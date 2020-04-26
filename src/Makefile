@@ -1,27 +1,27 @@
 CC=g++
-CFLAGS=-c -Wall -std=c++11 
+FLAGS=-c -Wall -std=c++14 
 LIBFLAGS=-lsfml-graphics -lsfml-window -lsfml-system
 
-SOURCES=$(wildcard source/*.cpp)
-OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=pacoronam
+SOURCEDIR = source
+BUILDDIR = build
+EXECUTABLE = pacoronam
 
+SOURCES = $(wildcard $(SOURCEDIR)/*.cpp)
+OBJECTS = $(patsubst $(SOURCEDIR)/%.cpp,$(BUILDDIR)/%.o,$(SOURCES))
 
+all: dir $(BUILDDIR)/$(EXECUTABLE) run
 
-all: make run
-
-make: $(SOURCES) $(EXECUTABLE) 
+dir:
+	mkdir -p $(BUILDDIR)
 
 run: 
-	./$(EXECUTABLE)
-        
-$(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@ $(LIBFLAGS)
+	@./$(BUILDDIR)/$(EXECUTABLE)
 
-.cpp.o:
-	$(CC) $(CFLAGS) $< -o $@ $(LIBFLAGS)
+$(BUILDDIR)/$(EXECUTABLE): $(OBJECTS)
+	$(CC) $^ -o $@ $(LIBFLAGS)
+
+$(OBJECTS): $(BUILDDIR)/%.o : $(SOURCEDIR)/%.cpp
+	$(CC) $(FLAGS) $< -o $@ $(LIBFLAGS)
 
 clean:
-	rm -rf source/*.o
-	rm -f $(EXECUTABLE)
-
+	rm -f $(BUILDDIR)/*o $(BUILDDIR)/$(EXECUTABLE)
