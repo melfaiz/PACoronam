@@ -2,36 +2,67 @@
 #include <iostream>
 
 #include "constants.hpp"
+#include "Game.hpp"
 #include "Map.hpp"
+#include "window.hpp"
 
 using namespace std;
 
 int main()
 {
+    window.setFramerateLimit(GAME_FPS);
 
-
-    sf::RenderWindow window(sf::VideoMode(WIDTH_WINDOW, HEIGHT_WINDOW), WINDOW_NAME);
-
-
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    Game game = Game();
 
     while (window.isOpen())
     {
+
+        
+
         sf::Event event;
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+
+            if (event.type == sf::Event::KeyPressed)
+                game.start();
+            
         }
 
-
-
-
-
         window.clear();
-        window.draw(shape);
+
+        game.displayMenu();
+        
+        
+
+        
+
+        while (game.isOn())
+        {
+            
+            window.clear();
+            
+            game.readKeyboard();
+
+            game.update();
+            
+            game.display();
+
+            window.display();
+            
+
+
+        }     
+
+        
+        
+        
         window.display();
+
+        
+
+
 
 
 

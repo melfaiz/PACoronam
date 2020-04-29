@@ -12,7 +12,7 @@ OBJECTS = $(patsubst $(SOURCEDIR)/%.cpp,$(BUILDDIR)/%.o,$(SOURCES))
 all: dir $(BUILDDIR)/$(EXECUTABLE) run
 
 dir:
-	mkdir -p $(BUILDDIR)
+	@mkdir -p $(BUILDDIR)
 
 run: 
 	@./$(BUILDDIR)/$(EXECUTABLE)
