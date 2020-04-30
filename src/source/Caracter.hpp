@@ -14,55 +14,29 @@ protected:
     int x;
     int y;
     Direction direction;
+    Direction nextDirection;
     double speed;
 
     
 
 public:
+
     Caracter(){
         x = 0;
         y = 0;
-        speed = 1.6;
         direction = WEST;
     }
 
-    void move();
-
-    void changeDirection(Direction direction);
 
 
     
 };
 
-void Caracter::move(){
-
-    switch (direction)
-    {
-    case NORTH:
-        y -= speed;
-        break;
-
-    case SOUTH:
-        y += speed;
-        break;
-
-    case EAST:
-        x -= speed;
-        break;
-
-    case WEST:
-        x += speed;
-
-    default:
-        break;
-    }
-
-}
 
 
-void Caracter::changeDirection(Direction direction){
-    this->direction = direction;
-}
+
+
+
 
 
 #endif

@@ -5,7 +5,8 @@
 #include "Map.hpp"
 #include "Pacman.hpp"
 #include "Monster.hpp"
-
+#include <iostream>
+#include <iomanip>
 
 class Game
 {
@@ -13,7 +14,7 @@ private:
 
     Map map;
     bool gameOn;
-    bool debug;
+    bool gamePaused;
 
     Pacman pacman;
 
@@ -27,7 +28,7 @@ public:
     Game() :blinky(Shadow),pinky(Speedy)
     {   
         gameOn = false;
-        debug = true;
+        gamePaused = false;
         score = 0;
 
 
@@ -47,7 +48,7 @@ public:
         
         displayScore();
         pacman.display();
-
+        map.display();
         blinky.display();
         pinky.display();
 
@@ -69,8 +70,12 @@ public:
         gameOn = false;
     }
 
-    bool isDebug(){
-        return debug;
+    bool isPaused(){
+        return gamePaused;
+    }
+
+    void pause(){
+        gamePaused = !gamePaused;
     }
 
 
@@ -95,7 +100,7 @@ void Game::displayGrid(){
 
 void Game::update(){
 
-    pacman.Caracter::move();
+    pacman.move();
     // blinky.Caracter::move();
     // pinky.Caracter::move();
 
@@ -108,9 +113,12 @@ void Game::displayScore(){
     {
         sf::Text text;
         text.setFont(font);
+        
+        std::stringstream ss;
+        ss << std::setw(4) << std::setfill('0') << 23;
+        std::string s = ss.str();
 
-        // std::cout << std::setfill('0') << std::setw(5) << 25;
-        text.setString(std::to_string(score));
+        text.setString(s);
         text.setCharacterSize(FONT_SIZE);
         text.setFillColor(sf::Color(247, 192, 158));
         text.setPosition(234,18);
@@ -131,22 +139,29 @@ void Game::readKeyboard(){
             {window.close();
             exit();} // GAME EXIT
 
-        if (event.type == sf::Event::KeyPressed){
+        if (event.type == sf::Event::KeyPressed ){
+
+            start();
+
             switch(event.key.code)
                 {
 
                         case(sf::Keyboard::Up):
-                                pacman.Caracter::changeDirection(NORTH);
-                                
+                                pacman.changeDirection(NORTH);                                
                                 break;
                         case(sf::Keyboard::Down):
-                                pacman.Caracter::changeDirection(SOUTH);
+                                pacman.changeDirection(SOUTH);
                                 break;
                         case(sf::Keyboard::Left):
-                                pacman.Caracter::changeDirection(EAST);
+                                pacman.changeDirection(EAST);
                                 break;
                         case(sf::Keyboard::Right):
-                                pacman.Caracter::changeDirection(WEST);
+                                pacman.changeDirection(WEST);
+                                break;
+
+                        case(sf::Keyboard::Escape):
+                                window.close();
+                                exit(); // GAME EXIT
                                 break;
 
                         default:
@@ -157,6 +172,9 @@ void Game::readKeyboard(){
         
     
     }
+
+
+
 
 }
 

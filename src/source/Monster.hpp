@@ -20,6 +20,7 @@ private:
     monsterType type;
     sf::RectangleShape monster;
     
+    
 
 public:
 
@@ -29,13 +30,14 @@ public:
 
     void display();
     
-    
+    bool isInside();
 };
 
 Monster::Monster(monsterType type)
 {   
 
     this->type = type;
+    speed = 2;
 
     monster.setSize(sf::Vector2f(MONSTER_SIZE, MONSTER_SIZE));
 
@@ -72,6 +74,9 @@ void Monster::display(){
 
 }
 
+bool Monster::isInside(){
+    return true;
+}
 
 
 #endif
