@@ -18,15 +18,12 @@ class Monster : public Caracter
 private:
     
     monsterType type;
+    sf::RectangleShape monster;
     
 
 public:
 
-    Monster(){
-
-        
-            
-    }
+    Monster() = default;
 
     Monster(monsterType type);
 
@@ -39,20 +36,23 @@ Monster::Monster(monsterType type)
 {   
 
     this->type = type;
-    caracter.setRadius(MONSTER_SIZE);
+
+    monster.setSize(sf::Vector2f(MONSTER_SIZE, MONSTER_SIZE));
 
     switch (type)
     {
     case Shadow:
-        caracter.setFillColor(sf::Color(250, 197, 246));
+        monster.setFillColor(sf::Color(250, 197, 246));
         x = 150;
         y = 150;
+        direction = WEST;
     
         break;
     case Speedy:
-        caracter.setFillColor(sf::Color(247, 187, 20));
+        monster.setFillColor(sf::Color(247, 187, 20));
         x = 150;
-        y = 180;
+        y = 200;
+        direction = NORTH;
         break;
     
     
@@ -67,8 +67,8 @@ Monster::Monster(monsterType type)
 
 void Monster::display(){
 
-    caracter.setPosition(x,y);            
-    window.draw(caracter);
+    monster.setPosition(x,y);            
+    window.draw(monster);
 
 }
 

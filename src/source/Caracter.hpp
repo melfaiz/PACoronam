@@ -14,16 +14,16 @@ protected:
     int x;
     int y;
     Direction direction;
-    int speed;
+    double speed;
 
-    sf::CircleShape caracter;
+    
 
 public:
     Caracter(){
         x = 0;
         y = 0;
-        speed = 1;
-        direction = SOUTH;
+        speed = 1.6;
+        direction = WEST;
     }
 
     void move();

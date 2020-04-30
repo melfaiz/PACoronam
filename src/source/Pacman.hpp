@@ -8,6 +8,7 @@ class Pacman : public Caracter
 {
 private:
     bool infected;
+    sf::CircleShape pacman;
 
 public:
     Pacman(){
@@ -17,8 +18,8 @@ public:
         x = 50;
         y = 50;
 
-        caracter.setRadius(PACMAN_SIZE);
-        caracter.setFillColor(sf::Color(255,238,0));
+        pacman.setRadius(PACMAN_RADIUS);
+        pacman.setFillColor(sf::Color(255,238,0));
         
     }
 
@@ -29,8 +30,8 @@ public:
 
 void Pacman::display(){    
 
-    caracter.setPosition(x,y);
-    window.draw(caracter);
+    pacman.setPosition(x,y);
+    window.draw(pacman);
 
 }
 
