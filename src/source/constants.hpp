@@ -7,7 +7,7 @@
 #define CELL_SIZE 20
 
 #define WIDTH 28
-#define HEIGHT 31
+#define HEIGHT 36
 
 
 

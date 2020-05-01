@@ -11,6 +11,7 @@ using namespace std;
 
 int main()
 {
+
     window.setFramerateLimit(GAME_FPS);
 
 
@@ -20,23 +21,28 @@ int main()
     while (window.isOpen())
     {
 
+
         
             
 
         game.readKeyboard();
 
+
         window.clear();
         game.displayGrid();
         game.display();
 
+
         if (game.isOn())
         {
+
 
             game.update();
 
         }
         
  
+
 
         window.display();
    

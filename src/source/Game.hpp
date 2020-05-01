@@ -21,12 +21,13 @@ private:
     Monster blinky;
     Monster pinky;
 
+
     int score;
-    
+
 public:
 
     Game() :blinky(Shadow),pinky(Speedy)
-    {   
+    {
         gameOn = false;
         gamePaused = false;
         score = 0;
@@ -38,19 +39,21 @@ public:
     void displayGrid();
 
     void start(){
-        gameOn = true;        
+        gameOn = true;
 
     }
 
     void update();
 
     void display(){
+
         
         displayScore();
         pacman.display();
         map.display();
         blinky.display();
         pinky.display();
+
 
     }
 
@@ -92,7 +95,7 @@ void Game::displayGrid(){
     texture.loadFromImage(image);  //Load Texture from image
 
     sf::Sprite sprite;
-    sprite.setTexture(texture);   
+    sprite.setTexture(texture);
 
     window.draw(sprite);
 }
@@ -168,9 +171,9 @@ void Game::readKeyboard(){
                                 break;
                 }
         }
-           
-        
-    
+
+
+
     }
 
 
