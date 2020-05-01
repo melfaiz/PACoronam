@@ -5,7 +5,8 @@
 #include "Map.hpp"
 #include "Pacman.hpp"
 #include "Monster.hpp"
-
+#include <iostream>
+#include <iomanip>
 
 class Game
 {
@@ -13,6 +14,7 @@ private:
 
     Map map;
     bool gameOn;
+    bool gamePaused;
 
     Pacman pacman;
 
@@ -20,15 +22,21 @@ private:
     Monster pinky;
 
 
+    int score;
+
 public:
 
     Game() :blinky(Shadow),pinky(Speedy)
     {
         gameOn = false;
+        gamePaused = false;
+        score = 0;
+
 
     }
 
     void displayMenu();
+    void displayGrid();
 
     void start(){
         gameOn = true;
@@ -39,13 +47,13 @@ public:
 
     void display(){
 
-
+        
+        displayScore();
         pacman.display();
-
-        //blinky.display();
-        //pinky.display();
-
         map.display();
+        blinky.display();
+        pinky.display();
+
 
     }
 
@@ -59,13 +67,28 @@ public:
 
     void readKeyboard();
 
+    void displayScore();
+
+    void exit(){
+        gameOn = false;
+    }
+
+    bool isPaused(){
+        return gamePaused;
+    }
+
+    void pause(){
+        gamePaused = !gamePaused;
+    }
+
+
 };
 
 
-void Game::displayMenu(){
+void Game::displayGrid(){
 
     sf::Image image;
-    if (!(image.loadFromFile(MENU_IMAGE)))
+    if (!(image.loadFromFile(GRID_IMAGE)))
         std::cout << "Cannot load image \n";   //Load Image
 
     sf::Texture texture;
@@ -77,10 +100,36 @@ void Game::displayMenu(){
     window.draw(sprite);
 }
 
+
 void Game::update(){
 
-    pacman.Caracter::move();
+    pacman.move();
+    // blinky.Caracter::move();
+    // pinky.Caracter::move();
 
+}
+
+void Game::displayScore(){
+
+    sf::Font font;
+    if (font.loadFromFile(FONT_STYLE))
+    {
+        sf::Text text;
+        text.setFont(font);
+        
+        std::stringstream ss;
+        ss << std::setw(4) << std::setfill('0') << 23;
+        std::string s = ss.str();
+
+        text.setString(s);
+        text.setCharacterSize(FONT_SIZE);
+        text.setFillColor(sf::Color(247, 192, 158));
+        text.setPosition(234,18);
+        window.draw(text);
+
+    }else{
+        std::cout << "Cant find font\n";
+    }
 }
 
 void Game::readKeyboard(){
@@ -88,24 +137,34 @@ void Game::readKeyboard(){
     sf::Event event;
     while (window.pollEvent(event))
     {
+      
         if (event.type == sf::Event::Closed)
-            window.close();
+            {window.close();
+            exit();} // GAME EXIT
 
-        if (event.type == sf::Event::KeyPressed){
+        if (event.type == sf::Event::KeyPressed ){
+
+            start();
+
             switch(event.key.code)
                 {
 
                         case(sf::Keyboard::Up):
-                                pacman.Caracter::changeDirection(NORTH);
+                                pacman.changeDirection(NORTH);                                
                                 break;
                         case(sf::Keyboard::Down):
-                                pacman.Caracter::changeDirection(SOUTH);
+                                pacman.changeDirection(SOUTH);
                                 break;
                         case(sf::Keyboard::Left):
-                                pacman.Caracter::changeDirection(EAST);
+                                pacman.changeDirection(EAST);
                                 break;
                         case(sf::Keyboard::Right):
-                                pacman.Caracter::changeDirection(WEST);
+                                pacman.changeDirection(WEST);
+                                break;
+
+                        case(sf::Keyboard::Escape):
+                                window.close();
+                                exit(); // GAME EXIT
                                 break;
 
                         default:
@@ -116,6 +175,9 @@ void Game::readKeyboard(){
 
 
     }
+
+
+
 
 }
 

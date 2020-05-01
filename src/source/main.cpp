@@ -5,6 +5,7 @@
 #include "Game.hpp"
 #include "Map.hpp"
 #include "window.hpp"
+#include <thread>
 
 using namespace std;
 
@@ -13,59 +14,38 @@ int main()
 
     window.setFramerateLimit(GAME_FPS);
 
+
+
     Game game = Game();
 
     while (window.isOpen())
     {
 
 
+        
+            
 
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
+        game.readKeyboard();
 
-            if (event.type == sf::Event::KeyPressed)
-                game.start();
-
-        }
 
         window.clear();
-
-        game.displayMenu();
-
-
+        game.displayGrid();
+        game.display();
 
 
-
-        while (game.isOn())
+        if (game.isOn())
         {
 
-            window.clear();
-
-            game.readKeyboard();
 
             game.update();
 
-            game.display();
-
-            window.display();
-
-
-
         }
-
-
+        
+ 
 
 
         window.display();
-
-
-
-
-
-
+   
 
 
     }
