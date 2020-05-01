@@ -26,6 +26,8 @@ typedef enum cellType {
 
 } cellType;
 
+
+
 class Map
 {
 
@@ -79,6 +81,7 @@ public:
 
     }
     void display();
+
 
     void full(int x, int y);
 

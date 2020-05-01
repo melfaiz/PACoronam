@@ -26,6 +26,8 @@
 #define TREAT_RADIUS 4
 #define PILL_RADIUS 9
 
+#define CELL(i,j) ( (i) + (j) * WIDTH)
+
 
 
 #endif

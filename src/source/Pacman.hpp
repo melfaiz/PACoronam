@@ -3,6 +3,7 @@
 
 #include "window.hpp"
 #include "Caracter.hpp"
+#include "Map.hpp"
 
 class Pacman : public Caracter
 {
@@ -26,7 +27,7 @@ public:
 
     void display();
     bool isInside(int x,int y);
-    void move();
+    void move(Map map);
     void changeDirection(Direction direction);
 
 };
@@ -59,14 +60,14 @@ bool Pacman::isInside(int x,int y){
 }
 
 
-void Pacman::move(){
+void Pacman::move(Map map){
 
 
         if (  (x+PACMAN_RADIUS+CELL_SIZE/2) % CELL_SIZE == 0  and nextDirection %2 == 0 )
             direction = nextDirection;
         if ( (y+ PACMAN_RADIUS+CELL_SIZE/2) % CELL_SIZE == 0 and nextDirection %2 == 1 )
             direction = nextDirection;
-        
+
 
         switch (direction)
         {
@@ -99,9 +100,6 @@ void Pacman::move(){
 
 void Pacman::changeDirection(Direction dir){
 
-
-
-    
     this->nextDirection = dir;
 }
 
