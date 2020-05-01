@@ -23,6 +23,9 @@
 #define PACMAN_RADIUS 15
 #define MONSTER_SIZE 30
 
+#define TREAT_RADIUS 4
+#define PILL_RADIUS 9
+
 
 
 #endif

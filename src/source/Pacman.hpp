@@ -62,9 +62,9 @@ bool Pacman::isInside(int x,int y){
 void Pacman::move(){
 
 
-        if (  (x+PACMAN_RADIUS) % (CELL_SIZE/2) == 0  and nextDirection %2 == 0 )
+        if (  (x+PACMAN_RADIUS+CELL_SIZE/2) % CELL_SIZE == 0  and nextDirection %2 == 0 )
             direction = nextDirection;
-        if ( (y+PACMAN_RADIUS) % (CELL_SIZE/2) == 0 and nextDirection %2 == 1 )
+        if ( (y+ PACMAN_RADIUS+CELL_SIZE/2) % CELL_SIZE == 0 and nextDirection %2 == 1 )
             direction = nextDirection;
         
 
