@@ -6,6 +6,7 @@
 #include <iostream>
 
 typedef enum cellType {
+
     EMPTY=0,
     FULL,
     HIGH_BAR,
@@ -22,14 +23,14 @@ typedef enum cellType {
     RIGHT_DOWN,
     GATE
 
+
 } cellType;
 
 class Map
 {
 
 private:
-    int width;
-    int height;
+
 
     cellType grid[HEIGHT][WIDTH] = {
         {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
@@ -68,6 +69,7 @@ private:
         {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
         {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
         {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY}
+
     };
 
 
@@ -117,13 +119,16 @@ void Map::display(){
     {
         for (size_t j = 0; j < WIDTH; j++)
         {
+
             x = j * CELL_SIZE;
             y = i * CELL_SIZE;
+
 
             cellType type = getCellType(i,j);
 
             switch (type)
             {
+
 
             case FULL:
                 full(x,y);
@@ -156,6 +161,7 @@ void Map::display(){
             case RIGHT_UP_CORNER:
                 right_up_corner(x,y);
                 break;
+
 
             case RIGHT_DOWN_CORNER:
                 right_down_corner(x,y);

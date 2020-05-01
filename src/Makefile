@@ -9,7 +9,7 @@ EXECUTABLE = pacoronam
 SOURCES = $(wildcard $(SOURCEDIR)/*.cpp)
 OBJECTS = $(patsubst $(SOURCEDIR)/%.cpp,$(BUILDDIR)/%.o,$(SOURCES))
 
-all: dir $(BUILDDIR)/$(EXECUTABLE) run
+all: clean dir $(BUILDDIR)/$(EXECUTABLE) run
 
 dir:
 	@mkdir -p $(BUILDDIR)
