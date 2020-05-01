@@ -10,6 +10,7 @@ using namespace std;
 
 int main()
 {
+
     window.setFramerateLimit(GAME_FPS);
 
     Game game = Game();
@@ -17,7 +18,7 @@ int main()
     while (window.isOpen())
     {
 
-        
+
 
         sf::Event event;
         while (window.pollEvent(event))
@@ -27,40 +28,40 @@ int main()
 
             if (event.type == sf::Event::KeyPressed)
                 game.start();
-            
+
         }
 
         window.clear();
 
         game.displayMenu();
-        
-        
 
-        
+
+
+
 
         while (game.isOn())
         {
-            
+
             window.clear();
-            
+
             game.readKeyboard();
 
             game.update();
-            
+
             game.display();
 
             window.display();
-            
 
 
-        }     
 
-        
-        
-        
+        }
+
+
+
+
         window.display();
 
-        
+
 
 
 

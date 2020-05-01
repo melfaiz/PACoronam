@@ -19,11 +19,11 @@ private:
     Monster blinky;
     Monster pinky;
 
-    
+
 public:
 
     Game() :blinky(Shadow),pinky(Speedy)
-    {   
+    {
         gameOn = false;
 
     }
@@ -31,19 +31,21 @@ public:
     void displayMenu();
 
     void start(){
-        gameOn = true;        
+        gameOn = true;
 
     }
 
     void update();
 
     void display(){
-        
-        
+
+
         pacman.display();
 
-        blinky.display();
-        pinky.display();
+        //blinky.display();
+        //pinky.display();
+
+        map.display();
 
     }
 
@@ -70,7 +72,7 @@ void Game::displayMenu(){
     texture.loadFromImage(image);  //Load Texture from image
 
     sf::Sprite sprite;
-    sprite.setTexture(texture);   
+    sprite.setTexture(texture);
 
     window.draw(sprite);
 }
@@ -110,9 +112,9 @@ void Game::readKeyboard(){
                                 break;
                 }
         }
-           
-        
-    
+
+
+
     }
 
 }

@@ -31,7 +31,7 @@ public:
     void changeDirection(Direction direction);
 
 
-    
+
 };
 
 void Caracter::move(){
@@ -61,6 +61,7 @@ void Caracter::move(){
 
 
 void Caracter::changeDirection(Direction direction){
+
     this->direction = direction;
 }
 
