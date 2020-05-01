@@ -10,6 +10,7 @@ class Pacman : public Caracter
 private:
     bool infected;
     int r;
+    int score;
     sf::CircleShape pacman;
 
 public:
@@ -19,6 +20,7 @@ public:
         x = 14*CELL_SIZE - PACMAN_RADIUS;
         y = 26.5*CELL_SIZE - PACMAN_RADIUS;
         speed = 1;
+        score = 0;
 
         pacman.setRadius(PACMAN_RADIUS);
         pacman.setFillColor(sf::Color(255,238,0));
@@ -27,8 +29,13 @@ public:
 
     void display();
     bool isInside(int x,int y);
-    void move(Map map);
+    void move(Map* map);
     void changeDirection(Direction direction);
+    int getScore(){
+        return score;
+    }
+
+    bool canMove(Map* map,int i,int j);
 
 };
 
@@ -59,43 +66,64 @@ bool Pacman::isInside(int x,int y){
     
 }
 
+bool Pacman::canMove(Map* map,int i,int j){
 
-void Pacman::move(Map map){
+    if ( map->getCellType(i, j) == EMPTY or map->getCellType(i, j) == TREAT or map->getCellType(i, j) == PILL)
+    {
+        return true;
+    }
+    return false;
+}
 
+void Pacman::move(Map* map){
 
-        if (  (x+PACMAN_RADIUS+CELL_SIZE/2) % CELL_SIZE == 0  and nextDirection %2 == 0 )
+        int xr = x+PACMAN_RADIUS;
+        int yr = y+PACMAN_RADIUS;
+
+        if (  (xr + CELL_SIZE/2) % CELL_SIZE == 0  and nextDirection %2 == 0 )
             direction = nextDirection;
-        if ( (y+ PACMAN_RADIUS+CELL_SIZE/2) % CELL_SIZE == 0 and nextDirection %2 == 1 )
+        if ( (yr + CELL_SIZE/2) % CELL_SIZE == 0 and nextDirection %2 == 1 )
             direction = nextDirection;
+
+        int j = ( x+ PACMAN_RADIUS) / CELL_SIZE;
+        int i = ( y+ PACMAN_RADIUS) / CELL_SIZE;
 
 
         switch (direction)
         {
         case NORTH:
-            if(isInside(x,y-speed))
+            if (isInside(x, y - speed) && canMove(map, (yr - speed - CELL_SIZE/2) / CELL_SIZE  ,j))
                 y -= speed;
-
             break;
 
         case SOUTH:
-            if(isInside(x,y+speed))
+            if (isInside(x, y + speed))
                 y += speed;
             break;
 
         case EAST:
-            if(isInside(x-speed,y))
+            if (isInside(x - speed, y))
                 x -= speed;
             break;
 
         case WEST:
-            if(isInside(x+speed,y))
+            if (isInside(x + speed, y))
                 x += speed;
 
         default:
             break;
         }
-  
 
+        if (map->getCellType(i, j) == TREAT)
+        {
+            score += 10;
+            map->setCellType(i, j, EMPTY);
+        }
+        if (map->getCellType(i, j) == PILL)
+        {
+            score += 100;
+            map->setCellType(i, j, EMPTY);
+        }
 }
 
 void Pacman::changeDirection(Direction dir){

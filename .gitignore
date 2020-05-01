@@ -4,3 +4,5 @@ src/build/*
 src/build/pacoronam
 src/build/pacoronam
 src/build/pacoronam
+*.json
+src/build/pacoronam

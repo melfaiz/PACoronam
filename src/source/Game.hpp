@@ -8,6 +8,8 @@
 #include <iostream>
 #include <iomanip>
 
+
+
 class Game
 {
 private:
@@ -51,8 +53,9 @@ public:
 
         
         displayScore();
-        pacman.display();
         map.display();
+        pacman.display();
+
 
         blinky.display();
         pinky.display();
@@ -108,7 +111,7 @@ void Game::displayGrid(){
 
 void Game::update(){
 
-    pacman.move(map);
+    pacman.move(&map);
     // blinky.Caracter::move();
     // pinky.Caracter::move();
 
@@ -123,7 +126,7 @@ void Game::displayScore(){
         text.setFont(font);
         
         std::stringstream ss;
-        ss << std::setw(4) << std::setfill('0') << score;
+        ss << std::setw(4) << std::setfill('0') << pacman.getScore();
         std::string s = ss.str();
 
         text.setString(s);

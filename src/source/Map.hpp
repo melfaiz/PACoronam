@@ -6,13 +6,13 @@
 #include <iostream>
 
 typedef enum cellType {
-    EMPTY=0,
-    FULL,
-    HIGH_BAR,
-    LOW_BAR,
-    RIGHT_BAR,
-    LEFT_BAR,
-    LEFT_UP_CORNER,
+    EMPTY=0x00, // 0000 0000
+    FULL=0x10, // 0001 0000
+    HIGH_BAR=0x11, // 0001 0001
+    LOW_BAR=0x12,
+    RIGHT_BAR=0x13,
+    LEFT_BAR=0x14,
+    LEFT_UP_CORNER=0x15,
     LEFT_DOWN_CORNER,
     RIGHT_UP_CORNER,
     RIGHT_DOWN_CORNER,
@@ -104,11 +104,16 @@ public:
     void treat(int x,int y);
     void pill(int x,int y);
 
-    cellType getCellType(int x, int y)
+    cellType getCellType(int i, int j)
     {
 
-        return (cellType)grid[x][y] ;
+        return (cellType)grid[i][j] ;
 
+    }
+
+    void setCellType(int i, int j, cellType type){
+
+        grid[i][j] = type;
     }
 
 
