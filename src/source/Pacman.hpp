@@ -14,10 +14,9 @@ private:
 public:
     Pacman(){
 
-        r = PACMAN_RADIUS;
         infected = false;
-        x = 5.5*CELL_SIZE - PACMAN_RADIUS;
-        y = 5.5*CELL_SIZE - PACMAN_RADIUS;
+        x = 14*CELL_SIZE - PACMAN_RADIUS;
+        y = 26.5*CELL_SIZE - PACMAN_RADIUS;
         speed = 1;
 
         pacman.setRadius(PACMAN_RADIUS);
@@ -40,7 +39,7 @@ void Pacman::display(){
 
     sf::CircleShape point;
     point.setRadius(3);
-    point.setPosition(x+r-3,y+r-3);
+    point.setPosition(x+PACMAN_RADIUS-3,y+PACMAN_RADIUS-3);
     point.setFillColor(sf::Color::Magenta);
     window.draw(point);
 
@@ -51,7 +50,7 @@ void Pacman::display(){
 
 bool Pacman::isInside(int x,int y){
 
-    if ( x <= 0 or x + 2* r > CELL_SIZE*WIDTH or y <= 0 or y+ 2*r > CELL_SIZE*HEIGHT)
+    if ( x <= 0 or x + 2* PACMAN_RADIUS > CELL_SIZE*WIDTH or y <= 0 or y+ 2*PACMAN_RADIUS > CELL_SIZE*HEIGHT)
     {
         return false;
     }
@@ -63,9 +62,9 @@ bool Pacman::isInside(int x,int y){
 void Pacman::move(){
 
 
-        if (  (x+r) % (CELL_SIZE/2) == 0  and nextDirection %2 == 0 )
+        if (  (x+PACMAN_RADIUS) % (CELL_SIZE/2) == 0  and nextDirection %2 == 0 )
             direction = nextDirection;
-        if ( (y+r) % (CELL_SIZE/2) == 0 and nextDirection %2 == 1 )
+        if ( (y+PACMAN_RADIUS) % (CELL_SIZE/2) == 0 and nextDirection %2 == 1 )
             direction = nextDirection;
         
 

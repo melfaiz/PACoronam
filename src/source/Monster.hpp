@@ -43,20 +43,36 @@ Monster::Monster(monsterType type)
 
     switch (type)
     {
-    case Shadow:
+    case Speedy:
+
         monster.setFillColor(sf::Color(250, 197, 246));
-        x = 150;
-        y = 150;
+        x = 14*CELL_SIZE - MONSTER_SIZE/2;
+        y = 16*CELL_SIZE + MONSTER_SIZE/2;
+
         direction = WEST;
     
         break;
-    case Speedy:
+
+    case Pokey:
         monster.setFillColor(sf::Color(247, 187, 20));
-        x = 150;
-        y = 200;
+        x = 16*CELL_SIZE - MONSTER_SIZE/2;
+        y = 16*CELL_SIZE + MONSTER_SIZE/2;
+        direction = NORTH;
+        break;
+
+    case Bashful:
+        monster.setFillColor(sf::Color::Cyan);
+        x = 12*CELL_SIZE - MONSTER_SIZE/2;
+        y = 16*CELL_SIZE + MONSTER_SIZE/2;
         direction = NORTH;
         break;
     
+    case Shadow:
+        monster.setFillColor(sf::Color::Red);
+        x = 14*CELL_SIZE - MONSTER_SIZE/2;
+        y = 13*CELL_SIZE + MONSTER_SIZE/2;
+        direction = NORTH;
+        break;
     
     default:
         break;

@@ -20,13 +20,15 @@ private:
 
     Monster blinky;
     Monster pinky;
+    Monster inky;
+    Monster clyde;
 
 
     int score;
 
 public:
 
-    Game() :blinky(Shadow),pinky(Speedy)
+    Game() :blinky(Shadow),pinky(Speedy),inky(Bashful),clyde(Pokey)
     {
         gameOn = false;
         gamePaused = false;
@@ -51,8 +53,11 @@ public:
         displayScore();
         pacman.display();
         map.display();
+
         blinky.display();
         pinky.display();
+        inky.display();
+        clyde.display();
 
 
     }
@@ -118,13 +123,13 @@ void Game::displayScore(){
         text.setFont(font);
         
         std::stringstream ss;
-        ss << std::setw(4) << std::setfill('0') << 23;
+        ss << std::setw(4) << std::setfill('0') << score;
         std::string s = ss.str();
 
         text.setString(s);
         text.setCharacterSize(FONT_SIZE);
         text.setFillColor(sf::Color(247, 192, 158));
-        text.setPosition(234,18);
+        text.setPosition(230,18);
         window.draw(text);
 
     }else{

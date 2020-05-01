@@ -22,27 +22,23 @@ int main()
     {
 
 
-        
-            
-
         game.readKeyboard();
 
-
         window.clear();
-        game.displayGrid();
+
+        
+
         game.display();
 
 
         if (game.isOn())
         {
 
-
             game.update();
 
         }
         
- 
-
+        game.displayGrid();
 
         window.display();
    

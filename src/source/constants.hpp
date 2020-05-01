@@ -13,7 +13,6 @@
 
 #define GAME_FPS 60 //Game frame rate
 
-#define MENU_IMAGE "img/menu.png"
 #define GRID_IMAGE "img/grid.png"
 
 #define FONT_STYLE "img/emulogic.ttf"
