@@ -75,12 +75,13 @@ bool Pacman::canMove(Map* map,int i,int j){
     return false;
 }
 
+
 void Pacman::move(Map* map){
 
         int xr = x+PACMAN_RADIUS;
         int yr = y+PACMAN_RADIUS;
 
-        if (  (xr + CELL_SIZE/2) % CELL_SIZE == 0  and nextDirection %2 == 0 )
+        if (  (xr + CELL_SIZE/2) % CELL_SIZE == 0  and nextDirection %2 == 0)
             direction = nextDirection;
         if ( (yr + CELL_SIZE/2) % CELL_SIZE == 0 and nextDirection %2 == 1 )
             direction = nextDirection;
@@ -92,22 +93,22 @@ void Pacman::move(Map* map){
         switch (direction)
         {
         case NORTH:
-            if (isInside(x, y - speed) && canMove(map, (yr - speed - CELL_SIZE/2) / CELL_SIZE  ,j))
+            if (isInside(x, y - speed) && canMove(map, (yr - speed - CELL_SIZE/2) / CELL_SIZE  ,j) )
                 y -= speed;
             break;
 
         case SOUTH:
-            if (isInside(x, y + speed))
+            if (isInside(x, y + speed) && canMove(map, (yr  + CELL_SIZE/2) / CELL_SIZE  ,j) )
                 y += speed;
             break;
 
         case EAST:
-            if (isInside(x - speed, y))
+            if (isInside(x - speed, y) && canMove(map, i  ,(xr - speed - CELL_SIZE/2) / CELL_SIZE) )
                 x -= speed;
             break;
 
         case WEST:
-            if (isInside(x + speed, y))
+            if (isInside(x + speed, y) && canMove(map, i  ,(xr  + CELL_SIZE/2) / CELL_SIZE) )
                 x += speed;
 
         default:
