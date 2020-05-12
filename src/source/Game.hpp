@@ -3,7 +3,7 @@
 
 
 #include "Map.hpp"
-#include "Pacman.HH"
+#include "Pacman.hpp"
 #include "Monster.hpp"
 #include <iostream>
 #include <iomanip>
