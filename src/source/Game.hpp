@@ -51,7 +51,7 @@ public:
 
     void display(){
 
-        
+
         displayScore();
         map.display();
         pacman.display();
@@ -126,7 +126,7 @@ void Game::displayScore(){
     {
         sf::Text text;
         text.setFont(font);
-        
+
         std::stringstream ss;
         ss << std::setw(4) << std::setfill('0') << pacman.getScore();
         std::string s = ss.str();
@@ -147,7 +147,7 @@ void Game::readKeyboard(){
     sf::Event event;
     while (window.pollEvent(event))
     {
-      
+
         if (event.type == sf::Event::Closed)
             {window.close();
             exit();} // GAME EXIT
@@ -160,16 +160,16 @@ void Game::readKeyboard(){
                 {
 
                         case(sf::Keyboard::Up):
-                                pacman.changeDirection(NORTH);                                
+                                pacman.changeDirection(NORTH);
                                 break;
                         case(sf::Keyboard::Down):
                                 pacman.changeDirection(SOUTH);
                                 break;
                         case(sf::Keyboard::Left):
-                                pacman.changeDirection(EAST);
+                                pacman.changeDirection(WEST);
                                 break;
                         case(sf::Keyboard::Right):
-                                pacman.changeDirection(WEST);
+                                pacman.changeDirection(EAST);
                                 break;
 
                         case(sf::Keyboard::Escape):
