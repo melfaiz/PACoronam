@@ -112,7 +112,9 @@ void Game::displayGrid(){
 void Game::update(){
 
     pacman.move(&map);
-    // blinky.Caracter::move();
+
+    blinky.move(&map,pacman);
+
     // pinky.Caracter::move();
 
 }

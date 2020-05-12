@@ -17,18 +17,24 @@ protected:
     Direction nextDirection;
     double speed;
 
+    bool canMove(Map* map,int i,int j);
+
     
 
 public:
 
-    Caracter(){
-        x = 0;
-        y = 0;
-    }
+
 
 };
 
+bool Caracter::canMove(Map* map,int i,int j){
 
+    if ( map->getCellType(i, j) == EMPTY or map->getCellType(i, j) == TREAT or map->getCellType(i, j) == PILL)
+    {
+        return true;
+    }
+    return false;
+}
 
 
 #endif

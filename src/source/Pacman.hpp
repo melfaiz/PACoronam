@@ -19,7 +19,7 @@ public:
         infected = false;
         x = 14*CELL_SIZE - PACMAN_RADIUS;
         y = 26.5*CELL_SIZE - PACMAN_RADIUS;
-        speed = 1;
+        speed = 2;
         score = 0;
 
         pacman.setRadius(PACMAN_RADIUS);
@@ -35,7 +35,12 @@ public:
         return score;
     }
 
-    bool canMove(Map* map,int i,int j);
+    int getX(){
+        return x;
+    }
+    int getY(){
+        return x;
+    }
 
 };
 
@@ -66,14 +71,7 @@ bool Pacman::isInside(int x,int y){
     
 }
 
-bool Pacman::canMove(Map* map,int i,int j){
 
-    if ( map->getCellType(i, j) == EMPTY or map->getCellType(i, j) == TREAT or map->getCellType(i, j) == PILL)
-    {
-        return true;
-    }
-    return false;
-}
 
 
 void Pacman::move(Map* map){
@@ -130,6 +128,7 @@ void Pacman::move(Map* map){
 void Pacman::changeDirection(Direction dir){
 
     this->nextDirection = dir;
+
 }
 
 
