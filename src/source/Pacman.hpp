@@ -245,16 +245,16 @@ void Pacman::move(Map* map){
         int i = yr / CELL_SIZE;
 
         //If this is the first move of the game :
-        if(direction == INITIAL){
-            if(nextDirection == EAST){
-                x -= speed;
-                direction = nextDirection;
-            }
-            if(nextDirection == WEST){
-                x += speed;
-                direction = nextDirection;
-            }
-        }
+        // if(direction == INITIAL){
+        //     if(nextDirection == EAST){
+        //         x -= speed;
+        //         direction = nextDirection;
+        //     }
+        //     if(nextDirection == WEST){
+        //         x += speed;
+        //         direction = nextDirection;
+        //     }
+        // }
 
 
 

@@ -6,7 +6,7 @@ typedef enum direction {
 	EAST,  // 1
 	SOUTH, // 2
 	WEST,   // 3
-	INITIAL
+	// INITIAL
 } Direction;
 
 class Caracter
@@ -14,7 +14,7 @@ class Caracter
 protected:
     int x;
     int y;
-    Direction direction = INITIAL;
+    Direction direction = WEST;
     Direction nextDirection;
     double speed;
 

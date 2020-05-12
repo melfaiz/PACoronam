@@ -11,7 +11,7 @@
 
 
 
-#define GAME_FPS 30 //Game frame rate
+#define GAME_FPS 60 //Game frame rate
 
 #define GRID_IMAGE "img/grid.png"
 
