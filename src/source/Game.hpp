@@ -113,9 +113,10 @@ void Game::update(){
 
     pacman.move(&map);
 
+
     blinky.move(&map,pacman);
 
-    // pinky.Caracter::move();
+    // pinky.move(&map,pacman);
 
 }
 

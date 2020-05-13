@@ -45,11 +45,11 @@ public:
         return score;
     }
 
-    int getX(){
+    double getX(){
         return x;
     }
-    int getY(){
-        return x;
+    double getY(){
+        return y;
     }
 
 };
@@ -156,10 +156,6 @@ bool Pacman::angle(Map* map,int i, int j){
 
     return false;
 
-    //if (  (xr + CELL_SIZE/2) % CELL_SIZE == 0  and nextDirection %2 == 0)
-        //        direction = nextDirection;
-    //if ( (yr + CELL_SIZE/2) % CELL_SIZE == 0 and nextDirection %2 == 1 )
-      //          direction = nextDirection;
 
 }
 
@@ -243,19 +239,6 @@ void Pacman::move(Map* map){
         // We compute the current cell :
         int j = xr / CELL_SIZE;
         int i = yr / CELL_SIZE;
-
-        //If this is the first move of the game :
-        // if(direction == INITIAL){
-        //     if(nextDirection == EAST){
-        //         x -= speed;
-        //         direction = nextDirection;
-        //     }
-        //     if(nextDirection == WEST){
-        //         x += speed;
-        //         direction = nextDirection;
-        //     }
-        // }
-
 
 
         if(turning)
