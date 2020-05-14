@@ -30,7 +30,7 @@ public:
         infected = false;
         x = 14*CELL_SIZE - PACMAN_RADIUS;
         y = 26.5*CELL_SIZE - PACMAN_RADIUS;
-        speed = 2;
+        speed = 1.7;
         score = 0;
 
         pacman.setRadius(PACMAN_RADIUS);

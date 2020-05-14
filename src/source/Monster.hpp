@@ -100,8 +100,8 @@ void Monster::move(Map* map,Pacman pacman){
         
         if( (xr + CELL_SIZE/2) % CELL_SIZE == 0 and (yr + CELL_SIZE/2) % CELL_SIZE == 0  )
         {
-        direction = nextDirection;
-        nextDirection = changeDirection(map,pacman);
+            direction = nextDirection;
+            nextDirection = changeDirection(map,pacman);
         }
             
 
@@ -208,25 +208,29 @@ Direction Monster::changeDirection(Map* map,Pacman pacman){
     int jp = (xp + PACMAN_RADIUS ) / CELL_SIZE ;
     int ip = (yp + PACMAN_RADIUS ) / CELL_SIZE ;
 
-    std::cout << jm<<" " << im << "\n";
-    std::cout << jp<<" " << ip << "\n";
-                
-    std::cout << "Actual direction : " << nextDirection << "\n\n";
-    switch (nextDirection)
+    // std::cout << jm<<" " << im << "\n";
+    // std::cout << jp<<" " << ip << "\n";
+    // std::cout << "Actual direction : " << nextDirection << "\n\n";
+
+    switch (direction)  // ooking one tile ahead of its current tile in its direction of travel.
     {
     case NORTH:
-        im = im -1;
+        if( canMove(map,im-1,jm)) // To not choose a wall and get stuck there
+            im = im -1;
         break;
 
     case SOUTH:
-        im = im+1;
+        if( canMove(map,im+1,jm))
+            im = im+1;
         break;
     case WEST:
-        jm = jm -1;
+        if( canMove(map,im,jm-1))
+            jm = jm -1;
         break;
 
     case EAST:
-        jm = jm +1;
+        if( canMove(map,im,jm+1))
+            jm = jm +1;
         break;
     default:
         break;
