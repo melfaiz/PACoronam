@@ -154,11 +154,11 @@ bool Monster::isInside(int x,int y){
     
 }
 
-double getDistanceIndices(int ia,int ja,int ib,int jb){
+float getDistanceIndices(int ia,int ja,int ib,int jb){
 
-	double a = ia - ib; //calculating number to square in next step
-	double b =  ja  - jb;
-	double dist;
+	float a = ia - ib; //calculating number to square in next step
+	float b =  ja  - jb;
+	float dist;
 
 	dist = pow(a, 2) + pow(b, 2);       //calculating Euclidean distance
 	dist = sqrt(dist);                  
@@ -171,11 +171,11 @@ double getDistanceIndices(int ia,int ja,int ib,int jb){
 Direction Monster::changeDirection(Map* map,Pacman pacman){
 
 
-    int xp = pacman.getX();
-    int yp = pacman.getY() ;
+    float xp = pacman.getX();
+    float yp = pacman.getY() ;
 
-    int xm = x ;
-    int ym = y ;
+    float xm = x ;
+    float ym = y ;
 
     // We compute the current cell :
     int jm = (xm + MONSTER_SIZE/2 ) / CELL_SIZE ;
@@ -230,9 +230,9 @@ Direction Monster::changeDirection(Map* map,Pacman pacman){
     }
 
 
-    double minDistance = 10000000;
+    float minDistance = 10000000;
 
-    double d = getDistanceIndices(ip,jp,im-1,jm);
+    float d = getDistanceIndices(ip,jp,im-1,jm);
 
     
     if ( d < minDistance and canMove(map,  im-1 , jm ) and !(  im-1 == imo and jm == jmo) )

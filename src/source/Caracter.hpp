@@ -16,7 +16,7 @@ protected:
     float y;
     Direction direction = WEST;
     Direction nextDirection;
-    double speed;
+    float speed;
 
     bool canMove(Map* map,int i,int j);
 
