@@ -166,27 +166,7 @@ double getDistanceIndices(int ia,int ja,int ib,int jb){
 	return dist;
 }
 
-int findMinDir(std::vector< std::vector<double> > v){
 
-    double min = 10000;
-    int d = NORTH;
-    for (size_t i = 0; i < v.size(); i++)
-    {
-        if ( v[i][1] == 1 )
-        {
-            if ( v[i][0] < min)
-            {   
-                min = v[i][0];
-                d = i;
-            }
-            
-        }
-
-    }
-
-    return d;
-    
-}
 
 Direction Monster::changeDirection(Map* map,Pacman pacman){
 
@@ -236,78 +216,62 @@ Direction Monster::changeDirection(Map* map,Pacman pacman){
         break;
     }
 
-    std::cout <<"next : " <<  jm <<" " << im << "\n";
+    // std::cout <<"next : " <<  jm <<" " << im << "\n";
 
-    std::cout << "\n\n";
+    // std::cout << "\n\n";
 
-    Direction minDirection ;
-    
+    Direction minDirection ;   
 
-    std::vector< std::vector<double> > dd;
+    // std::vector< std::vector<double> > dd;
 
 
     if(getDistanceIndices(ip,jp,im,jm)==0){
         return direction;
     }
 
-    // std::cout << "north distance : " << d << "\n";
+
+    double minDistance = 10000000;
 
     double d = getDistanceIndices(ip,jp,im-1,jm);
-    dd.push_back( {d,0});
-    std::cout << "north distance : " << d << "\n";
+
     
-    if (canMove(map,  im-1 , jm ) and !(  im-1 == imo and jm == jmo) )
+    if ( d < minDistance and canMove(map,  im-1 , jm ) and !(  im-1 == imo and jm == jmo) )
     {
         minDirection = NORTH;
-        
-        dd[0] = {d,1};
-        // std::cout << "can move east\n";
+        minDistance = d;
     } 
 
 
     d = getDistanceIndices(ip,jp,im,jm+1);
-    std::cout << "east distance : " << d << "\n";
-    dd.push_back( {d,0});
-    if (canMove(map,  im , jm+1) and !( im == imo and jm+1 == jmo) )
+    // std::cout << "east distance : " << d << "\n";
+
+    if (d < minDistance and canMove(map, im , jm+1) and !( im == imo and jm+1 == jmo) )
     {
         minDirection = EAST;
-        
-        // std::cout << "can move east\n";
-        dd[1] = {d,1};
+        minDistance = d;
+
     }     
 
     d = getDistanceIndices(ip,jp,im+1,jm);
-    std::cout << "south distance : " << d << "\n";
-    dd.push_back( {d,0});
-    if (canMove(map,   im+1,jm) and !( im+1 == imo and jm == jmo))
+
+    if (d < minDistance and canMove(map, im+1,jm) and !( im+1 == imo and jm == jmo))
     {
 
         minDirection = SOUTH;
-        
-        // std::cout << "can move south\n";
-        dd[2] = {d,1};
+        minDistance = d;
         
     }
  
     d = getDistanceIndices(ip,jp,im,jm-1);
-     std::cout << "west distance : " << d << "\n";
-    dd.push_back( {d,0});
-    if ( canMove(map, im,jm-1) and !( im == imo and jm-1 == jmo) )
+
+    if (d < minDistance and  canMove(map, im,jm-1) and !( im == imo and jm-1 == jmo) )
     {
         
         minDirection = WEST;
-        dd[3] = {d,1};
-        
-        // std::cout << "can move west\n";
+        minDistance = d;
         
     }    
 
-    for (size_t i = 0; i < 4; i++)
-    {
-        std::cout << dd[i][0] << " : " << dd[i][1] << "\n";
-    }
-    
-    minDirection = (Direction)findMinDir(dd);
     std::cout << "returned : " << minDirection << "\n\n";
     return minDirection;
 
