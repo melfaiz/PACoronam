@@ -25,14 +25,7 @@ void Game::display(sf::RenderWindow &window){
     displayScore(window);
     displayGrid(window);
 
-
     pacman.display(window);
-
-    // blinky.display(window);
-    // pinky.display();
-    // inky.display();
-    // clyde.display();
-
 
 }
 
