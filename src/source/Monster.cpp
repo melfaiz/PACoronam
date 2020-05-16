@@ -1,69 +1,6 @@
-#ifndef MONSTER_H
-#define MONSTER_H
+#include "Monster.hpp"
 
-<<<<<<< HEAD
-#include "window.hpp"
-#include "Caracter.hpp"
-#include <vector>
-#include<cmath>
-=======
-#include "Character.hpp"
-#include "Pacman.hpp"
-#include <vector>
-#include <cmath>
->>>>>>> 7dd8b470ce80ff264de596f15f88c501e965434a
 
-typedef enum monsterType {
-
-    Shadow = 0,
-    Speedy ,
-    Bashful,
-    Pokey,
-
-} monsterType;
-
-typedef enum mode {
-
-    chase = 0,
-    scatter,
-    panic,
-
-} Mode;
-
-class Monster : public Caracter
-{
-private:
-    
-    monsterType type;
-    sf::RectangleShape monster;
-    Mode mode;
-    
-    
-
-public:
-
-    Monster() = default;
-
-    Monster(monsterType type);
-
-<<<<<<< HEAD
-    void display();
-=======
-    void display(sf::RenderWindow &window);
->>>>>>> 7dd8b470ce80ff264de596f15f88c501e965434a
-    
-    bool isInside(int x,int y);
-
-    void  move(Map* map,Pacman pacman);
-
-    Direction changeDirection(Map *map,Pacman pacman);
-
-    Direction chasePoint(Map* map,float xp,float yp);
-
-    
-};
-
-<<<<<<< HEAD
 Monster::Monster(monsterType type)
 {   
 
@@ -103,8 +40,8 @@ Monster::Monster(monsterType type)
         x = 14*CELL_SIZE - MONSTER_SIZE/2;
         // x = 15*CELL_SIZE + CELL_SIZE/2- MONSTER_SIZE/2;
         y = 13*CELL_SIZE + MONSTER_SIZE/2;
-        // direction = EAST;
-        nextDirection = WEST;
+        direction = EAST;
+        // nextDirection = WEST;
         break;
     
     default:
@@ -162,7 +99,7 @@ void Monster::move(Map* map,Pacman pacman){
 }
 
 
-void Monster::display(){
+void Monster::display(sf::RenderWindow &window){
 
     monster.setPosition(x,y);            
     window.draw(monster);
@@ -275,7 +212,6 @@ Direction Monster::chasePoint(Map* map,float xp,float yp){
         
     }    
 
-    std::cout << "returned : " << minDirection << "\n";
     return minDirection;
 
 
@@ -291,16 +227,7 @@ Direction Monster::changeDirection(Map* map,Pacman pacman){
 
     float xp = pacman.getX();
     float yp = pacman.getY() ;
-
-
-
   
     return chasePoint(map,xp,yp);
 
 }
-
-=======
->>>>>>> 7dd8b470ce80ff264de596f15f88c501e965434a
-
-
-#endif
