@@ -54,6 +54,7 @@ public:
     Direction start(Map* map);
 
     bool canMove(Map* map,int i,int j);
+    Direction randomDirection(Map* map);
 
     
 };
