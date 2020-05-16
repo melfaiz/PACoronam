@@ -55,7 +55,7 @@ Monster::Monster(monsterType type)
 
         direction = WEST;
 
-        mode = scatter;
+        mode = on;
 
         chaseX = 14 * CELL_SIZE - CELL_SIZE / 2 - MONSTER_SIZE / 2;
         chaseY = 13 * CELL_SIZE + MONSTER_SIZE;
@@ -183,11 +183,11 @@ void Monster::changeDirection(Map *map, Pacman pacman)
     float yp = pacman.getY();
 
     if (mode == on) // Monsters dont obey to being in the middle while exiting the gate
-    {
-        chaseX = 14 * CELL_SIZE;
-        chaseY = 14 * CELL_SIZE + CELL_SIZE / 2;
+    {   
+        std::cout << "MODE ON\n";
 
-        direction = start(map);
+        direction = nextDirection;
+        nextDirection = start(map);
     }
     else if (int(xr + CELL_SIZE / 2) % CELL_SIZE == 0 and int(yr + CELL_SIZE / 2) % CELL_SIZE == 0)
 
@@ -246,8 +246,6 @@ void Monster::changeDirection(Map *map, Pacman pacman)
             
             if(!canMove(map, im + Yd[direction] , jm + Xd[direction]))
             {   
-                std::cout << "ya 3wj men : " << direction << "\n";
-
                 direction = randomDirection(map) ; 
             }
         }
@@ -263,6 +261,7 @@ Direction Monster::start(Map *map)
 
     if (yr == 13 * CELL_SIZE + MONSTER_SIZE)
     { // To adjust monsters in the middle of the cell after exiting the gate
+        std::cout << "adjusting\n";
         direction = WEST;
     }
 

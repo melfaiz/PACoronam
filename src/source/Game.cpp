@@ -22,10 +22,10 @@ void Game::update(){
 
     pacman.move(&map);
 
-    // blinky.move(&map,pacman);
+    blinky.move(&map,pacman);
     pinky.move(&map,pacman);
-    // inky.move(&map,pacman);
-    // clyde.move(&map,pacman);
+    inky.move(&map,pacman);
+    clyde.move(&map,pacman);
 
 }
 
@@ -39,10 +39,10 @@ void Game::display(sf::RenderWindow &window){
 
     pacman.display(window);
 
-    // blinky.display(window);
+    blinky.display(window);
     pinky.display(window);
-    // inky.display(window);
-    // clyde.display(window);
+    inky.display(window);
+    clyde.display(window);
 
     displayGrid(window);
 
