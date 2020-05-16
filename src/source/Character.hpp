@@ -13,7 +13,7 @@ protected:
     float x;
     float y;
 
-    Direction direction = INITIAL;
+    Direction direction ;
     Direction nextDirection;
 
     double speed;

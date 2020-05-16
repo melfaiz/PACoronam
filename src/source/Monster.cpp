@@ -196,41 +196,43 @@ void Monster::changeDirection(Map *map, Pacman pacman)
 
     int distance;
 
-    int twoTilesX = xp + jd[pacmanDirection] * 2 * CELL_SIZE ;
-    int twoTilesY = yp + id[pacmanDirection] * 2 * CELL_SIZE ;
-
     if (mode == on) // Monsters dont obey to being in the middle while exiting the gate
     {
 
 
         direction = nextDirection;
         nextDirection = start(map);
+        
     }
     else if (int(xr + CELL_SIZE / 2) % CELL_SIZE == 0 and int(yr + CELL_SIZE / 2) % CELL_SIZE == 0)
     {
 
         if (mode == chase)
         {
-
             switch (type)
             {
                 case Speedy: //pinky                   
 
                     // 4 cells ahead of pacman
+
                     chaseX = xp + jd[pacmanDirection] * 4 * CELL_SIZE ;
                     chaseY = yp + id[pacmanDirection] * 4 * CELL_SIZE ;
-                    
+
                     break;
 
                 case Pokey: 
 
                     distance = getDistanceIndices(ip,jp,im,jm);
 
-                    if (distance < 8 * CELL_SIZE) // if pokey is less than 8 cells to pacman he goes home
+                    std::cout << "Distane " << distance << "\n";
+
+                    if (distance < 8 ) // if pokey is less than 8 cells to pacman he goes home
                     {
+                        
                         chaseX =  16 * CELL_SIZE - MONSTER_SIZE / 2;
                         chaseY = 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
                     }else{ // he goes for pacman
+                       
                         chaseX = xp;
                         chaseY = yp;                        
                     }
@@ -254,6 +256,8 @@ void Monster::changeDirection(Map *map, Pacman pacman)
 
 
             direction = nextDirection;
+           
+
             nextDirection = chasePoint(map, chaseX, chaseY);
 
         }
@@ -315,7 +319,9 @@ Direction Monster::start(Map *map)
 
     if (yr == 13 * CELL_SIZE + MONSTER_SIZE)
     { // To adjust monsters in the middle of the cell after exiting the gate
-        direction = WEST;
+
+         direction = WEST;
+
     }
 
     Direction newDirection;
@@ -334,8 +340,10 @@ Direction Monster::start(Map *map)
         }
 
         if (xr == chaseX && yr == chaseY)
-        {
+        {   
+            
             newDirection = WEST;
+
             mode =  chase;
         }
 
@@ -384,12 +392,14 @@ Direction Monster::start(Map *map)
 
         if (xr > chaseX)
         {
+        
             newDirection = WEST;
         }
-
-        if (xr == chaseX && yr == chaseY)
+        
+        if (xr == chaseX && yr == chaseY )
         {
             newDirection = WEST;
+           
             mode =  chase;
         }
 
@@ -419,7 +429,7 @@ Direction Monster::chasePoint(Map *map, float xp, float yp)
     int jmo = (xm + MONSTER_SIZE / 2) / CELL_SIZE;
     int imo = (ym + MONSTER_SIZE / 2) / CELL_SIZE;
 
-    switch (direction) // ooking one tile ahead of its current tile in its direction of travel.
+    switch (nextDirection) // looking one tile ahead of its current tile in its direction of travel.
     {
     case NORTH:
         if (canMove(map, im - 1, jm)) // To not choose a wall and get stuck there
@@ -480,5 +490,7 @@ Direction Monster::chasePoint(Map *map, float xp, float yp)
         minDirection = WEST;
         minDistance = d;
     }
+
+
     return minDirection;
 }
