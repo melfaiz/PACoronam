@@ -15,12 +15,21 @@ typedef enum monsterType {
 
 } monsterType;
 
+typedef enum mode {
+
+    chase = 0,
+    scatter,
+    panic,
+
+} Mode;
+
 class Monster : public Caracter
 {
 private:
     
     monsterType type;
     sf::RectangleShape monster;
+    Mode mode;
     
     
 
@@ -37,6 +46,10 @@ public:
     void  move(Map* map,Pacman pacman);
 
     Direction changeDirection(Map *map,Pacman pacman);
+
+    Direction chasePoint(Map* map,float xp,float yp);
+
+    
 };
 
 Monster::Monster(monsterType type)
@@ -167,12 +180,8 @@ float getDistanceIndices(int ia,int ja,int ib,int jb){
 }
 
 
+Direction Monster::chasePoint(Map* map,float xp,float yp){
 
-Direction Monster::changeDirection(Map* map,Pacman pacman){
-
-
-    float xp = pacman.getX();
-    float yp = pacman.getY() ;
 
     float xm = x ;
     float ym = y ;
@@ -188,9 +197,6 @@ Direction Monster::changeDirection(Map* map,Pacman pacman){
     int jp = (xp + PACMAN_RADIUS ) / CELL_SIZE ;
     int ip = (yp + PACMAN_RADIUS ) / CELL_SIZE ;
 
-    // std::cout << jm<<" " << im << "\n";
-    // std::cout << jp<<" " << ip << "\n";
-    // std::cout << "Actual direction : " << nextDirection << "\n\n";
 
     switch (direction)  // ooking one tile ahead of its current tile in its direction of travel.
     {
@@ -216,24 +222,11 @@ Direction Monster::changeDirection(Map* map,Pacman pacman){
         break;
     }
 
-    // std::cout <<"next : " <<  jm <<" " << im << "\n";
-
-    // std::cout << "\n\n";
-
     Direction minDirection ;   
-
-    // std::vector< std::vector<double> > dd;
-
-
-    if(getDistanceIndices(ip,jp,im,jm)==0){
-        return direction;
-    }
-
 
     float minDistance = 10000000;
 
     float d = getDistanceIndices(ip,jp,im-1,jm);
-
     
     if ( d < minDistance and canMove(map,  im-1 , jm ) and !(  im-1 == imo and jm == jmo) )
     {
@@ -241,9 +234,7 @@ Direction Monster::changeDirection(Map* map,Pacman pacman){
         minDistance = d;
     } 
 
-
     d = getDistanceIndices(ip,jp,im,jm+1);
-    // std::cout << "east distance : " << d << "\n";
 
     if (d < minDistance and canMove(map, im , jm+1) and !( im == imo and jm+1 == jmo) )
     {
@@ -272,8 +263,27 @@ Direction Monster::changeDirection(Map* map,Pacman pacman){
         
     }    
 
-    std::cout << "returned : " << minDirection << "\n\n";
+    std::cout << "returned : " << minDirection << "\n";
     return minDirection;
+
+
+
+
+
+}
+
+
+Direction Monster::changeDirection(Map* map,Pacman pacman){
+
+
+
+    float xp = pacman.getX();
+    float yp = pacman.getY() ;
+
+
+
+  
+    return chasePoint(map,xp,yp);
 
 }
 
