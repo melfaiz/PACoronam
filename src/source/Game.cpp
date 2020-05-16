@@ -1,5 +1,16 @@
 #include "Game.hpp"
 
+
+//Constructor :
+Game::Game() :blinky(Shadow),pinky(Speedy),inky(Bashful),clyde(Pokey)
+{
+
+    gameOn = false;
+
+}
+
+
+
 //Give the state of the game :
 bool Game::isOn(){
     return gameOn;
@@ -11,10 +22,8 @@ void Game::update(){
 
     pacman.move(&map);
 
+    blinky.move(&map,pacman);
 
-    //blinky.move(&map,pacman);
-
-    // pinky.move(&map,pacman);
 }
 
 
@@ -26,6 +35,11 @@ void Game::display(sf::RenderWindow &window){
     displayGrid(window);
 
     pacman.display(window);
+
+    blinky.display(window);
+    pinky.display(window);
+    inky.display(window);
+    clyde.display(window);
 
 }
 
@@ -69,6 +83,10 @@ void Game::displayGrid(sf::RenderWindow &window){
     window.draw(sprite);
 }
 
+void Game::start(){
+    gameOn = true;
+}
+
 //Read the input :
 void Game::readKeyboard(sf::RenderWindow &window){
 
@@ -82,6 +100,8 @@ void Game::readKeyboard(sf::RenderWindow &window){
         }
 
         if (event.type == sf::Event::KeyPressed ){
+
+            start();
 
             switch(event.key.code){
 
@@ -109,9 +129,3 @@ void Game::readKeyboard(sf::RenderWindow &window){
     }
 }
 
-//Constructor :
-Game::Game(){
-
-    gameOn = true;
-
-}

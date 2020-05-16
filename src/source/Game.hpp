@@ -3,9 +3,11 @@
 
 #include "Map.hpp"
 #include "Pacman.hpp"
+#include "Monster.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <iomanip>
+
 
 class Game
 {
@@ -17,6 +19,7 @@ public:
     void readKeyboard(sf::RenderWindow &window);
     void update();
     bool isOn();
+ 
 
 private:
 
@@ -25,14 +28,14 @@ private:
 
     void displayScore(sf::RenderWindow &window);
     void displayGrid(sf::RenderWindow &window);
-    //bool gamePaused;
+    void start();
 
     Pacman pacman;
 
-    //Monster blinky;
-    //Monster pinky;
-    //Monster inky;
-    //Monster clyde;
+    Monster blinky;
+    Monster pinky;
+    Monster inky;
+    Monster clyde;
 
 };
 
