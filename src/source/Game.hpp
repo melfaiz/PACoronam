@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <iomanip>
+#include "Monster.hpp"
 
 class Game
 {
@@ -13,6 +14,7 @@ class Game
 public:
 
     Game();
+
     void display(sf::RenderWindow &window);
     void readKeyboard(sf::RenderWindow &window);
     void update();
@@ -25,14 +27,13 @@ private:
 
     void displayScore(sf::RenderWindow &window);
     void displayGrid(sf::RenderWindow &window);
-    //bool gamePaused;
 
     Pacman pacman;
 
-    //Monster blinky;
-    //Monster pinky;
-    //Monster inky;
-    //Monster clyde;
+    // Monster blinky;
+    // Monster pinky;
+    // Monster inky;
+    // Monster clyde;
 
 };
 
