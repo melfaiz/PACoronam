@@ -46,7 +46,7 @@ public:
     
     bool isInside(int x,int y);
 
-    void  move(Map* map,Pacman pacman);
+    void move(Map* map,Pacman pacman);
 
     void changeDirection(Map *map,Pacman pacman);
 

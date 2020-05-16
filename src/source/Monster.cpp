@@ -176,31 +176,85 @@ Direction Monster::randomDirection(Map* map){
 void Monster::changeDirection(Map *map, Pacman pacman)
 {
     
+    
+    int jd[] = {0,1,0,-1};
+    int id[] = {-1,0,1,0};
+
     float xr = x + MONSTER_SIZE / 2;
     float yr = y + MONSTER_SIZE / 2;
 
-    float xp = pacman.getX();
-    float yp = pacman.getY();
+    float xp = pacman.getX() + PACMAN_RADIUS;
+    float yp = pacman.getY() + PACMAN_RADIUS;
+
+    int ip = yp / CELL_SIZE;
+    int jp = xp / CELL_SIZE;
+
+    int im = yr / CELL_SIZE;
+    int jm = xr / CELL_SIZE;
+
+    Direction pacmanDirection = pacman.getDirection();
+
+    int distance;
+
+    int twoTilesX = xp + jd[pacmanDirection] * 2 * CELL_SIZE ;
+    int twoTilesY = yp + id[pacmanDirection] * 2 * CELL_SIZE ;
 
     if (mode == on) // Monsters dont obey to being in the middle while exiting the gate
-    {   
-        std::cout << "MODE ON\n";
+    {
+
 
         direction = nextDirection;
         nextDirection = start(map);
     }
     else if (int(xr + CELL_SIZE / 2) % CELL_SIZE == 0 and int(yr + CELL_SIZE / 2) % CELL_SIZE == 0)
-
     {
 
-        if (mode == panic)
+        if (mode == chase)
         {
 
-            chaseX = xp;
-            chaseY = yp;
+            switch (type)
+            {
+                case Speedy: //pinky                   
+
+                    // 4 cells ahead of pacman
+                    chaseX = xp + jd[pacmanDirection] * 4 * CELL_SIZE ;
+                    chaseY = yp + id[pacmanDirection] * 4 * CELL_SIZE ;
+                    
+                    break;
+
+                case Pokey: 
+
+                    distance = getDistanceIndices(ip,jp,im,jm);
+
+                    if (distance < 8 * CELL_SIZE) // if pokey is less than 8 cells to pacman he goes home
+                    {
+                        chaseX =  16 * CELL_SIZE - MONSTER_SIZE / 2;
+                        chaseY = 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
+                    }else{ // he goes for pacman
+                        chaseX = xp;
+                        chaseY = yp;                        
+                    }
+
+                    break;
+
+                case Bashful:
+
+                    chaseX = xp;
+                    chaseY = yp;
+                    break;
+
+                case Shadow:
+                    chaseX = xp;
+                    chaseY = yp;
+                    break;
+
+                default:
+                    break;
+            }
+
 
             direction = nextDirection;
-            nextDirection = chasePoint(map, xp, yp);
+            nextDirection = chasePoint(map, chaseX, chaseY);
 
         }
         else if (mode == scatter)
@@ -235,14 +289,14 @@ void Monster::changeDirection(Map *map, Pacman pacman)
             direction = nextDirection;
             nextDirection = chasePoint(map, chaseX, chaseY);
 
-        }else if (mode == chase)
+        }else if (mode == panic)
         {
             
             int Xd[] = {0,1,0,-1};
             int Yd[] = {-1,0,1,0};
 
             int im = (y+ MONSTER_SIZE/2) / CELL_SIZE;
-            int jm =(x+ MONSTER_SIZE/2)/ CELL_SIZE;
+            int jm = (x+ MONSTER_SIZE/2) / CELL_SIZE;
             
             if(!canMove(map, im + Yd[direction] , jm + Xd[direction]))
             {   
@@ -261,7 +315,6 @@ Direction Monster::start(Map *map)
 
     if (yr == 13 * CELL_SIZE + MONSTER_SIZE)
     { // To adjust monsters in the middle of the cell after exiting the gate
-        std::cout << "adjusting\n";
         direction = WEST;
     }
 

@@ -42,6 +42,10 @@ public:
     void display(sf::RenderWindow &window);
 
     int getScore();
+
+    Direction getDirection(){
+        return direction;
+    }
     double getX();
     double getY();
 
