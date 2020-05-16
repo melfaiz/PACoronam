@@ -1,7 +1,6 @@
 #ifndef MONSTER_H
 #define MONSTER_H
 
-#include "Character.hpp"
 #include "Pacman.hpp"
 #include <vector>
 #include <cmath>
@@ -20,6 +19,7 @@ typedef enum mode {
     chase = 0,
     scatter,
     panic,
+    on,
 
 } Mode;
 
@@ -30,6 +30,9 @@ private:
     monsterType type;
     sf::RectangleShape monster;
     Mode mode;
+
+    float chaseX;
+    float chaseY;
     
     
 
@@ -45,9 +48,12 @@ public:
 
     void  move(Map* map,Pacman pacman);
 
-    Direction changeDirection(Map *map,Pacman pacman);
+    void changeDirection(Map *map,Pacman pacman);
 
     Direction chasePoint(Map* map,float xp,float yp);
+    Direction start(Map* map);
+
+    bool canMove(Map* map,int i,int j);
 
     
 };

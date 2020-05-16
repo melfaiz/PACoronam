@@ -15,17 +15,26 @@ Monster::Monster(monsterType type)
 
         monster.setFillColor(sf::Color(250, 197, 246));
         x = 14*CELL_SIZE - MONSTER_SIZE/2;
-        y = 16*CELL_SIZE + MONSTER_SIZE/2;
+        y = 17*CELL_SIZE - MONSTER_SIZE/2 + CELL_SIZE/2;
 
         direction = WEST;
-    
+        mode = on;
+
+        chaseX =  14*CELL_SIZE - CELL_SIZE/2 - MONSTER_SIZE/2 ;        
+        chaseY = 13*CELL_SIZE + MONSTER_SIZE;
+        
         break;
 
     case Pokey:
         monster.setFillColor(sf::Color(247, 187, 20));
         x = 16*CELL_SIZE - MONSTER_SIZE/2;
-        y = 16*CELL_SIZE + MONSTER_SIZE/2;
+        y = 17*CELL_SIZE - MONSTER_SIZE/2 + CELL_SIZE/2;
         direction = WEST;
+        mode = on;
+
+        chaseX = 14*CELL_SIZE ;
+        chaseY = 14*CELL_SIZE + CELL_SIZE/2;
+
         break;
 
     case Bashful:
@@ -33,15 +42,26 @@ Monster::Monster(monsterType type)
         x = 12*CELL_SIZE - MONSTER_SIZE/2;
         y = 16*CELL_SIZE + MONSTER_SIZE/2;
         direction = WEST;
+        mode = on;
+
+        chaseX = 14*CELL_SIZE ;
+        chaseY = 14*CELL_SIZE + CELL_SIZE/2;
         break;
     
     case Shadow:
         monster.setFillColor(sf::Color::Red);
         x = 14*CELL_SIZE - MONSTER_SIZE/2;
-        // x = 15*CELL_SIZE + CELL_SIZE/2- MONSTER_SIZE/2;
-        y = 13*CELL_SIZE + MONSTER_SIZE/2;
-        direction = EAST;
-        // nextDirection = WEST;
+
+        y = 14*CELL_SIZE - MONSTER_SIZE/2 + CELL_SIZE/2;
+
+
+        direction = WEST;
+
+        mode = scatter;
+        
+        chaseX = 14*CELL_SIZE - CELL_SIZE/2 - MONSTER_SIZE/2 ;
+        chaseY = 13*CELL_SIZE + MONSTER_SIZE;
+
         break;
     
     default:
@@ -54,22 +74,24 @@ Monster::Monster(monsterType type)
 }
 
 
+bool Monster::canMove(Map* map,int i,int j){
+
+    if ( map->getCellType(i, j) == EMPTY or map->getCellType(i, j) == TREAT or map->getCellType(i, j) == PILL or ( mode == on && map->getCellType(i, j) == GATE) )
+    {
+        return true;
+    }
+    return false;
+}
+
+
 void Monster::move(Map* map,Pacman pacman){
 
-        int xr = x+ MONSTER_SIZE/2;
-        int yr = y+ MONSTER_SIZE/2;
-
-        
-        if( (xr + CELL_SIZE/2) % CELL_SIZE == 0 and (yr + CELL_SIZE/2) % CELL_SIZE == 0  )
-        {
-            direction = nextDirection;
-            nextDirection = changeDirection(map,pacman);
-        }
-            
-
+        float xr = x+ MONSTER_SIZE/2;
+        float yr = y+ MONSTER_SIZE/2;
         int j = xr / CELL_SIZE;
         int i = yr / CELL_SIZE;
 
+        changeDirection(map,pacman);
 
         switch (direction)
         {
@@ -129,6 +151,178 @@ float getDistanceIndices(int ia,int ja,int ib,int jb){
 }
 
 
+
+
+void Monster::changeDirection(Map* map,Pacman pacman){
+
+
+    float xr = x+ MONSTER_SIZE/2;
+    float yr = y+ MONSTER_SIZE/2;
+
+    float xp = pacman.getX();
+    float yp = pacman.getY();
+    
+    if ( mode == on)
+    {
+            direction = nextDirection;
+            nextDirection = start(map);     
+        
+    }else if( int(xr + CELL_SIZE/2) % CELL_SIZE == 0 and int(yr + CELL_SIZE/2) % CELL_SIZE == 0  )
+    
+    {
+
+
+            if(mode == chase){
+
+        chaseX = xp;
+        chaseY = yp;
+
+        
+            direction = nextDirection;
+            nextDirection = chasePoint(map,xp,yp);
+
+        }else if(mode == scatter){
+
+        switch (type)
+        {
+            case Speedy:
+             chaseX = 0;
+             chaseY = 0;
+            break;
+
+            case Pokey:
+             chaseX = 10*CELL_SIZE;
+             chaseY = 0;
+            break;
+
+            case Bashful:
+             chaseY = 20*CELL_SIZE;
+             chaseX = 0;
+            break;
+
+            case Shadow:
+              chaseX =20*CELL_SIZE;
+             chaseY = 20*CELL_SIZE;
+            break;
+        
+        default:
+            break;
+        }
+
+        direction = nextDirection;
+        nextDirection = chasePoint(map,chaseX,chaseY);
+    
+
+        
+    } 
+
+    }
+
+}
+
+
+Direction Monster::start(Map* map){
+
+    float xr = x+ MONSTER_SIZE/2;
+    float yr = y + MONSTER_SIZE/2;
+
+    if( yr == 13*CELL_SIZE + MONSTER_SIZE){ // To adjust monsters in the middle of the cell after exiting the gate
+                direction = WEST;
+    }
+
+    Direction newDirection;
+
+    switch (type)
+    {
+    case Speedy:
+
+
+        if ( yr > chaseY )
+        {                
+            newDirection = NORTH;
+            
+        }else if( xr + speed > chaseX)
+        {
+            newDirection = WEST;
+        }
+
+        if( xr == chaseX && yr == chaseY )
+        {   
+            newDirection = WEST;
+            mode = chase;
+
+        }
+
+
+        break;
+
+    case Pokey:
+    
+        if( xr - speed > chaseX)
+        {
+            newDirection = WEST;
+
+        }else if( yr > chaseY){
+            newDirection = NORTH;
+        }
+
+        if( xr == chaseX && yr == chaseY )
+        {   
+
+                newDirection = WEST;    
+                mode = chase;
+        
+
+        }
+
+       
+
+        break;
+
+
+    case Bashful:
+
+        if( xr + speed < chaseX)
+        {
+            newDirection = EAST;
+
+        }else if( yr > chaseY){
+            newDirection = NORTH;
+        }
+
+        if( xr == chaseX && yr == chaseY )
+        {   
+            newDirection = WEST;
+            mode = chase;
+        }
+
+        break;
+    
+    case Shadow:
+
+        if( xr > chaseX)
+        {
+            newDirection = WEST;
+        }
+
+        if( xr == chaseX && yr == chaseY )
+        {   
+            newDirection = WEST;
+            mode = chase;
+        }
+
+        break;
+    
+    default:
+        break;
+    }
+    
+
+    return newDirection;
+
+}
+
+
 Direction Monster::chasePoint(Map* map,float xp,float yp){
 
 
@@ -136,15 +330,15 @@ Direction Monster::chasePoint(Map* map,float xp,float yp){
     float ym = y ;
 
     // We compute the current cell :
+    int jp = (xp + PACMAN_RADIUS ) / CELL_SIZE ;
+    int ip = (yp + PACMAN_RADIUS ) / CELL_SIZE ;
+
+    // We compute the current cell :
     int jm = (xm + MONSTER_SIZE/2 ) / CELL_SIZE ;
     int im = (ym + MONSTER_SIZE/2 ) / CELL_SIZE ;
 
     int jmo = (xm + MONSTER_SIZE/2 ) / CELL_SIZE ;
     int imo = (ym + MONSTER_SIZE/2 ) / CELL_SIZE ;
-
-    // We compute the current cell :
-    int jp = (xp + PACMAN_RADIUS ) / CELL_SIZE ;
-    int ip = (yp + PACMAN_RADIUS ) / CELL_SIZE ;
 
 
     switch (direction)  // ooking one tile ahead of its current tile in its direction of travel.
@@ -210,24 +404,8 @@ Direction Monster::chasePoint(Map* map,float xp,float yp){
         minDirection = WEST;
         minDistance = d;
         
-    }    
-
+    }   
     return minDirection;
 
-
-
-
-
-}
-
-
-Direction Monster::changeDirection(Map* map,Pacman pacman){
-
-
-
-    float xp = pacman.getX();
-    float yp = pacman.getY() ;
-  
-    return chasePoint(map,xp,yp);
 
 }

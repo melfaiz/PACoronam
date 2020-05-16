@@ -16,7 +16,7 @@ protected:
     Direction direction = INITIAL;
     Direction nextDirection;
 
-    float speed;
+    double speed;
 
     bool canMove(Map* map,int i,int j);
 
