@@ -326,7 +326,7 @@ Direction Monster::start(Map *map)
 
     }
 
-    Direction newDirection;
+    Direction newDirection = NOWHERE;
 
     switch (type)
     {

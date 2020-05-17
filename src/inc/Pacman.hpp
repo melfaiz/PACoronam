@@ -21,7 +21,7 @@ private:
     Direction final_dir;
 
     //initial parameters :
-    const double speed_ref = 2;
+    const double speed_ref = 1;
     const double x_i = 14*CELL_SIZE - PACMAN_RADIUS-0.5;
     const double y_i = y = 26.5*CELL_SIZE - PACMAN_RADIUS;
 
