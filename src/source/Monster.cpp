@@ -1,8 +1,10 @@
+
 #include "Monster.hpp"
 
 Monster::Monster(monsterType type)
 {
 
+    in_tunnel = false;
     this->type = type;
     speed = 1;
 
@@ -70,7 +72,7 @@ Monster::Monster(monsterType type)
 bool Monster::canMove(Map *map, int i, int j)
 {
 
-    if (map->getCellType(i, j) == EMPTY or map->getCellType(i, j) == TREAT or map->getCellType(i, j) == PILL or (mode == on && map->getCellType(i, j) == GATE))
+    if (map->getCellType(i, j) == EMPTY or map->getCellType(i, j) == TREAT or map->getCellType(i, j) == PILL or (mode == on && map->getCellType(i, j) == GATE) or  map->getCellType(i, j) == VIRAL_PILL or map->getCellType(i, j) == VIRAL_THREAT)
     {
         return true;
     }
@@ -85,31 +87,56 @@ void Monster::move(Map *map, Pacman pacman)
     int j = xr / CELL_SIZE;
     int i = yr / CELL_SIZE;
 
-    changeDirection(map, pacman);
+    tunnel t;
+    in_tunnel = t.is_in_tunnel(xr,direction);
 
-    switch (direction)
-    {
-    case NORTH:
-        if (isInside(x, y - speed) && canMove(map, (yr - speed - CELL_SIZE / 2) / CELL_SIZE, j))
-            y -= speed;
-        break;
+    if(in_tunnel)
+        x = t.in_tunnel(x,speed,direction);
 
-    case SOUTH:
-        if (isInside(x, y + speed) && canMove(map, (yr + CELL_SIZE / 2) / CELL_SIZE, j))
-            y += speed;
-        break;
+    else{
+        changeDirection(map, pacman);
 
-    case WEST:
-        if (isInside(x - speed, y) && canMove(map, i, (xr - speed - CELL_SIZE / 2) / CELL_SIZE))
-            x -= speed;
-        break;
+        switch (direction)
+        {
+        case NORTH:
+            if (canMove(map, (yr - speed - CELL_SIZE/2) / CELL_SIZE  ,j) )
+                    y -= speed;
+            else{
+                //If we need to apply a move smaller than the speed :
+                y = (i+0.5)*CELL_SIZE-MONSTER_SIZE/2;
+            }
+            break;
 
-    case EAST:
-        if (isInside(x + speed, y) && canMove(map, i, (xr + CELL_SIZE / 2) / CELL_SIZE))
-            x += speed;
+        case SOUTH:
+            if (canMove(map, (yr  + speed + CELL_SIZE/2 -1) / CELL_SIZE  ,j) )
+                y += speed;
+            else{
+                //If we need to apply a move smaller than the speed :
+                y = (i+0.5)*CELL_SIZE-MONSTER_SIZE/2;
+            }
+            break;
 
-    default:
-        break;
+        case WEST:
+            if (canMove(map, i  ,(xr - speed - CELL_SIZE/2) / CELL_SIZE) )
+                x -= speed;
+            else{
+                //If we need to apply a move smaller than the speed :
+                x = (j+0.5)*CELL_SIZE-PACMAN_RADIUS;
+            }
+            break;
+
+        case EAST:
+            if (canMove(map, i  ,(xr  + speed + CELL_SIZE/2 -1) / CELL_SIZE) )
+                x += speed;
+            else{
+                //If we need to apply a move smaller than the speed :
+                x = (j+0.5)*CELL_SIZE-PACMAN_RADIUS;
+            }
+            break;
+
+        default:
+            break;
+        }
     }
 }
 
@@ -130,7 +157,8 @@ bool Monster::isInside(int x, int y)
     return true;
 }
 
-float getDistanceIndices(int ia, int ja, int ib, int jb)
+
+float Monster::getDistanceIndices(int ia, int ja, int ib, int jb)
 {
 
     float a = ia - ib; //calculating number to square in next step
@@ -149,7 +177,7 @@ Direction Monster::randomDirection(Map* map){
     int id[] = {-1,0,1,0};
 
     std::vector<int> directions;
-    
+
 
     for (int i = 0; i < 4; i++)
     {
@@ -165,18 +193,18 @@ Direction Monster::randomDirection(Map* map){
 
     Direction dir = (Direction)directions[rand() % 2];
     while ( !canMove(map, im + id[dir] , jm + jd[dir]) )
-    {   
+    {
         dir = (Direction)directions[rand() % 2];
     }
 
-    return dir ;     
+    return dir ;
 
 }
 
 void Monster::changeDirection(Map *map, Pacman pacman)
 {
-    
-    
+
+
     int jd[] = {0,1,0,-1};
     int id[] = {-1,0,1,0};
 
@@ -202,7 +230,7 @@ void Monster::changeDirection(Map *map, Pacman pacman)
 
         direction = nextDirection;
         nextDirection = start(map);
-        
+
     }
     else if (int(xr + CELL_SIZE / 2) % CELL_SIZE == 0 and int(yr + CELL_SIZE / 2) % CELL_SIZE == 0)
     {
@@ -211,7 +239,7 @@ void Monster::changeDirection(Map *map, Pacman pacman)
         {
             switch (type)
             {
-                case Speedy: //pinky                   
+                case Speedy: //pinky
 
                     // 4 cells ahead of pacman
 
@@ -220,21 +248,19 @@ void Monster::changeDirection(Map *map, Pacman pacman)
 
                     break;
 
-                case Pokey: 
+                case Pokey:
 
                     distance = getDistanceIndices(ip,jp,im,jm);
 
-                    std::cout << "Distane " << distance << "\n";
-
                     if (distance < 8 ) // if pokey is less than 8 cells to pacman he goes home
                     {
-                        
+
                         chaseX =  16 * CELL_SIZE - MONSTER_SIZE / 2;
                         chaseY = 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
                     }else{ // he goes for pacman
-                       
+
                         chaseX = xp;
-                        chaseY = yp;                        
+                        chaseY = yp;
                     }
 
                     break;
@@ -256,7 +282,7 @@ void Monster::changeDirection(Map *map, Pacman pacman)
 
 
             direction = nextDirection;
-           
+
 
             nextDirection = chasePoint(map, chaseX, chaseY);
 
@@ -266,12 +292,12 @@ void Monster::changeDirection(Map *map, Pacman pacman)
 
             switch (type)
             {
-            case Speedy: 
+            case Speedy:
                 chaseX = 3*CELL_SIZE;
                 chaseY = 0;
                 break;
 
-            case Pokey: 
+            case Pokey:
                 chaseX = 0;
                 chaseY = 36*CELL_SIZE;
                 break;
@@ -295,19 +321,19 @@ void Monster::changeDirection(Map *map, Pacman pacman)
 
         }else if (mode == panic)
         {
-            
+
             int Xd[] = {0,1,0,-1};
             int Yd[] = {-1,0,1,0};
 
             int im = (y+ MONSTER_SIZE/2) / CELL_SIZE;
             int jm = (x+ MONSTER_SIZE/2) / CELL_SIZE;
-            
+
             if(!canMove(map, im + Yd[direction] , jm + Xd[direction]))
-            {   
-                direction = randomDirection(map) ; 
+            {
+                direction = randomDirection(map) ;
             }
         }
-        
+
     }
 }
 
@@ -317,12 +343,10 @@ Direction Monster::start(Map *map)
     float xr = x + MONSTER_SIZE / 2;
     float yr = y + MONSTER_SIZE / 2;
 
+    //Initial direction of a monster :
     if (yr == 13 * CELL_SIZE + MONSTER_SIZE)
-    { // To adjust monsters in the middle of the cell after exiting the gate
-
          direction = WEST;
 
-    }
 
     Direction newDirection;
 
@@ -340,8 +364,8 @@ Direction Monster::start(Map *map)
         }
 
         if (xr == chaseX && yr == chaseY)
-        {   
-            
+        {
+
             newDirection = WEST;
 
             mode =  chase;
@@ -392,14 +416,14 @@ Direction Monster::start(Map *map)
 
         if (xr > chaseX)
         {
-        
+
             newDirection = WEST;
         }
-        
+
         if (xr == chaseX && yr == chaseY )
         {
             newDirection = WEST;
-           
+
             mode =  chase;
         }
 

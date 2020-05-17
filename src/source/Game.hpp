@@ -8,7 +8,6 @@
 #include <iostream>
 #include <iomanip>
 
-
 class Game
 {
 
@@ -19,7 +18,7 @@ public:
     void readKeyboard(sf::RenderWindow &window);
     void update();
     bool isOn();
- 
+    void ready(sf::RenderWindow &window);
 
 private:
 
@@ -28,7 +27,8 @@ private:
 
     void displayScore(sf::RenderWindow &window);
     void displayGrid(sf::RenderWindow &window);
-    void start();
+    void restart();
+    //bool gamePaused;
 
     Pacman pacman;
 

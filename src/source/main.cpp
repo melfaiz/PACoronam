@@ -1,50 +1,35 @@
-#include <SFML/Graphics.hpp>
-#include <iostream>
-
 #include "constants.hpp"
 #include "Game.hpp"
-#include "Map.hpp"
-#include "window.hpp"
-#include <thread>
+#include <SFML/Graphics.hpp>
 
-using namespace std;
+int main(){
 
-int main()
-{
-
+    //Declaration of the Window :
+    sf::RenderWindow window(sf::VideoMode(WIDTH * CELL_SIZE, HEIGHT * CELL_SIZE), WINDOW_NAME,sf::Style::Close);
     window.setFramerateLimit(GAME_FPS);
 
+    //Creation of the game :
+    Game game;
 
+    while(window.isOpen()){
 
-    Game game = Game();
-
-    while (window.isOpen())
-    {
-
-
-        game.readKeyboard();
+        game.readKeyboard(window);
 
         window.clear();
 
-        
-
-        game.display();
-
-
-        if (game.isOn())
-        {
-
+        //If the game is running :
+        if (game.isOn()){
+            game.display(window);
             game.update();
-
         }
-        
-        game.displayGrid();
+        else{
+            game.ready(window);
+            game.display(window);
+        }
 
         window.display();
-   
-
-
     }
 
     return 0;
+
 }
