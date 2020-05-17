@@ -20,9 +20,9 @@ double tunnel::in_tunnel(double x, double speed, Direction direction){
 
 }
 
-bool tunnel::is_in_tunnel(double x, Direction direction){
+bool tunnel::is_in_tunnel(double xr, Direction direction){
 
-    if(x > 27.5*CELL_SIZE - PACMAN_RADIUS-0.5 || x < 0.5*CELL_SIZE - PACMAN_RADIUS-0.5)
+    if(xr >= 27*CELL_SIZE || xr <= 1*CELL_SIZE)
         return true;
 
     return false;

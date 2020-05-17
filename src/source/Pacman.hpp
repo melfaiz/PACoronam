@@ -4,6 +4,7 @@
 #include "Character.hpp"
 #include "Map.hpp"
 #include "tunnel.hpp"
+#include "corona.hpp"
 
 #include <iostream>
 
@@ -34,12 +35,14 @@ private:
     bool angle(Map* map, int i, int j);
     void turn(int xr, int yr);
     void speed_modif(char s);
+    corona health;
 
 
 public:
 
     Pacman();
     void display(sf::RenderWindow &window);
+    void restart();
 
     int getScore();
     double getX();

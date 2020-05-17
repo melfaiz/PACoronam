@@ -1,6 +1,21 @@
 #include "Game.hpp"
 using namespace std;
 
+//Restart the game :
+void Game::restart(){
+
+    gameOn = false;
+    map.restart();
+
+    pacman.restart();
+
+    //Monster blinky;
+    //Monster pinky;
+    //Monster inky;
+    //Monster clyde;
+
+}
+
 //Give the state of the game :
 bool Game::isOn(){
     return gameOn;
@@ -50,7 +65,6 @@ void Game::display(sf::RenderWindow &window){
     pinky.display(window);
     inky.display(window);
     clyde.display(window);
-
 }
 
 //Display the score :
@@ -126,6 +140,8 @@ void Game::readKeyboard(sf::RenderWindow &window){
                 window.close();
                 gameOn = false;
                 break;
+            case(sf::Keyboard::R):
+                restart();
             default:
                 break;
             }

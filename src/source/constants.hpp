@@ -39,4 +39,13 @@ typedef enum direction {
 	NOWHERE
 } Direction;
 
+typedef enum corona_state{
+
+    healthy = 0,
+    incubation,
+    sick,
+    imunate
+
+}corona_state;
+
 #endif

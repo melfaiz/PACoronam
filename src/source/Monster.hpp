@@ -35,6 +35,7 @@ private:
     Mode mode;
     float chaseX;
     float chaseY;
+    bool in_tunnel;
 
     bool canMove(Map *map, int i, int j);
     bool isInside(int x, int y);

@@ -1,5 +1,19 @@
 #include "Map.hpp"
 
+//Restart the map :
+void Map::restart(){
+
+    for (size_t i = 0; i <HEIGHT; i++)
+    {
+        for (size_t j = 0; j < WIDTH; j++)
+        {
+                grid[i][j] = grid_ref[i][j];
+        }
+    }
+
+}
+
+
 //Display the map, without characters :
 void Map::display(sf::RenderWindow &window){
 
@@ -295,4 +309,15 @@ void Map::setCellType(int i, int j, cellType type){
 }
 
 //Constructor :
-Map::Map(){}
+Map::Map(){
+
+    for (size_t i = 0; i <HEIGHT; i++)
+    {
+        for (size_t j = 0; j < WIDTH; j++)
+        {
+                grid[i][j] = grid_ref[i][j];
+        }
+    }
+
+}
+

@@ -27,6 +27,7 @@ private:
 
     void displayScore(sf::RenderWindow &window);
     void displayGrid(sf::RenderWindow &window);
+    void restart();
     //bool gamePaused;
 
     Pacman pacman;

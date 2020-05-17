@@ -1,5 +1,19 @@
 #include "Pacman.hpp"
 
+void Pacman::restart(){
+
+        direction = INITIAL;
+        infected = false;
+        invincible = false;
+        turning = false;
+        in_tunnel = false;
+        x = x_i;
+        y = y_i;
+        speed = speed_ref;
+        score = 0;
+        health.restart_system();
+
+}
 
 //Engage the procedure to move change the direction of the Pacman :
 void Pacman::changeDirection(Direction dir){
@@ -39,8 +53,8 @@ void Pacman::speed_modif(char s){
 void Pacman::move(Map* map){
 
         // We compute the center :
-        int xr = x+PACMAN_RADIUS;
-        int yr = y+PACMAN_RADIUS;
+        float xr = x+PACMAN_RADIUS;
+        float yr = y+PACMAN_RADIUS;
 
         // We compute the current cell :
         int j = xr / CELL_SIZE;
@@ -50,7 +64,7 @@ void Pacman::move(Map* map){
         speed_modif('w');//The input doesn't matter :
 
         tunnel t;
-        in_tunnel = t.is_in_tunnel(x,direction);
+        in_tunnel = t.is_in_tunnel(xr,direction);
 
         //If this is the first move of the game :
         if(direction == INITIAL){
@@ -124,6 +138,7 @@ void Pacman::move(Map* map){
                         //If we need to apply a move smaller than the speed :
                         x = (j+0.5)*CELL_SIZE-PACMAN_RADIUS;
                     }
+                    break;
 
                 default:
                     break;
@@ -320,11 +335,28 @@ bool Pacman::eat(Map* map, int i, int j){
         map->setCellType(i, j, EMPTY);
         return true;
     }
-    if (map->getCellType(i, j) == PILL)
+
+    else if (map->getCellType(i, j) == VIRAL_THREAT)
+    {
+        score += 10;
+        map->setCellType(i, j, EMPTY);
+        health.state(true);
+        return true;
+    }
+
+
+    else if (map->getCellType(i, j) == PILL)
     {
         score += 100;
         map->setCellType(i, j, EMPTY);
         speed_modif('p');
+        return true;
+    }
+    else if (map->getCellType(i,j) == VIRAL_PILL)
+    {
+        score += 100;
+        map->setCellType(i, j, EMPTY);
+        health.state(true);
         return true;
     }
 
@@ -427,7 +459,7 @@ Pacman::Pacman(){
         y = y_i;
         speed = speed_ref;
         score = 0;
-        direction = EAST;
+        health.restart_system();
 
         pacman.setRadius(PACMAN_RADIUS);
         pacman.setFillColor(sf::Color(255,238,0));
