@@ -1,5 +1,6 @@
 #include "Map.hpp"
 
+<<<<<<< HEAD
 //Restart the map :
 void Map::restart(){
 
@@ -14,6 +15,8 @@ void Map::restart(){
 }
 
 
+=======
+>>>>>>> c111a05056d7f9951e167b225032c0e3038244e9
 //Display the map, without characters :
 void Map::display(sf::RenderWindow &window){
 
@@ -309,6 +312,7 @@ void Map::setCellType(int i, int j, cellType type){
 }
 
 //Constructor :
+<<<<<<< HEAD
 Map::Map(){
 
     for (size_t i = 0; i <HEIGHT; i++)
@@ -321,3 +325,6 @@ Map::Map(){
 
 }
 
+=======
+Map::Map(){}
+>>>>>>> c111a05056d7f9951e167b225032c0e3038244e9

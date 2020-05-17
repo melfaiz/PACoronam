@@ -1,5 +1,6 @@
 #include "Pacman.hpp"
 
+<<<<<<< HEAD
 void Pacman::restart(){
 
         direction = INITIAL;
@@ -14,6 +15,8 @@ void Pacman::restart(){
         health.restart_system();
 
 }
+=======
+>>>>>>> c111a05056d7f9951e167b225032c0e3038244e9
 
 //Engage the procedure to move change the direction of the Pacman :
 void Pacman::changeDirection(Direction dir){
@@ -53,8 +56,13 @@ void Pacman::speed_modif(char s){
 void Pacman::move(Map* map){
 
         // We compute the center :
+<<<<<<< HEAD
         float xr = x+PACMAN_RADIUS;
         float yr = y+PACMAN_RADIUS;
+=======
+        int xr = x+PACMAN_RADIUS;
+        int yr = y+PACMAN_RADIUS;
+>>>>>>> c111a05056d7f9951e167b225032c0e3038244e9
 
         // We compute the current cell :
         int j = xr / CELL_SIZE;
@@ -64,7 +72,11 @@ void Pacman::move(Map* map){
         speed_modif('w');//The input doesn't matter :
 
         tunnel t;
+<<<<<<< HEAD
         in_tunnel = t.is_in_tunnel(xr,direction);
+=======
+        in_tunnel = t.is_in_tunnel(x,direction);
+>>>>>>> c111a05056d7f9951e167b225032c0e3038244e9
 
         //If this is the first move of the game :
         if(direction == INITIAL){
@@ -138,7 +150,10 @@ void Pacman::move(Map* map){
                         //If we need to apply a move smaller than the speed :
                         x = (j+0.5)*CELL_SIZE-PACMAN_RADIUS;
                     }
+<<<<<<< HEAD
                     break;
+=======
+>>>>>>> c111a05056d7f9951e167b225032c0e3038244e9
 
                 default:
                     break;
@@ -335,6 +350,7 @@ bool Pacman::eat(Map* map, int i, int j){
         map->setCellType(i, j, EMPTY);
         return true;
     }
+<<<<<<< HEAD
 
     else if (map->getCellType(i, j) == VIRAL_THREAT)
     {
@@ -346,12 +362,16 @@ bool Pacman::eat(Map* map, int i, int j){
 
 
     else if (map->getCellType(i, j) == PILL)
+=======
+    if (map->getCellType(i, j) == PILL)
+>>>>>>> c111a05056d7f9951e167b225032c0e3038244e9
     {
         score += 100;
         map->setCellType(i, j, EMPTY);
         speed_modif('p');
         return true;
     }
+<<<<<<< HEAD
     else if (map->getCellType(i,j) == VIRAL_PILL)
     {
         score += 100;
@@ -359,6 +379,8 @@ bool Pacman::eat(Map* map, int i, int j){
         health.state(true);
         return true;
     }
+=======
+>>>>>>> c111a05056d7f9951e167b225032c0e3038244e9
 
     return false;
 }
@@ -459,7 +481,11 @@ Pacman::Pacman(){
         y = y_i;
         speed = speed_ref;
         score = 0;
+<<<<<<< HEAD
         health.restart_system();
+=======
+        direction = EAST;
+>>>>>>> c111a05056d7f9951e167b225032c0e3038244e9
 
         pacman.setRadius(PACMAN_RADIUS);
         pacman.setFillColor(sf::Color(255,238,0));
