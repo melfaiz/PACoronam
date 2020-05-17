@@ -1,19 +1,29 @@
 #include "Game.hpp"
-
-
-//Constructor :
-Game::Game() :blinky(Shadow),pinky(Speedy),inky(Bashful),clyde(Pokey)
-{
-
-    gameOn = false;
-
-}
-
-
+using namespace std;
 
 //Give the state of the game :
 bool Game::isOn(){
     return gameOn;
+}
+
+void Game::ready(sf::RenderWindow &window){
+
+    sf::Font font;
+    if (font.loadFromFile(FONT_STYLE))
+    {
+        sf::Text text;
+        text.setFont(font);
+        text.setString("Ready?!");
+        text.setCharacterSize(FONT_SIZE);
+        text.setFillColor(sf::Color(247, 192, 158));
+        text.setPosition(205,20*CELL_SIZE);
+        window.draw(text);
+
+    }else{
+        cout << "Cant find font\n";
+    }
+
+
 }
 
 
@@ -21,12 +31,10 @@ bool Game::isOn(){
 void Game::update(){
 
     pacman.move(&map);
-
     blinky.move(&map,pacman);
     pinky.move(&map,pacman);
     inky.move(&map,pacman);
     clyde.move(&map,pacman);
-
 }
 
 
@@ -35,16 +43,13 @@ void Game::display(sf::RenderWindow &window){
 
     map.display(window);
     displayScore(window);
-    
+    displayGrid(window);
 
     pacman.display(window);
-
     blinky.display(window);
     pinky.display(window);
     inky.display(window);
     clyde.display(window);
-
-    displayGrid(window);
 
 }
 
@@ -57,9 +62,9 @@ void Game::displayScore(sf::RenderWindow &window){
         sf::Text text;
         text.setFont(font);
 
-        std::stringstream ss;
-        ss << std::setw(4) << std::setfill('0') << pacman.getScore();// to change;
-        std::string s = ss.str();
+        stringstream ss;
+        ss << setw(4) << setfill('0') << pacman.getScore();// to change;
+        string s = ss.str();
 
         text.setString(s);
         text.setCharacterSize(FONT_SIZE);
@@ -68,7 +73,7 @@ void Game::displayScore(sf::RenderWindow &window){
         window.draw(text);
 
     }else{
-        std::cout << "Cant find font\n";
+        cout << "Cant find font\n";
     }
 }
 
@@ -77,7 +82,7 @@ void Game::displayGrid(sf::RenderWindow &window){
 
     sf::Image image;
     if (!(image.loadFromFile(GRID_IMAGE)))
-        std::cout << "Cannot load image \n";   //Load Image
+        cout << "Cannot load image \n";   //Load Image
 
     sf::Texture texture;
     texture.loadFromImage(image);  //Load Texture from image
@@ -86,10 +91,6 @@ void Game::displayGrid(sf::RenderWindow &window){
     sprite.setTexture(texture);
 
     window.draw(sprite);
-}
-
-void Game::start(){
-    gameOn = true;
 }
 
 //Read the input :
@@ -106,8 +107,7 @@ void Game::readKeyboard(sf::RenderWindow &window){
 
         if (event.type == sf::Event::KeyPressed ){
 
-            start();
-
+            gameOn = true;
             switch(event.key.code){
 
             case(sf::Keyboard::Up):
@@ -134,3 +134,9 @@ void Game::readKeyboard(sf::RenderWindow &window){
     }
 }
 
+//Constructor :
+Game::Game():blinky(Shadow),pinky(Speedy),inky(Bashful),clyde(Pokey){
+
+    gameOn = false;
+
+}
