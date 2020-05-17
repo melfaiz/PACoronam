@@ -13,10 +13,10 @@ protected:
     float x;
     float y;
 
-    Direction direction = INITIAL;
+    Direction direction ;
     Direction nextDirection;
 
-    float speed;
+    double speed;
 
     bool canMove(Map* map,int i,int j);
 
