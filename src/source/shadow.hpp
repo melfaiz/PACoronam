@@ -18,6 +18,7 @@ public :
 
     float getX();
     float getY();
+    void is_dead();
 
 private:
 
@@ -26,6 +27,7 @@ private:
     Mode mode;
     float chaseX;
     float chaseY;
+    const float speed_ref = 1;
 
     float getDistanceIndices(int ia, int ja, int ib, int jb);
     bool canMove(Map* map,int i, int j);
@@ -33,6 +35,7 @@ private:
     Direction chasePoint(Map *map, float xp, float yp);
     void changeDirection(Map *map, Pacman pacman);
     Direction randomDirection(Map* map);
+    void change_mode(bool pills);
 
 };
 

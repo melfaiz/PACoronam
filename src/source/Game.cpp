@@ -86,9 +86,9 @@ void Game::eaten(){
     int xb = (Blinky.getX()+MONSTER_SIZE/2)/CELL_SIZE;
     int yb = (Blinky.getY()+MONSTER_SIZE/2)/CELL_SIZE;
 
-    if(xp == xb && yp == yb){
+    if(xp == xb && yp == yb && !pacman.in_tunnel){
         if (pacman.invincible){
-            return;
+            Blinky.is_dead();
         }
         else{
             gameOn = false;

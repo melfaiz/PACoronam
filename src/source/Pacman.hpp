@@ -17,14 +17,13 @@ private:
     bool infected;
     int score;
     bool turning;
-    bool in_tunnel;
     Direction final_dir;
     int food_eaten;
 
     //initial parameters :
-    const double speed_ref = 1;
-    const double x_i = 14*CELL_SIZE - PACMAN_RADIUS-0.5;
-    const double y_i = y = 26.5*CELL_SIZE - PACMAN_RADIUS;
+    const float speed_ref = 1;
+    const float x_i = 14*CELL_SIZE - PACMAN_RADIUS-0.5;
+    const float y_i = y = 26.5*CELL_SIZE - PACMAN_RADIUS;
 
     int r; // ?
 
@@ -43,6 +42,7 @@ public:
     Pacman();
 
     bool invincible;
+    bool in_tunnel;
 
     void display(sf::RenderWindow &window);
     void restart();

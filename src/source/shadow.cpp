@@ -7,6 +7,50 @@ void shadow::display(sf::RenderWindow &window)
     window.draw(shadow_draw);
 }
 
+void shadow::is_dead(){
+    mode = dead;
+}
+
+void shadow::change_mode(bool pills){
+
+    static int counter = 0;
+    static int old_counter = 0;
+
+    if(mode == dead){
+        if((x == 14 * CELL_SIZE - MONSTER_SIZE / 2) && (y = 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2))
+            mode = on;
+        if(++counter > 39*GAME_FPS)
+            counter = 0;
+        old_counter = counter;
+        return;
+    }
+
+    else if(pills && mode != dead){
+        if(counter-old_counter < 6.5*GAME_FPS)
+            shadow_draw.setFillColor(sf::Color::Blue);
+        if(counter-old_counter >= 6.5*GAME_FPS)
+            shadow_draw.setFillColor(sf::Color::White);
+        counter++;
+        mode = panic;
+        speed = 0.77*speed_ref;
+        return;
+    }
+    else{
+        shadow_draw.setFillColor(sf::Color::Red);
+    }
+
+    if(++counter > 39*GAME_FPS)
+        counter = 0;
+    old_counter = counter;
+
+    if(counter <= 9*GAME_FPS)
+        mode = scatter;
+    else if(counter <= 39*GAME_FPS)
+        mode = chase;
+
+}
+
+
 //Give a random direction to Shadow :
 Direction shadow::randomDirection(Map* map){
 
@@ -61,6 +105,16 @@ void shadow::move(Map *map, Pacman pacman)
     float yr = y + MONSTER_SIZE / 2;
     int j = xr / CELL_SIZE;
     int i = yr / CELL_SIZE;
+
+    std::cout << mode;
+
+    if(pacman.invincible)
+        change_mode(true);
+    else{
+        change_mode(false);
+    }
+
+        std::cout << mode;
 
     tunnel t;
     in_tunnel = t.is_in_tunnel(xr,direction);
@@ -239,6 +293,7 @@ Direction shadow::chasePoint(Map *map, float xp, float yp)
 }
 
 
+//Change the direction:
 void shadow::changeDirection(Map *map, Pacman pacman)
 {
 
@@ -287,6 +342,13 @@ void shadow::changeDirection(Map *map, Pacman pacman)
                 direction = randomDirection(map) ;
             }
         }
+        else if(mode == dead){
+
+            chaseX = 14 * CELL_SIZE - MONSTER_SIZE / 2;
+            chaseY = 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
+            direction = nextDirection;
+            nextDirection = chasePoint(map, chaseX, chaseY);
+        }
 
     }
 }
@@ -303,7 +365,6 @@ float shadow::getY(){
 shadow::shadow(){
 
     in_tunnel = false;
-    speed = 1;
 
     shadow_draw.setSize(sf::Vector2f(MONSTER_SIZE, MONSTER_SIZE));
 
@@ -311,6 +372,7 @@ shadow::shadow(){
 
     x = 14 * CELL_SIZE - MONSTER_SIZE / 2;
     y = 14 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
+    speed = speed_ref;
 
     direction = WEST;
 

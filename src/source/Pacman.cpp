@@ -3,7 +3,6 @@
 void Pacman::restart(){
 
         direction = INITIAL;
-        infected = false;
         invincible = false;
         turning = false;
         in_tunnel = false;
@@ -424,11 +423,11 @@ void Pacman::display(sf::RenderWindow &window){
     pacman.setPosition(x,y);
     window.draw(pacman);
 
-    sf::CircleShape point;
-    point.setRadius(1);
-    point.setPosition(x+PACMAN_RADIUS-1,y+PACMAN_RADIUS-1);
-    point.setFillColor(sf::Color::Magenta);
-    window.draw(point);
+    //sf::CircleShape point;
+    //point.setRadius(1);
+    //point.setPosition(x+PACMAN_RADIUS-1,y+PACMAN_RADIUS-1);
+    //point.setFillColor(sf::Color::Magenta);
+    //window.draw(point);
 }
 
 
@@ -459,7 +458,6 @@ int Pacman::get_food_eaten(){
 //Constructor :
 Pacman::Pacman(){
 
-        infected = false;
         invincible = false;
         turning = false;
         in_tunnel = false;

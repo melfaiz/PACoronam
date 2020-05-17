@@ -56,7 +56,8 @@ typedef enum mode {
     chase = 0,
     scatter,
     panic,
-    on
+    on,
+    dead
 
 } Mode;
 
