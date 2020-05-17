@@ -6,7 +6,7 @@ Monster::Monster(monsterType type)
 
     this->type = type;
     speed = 1;
-
+    
     monster.setSize(sf::Vector2f(MONSTER_SIZE, MONSTER_SIZE));
 
     switch (type)

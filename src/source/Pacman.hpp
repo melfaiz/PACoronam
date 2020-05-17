@@ -20,6 +20,7 @@ private:
     bool in_tunnel;
     Direction final_dir;
 
+
     //initial parameters :
     const double speed_ref = 1;
     const double x_i = 14*CELL_SIZE - PACMAN_RADIUS-0.5;
