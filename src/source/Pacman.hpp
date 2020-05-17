@@ -15,11 +15,11 @@ private:
     sf::CircleShape pacman;
 
     bool infected;
-    bool invincible;
     int score;
     bool turning;
     bool in_tunnel;
     Direction final_dir;
+    int food_eaten;
 
     //initial parameters :
     const double speed_ref = 1;
@@ -41,6 +41,9 @@ private:
 public:
 
     Pacman();
+
+    bool invincible;
+
     void display(sf::RenderWindow &window);
     void restart();
 
@@ -48,6 +51,7 @@ public:
     double getX();
     double getY();
     Direction getDirection();
+    int get_food_eaten();
 
     void move(Map* map);
     void changeDirection(Direction direction);

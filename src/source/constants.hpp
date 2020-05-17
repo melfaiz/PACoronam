@@ -39,6 +39,7 @@ typedef enum direction {
 	NOWHERE
 } Direction;
 
+//Corona mode :
 typedef enum corona_state{
 
     healthy = 0,
@@ -47,5 +48,16 @@ typedef enum corona_state{
     imunate
 
 }corona_state;
+
+
+//Monster mode :
+typedef enum mode {
+
+    chase = 0,
+    scatter,
+    panic,
+    on
+
+} Mode;
 
 #endif

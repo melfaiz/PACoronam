@@ -3,7 +3,7 @@
 
 #include "Map.hpp"
 #include "Pacman.hpp"
-#include "Monster.hpp"
+#include "shadow.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <iomanip>
@@ -18,24 +18,26 @@ public:
     void readKeyboard(sf::RenderWindow &window);
     void update();
     bool isOn();
+    bool isFinish();
     void ready(sf::RenderWindow &window);
+    void bad(sf::RenderWindow &window);
 
 private:
 
     Map map;
     bool gameOn;
+    bool finish;
+    int step;
 
     void displayScore(sf::RenderWindow &window);
     void displayGrid(sf::RenderWindow &window);
+    void eaten();
     void restart();
     //bool gamePaused;
 
     Pacman pacman;
 
-    Monster blinky;
-    Monster pinky;
-    Monster inky;
-    Monster clyde;
+    shadow Blinky;
 
 };
 

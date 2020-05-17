@@ -5,20 +5,41 @@ using namespace std;
 void Game::restart(){
 
     gameOn = false;
+    finish = false;
     map.restart();
+    step = 0;
 
     pacman.restart();
-
-    //Monster blinky;
-    //Monster pinky;
-    //Monster inky;
-    //Monster clyde;
+    Blinky.restart();
 
 }
 
 //Give the state of the game :
 bool Game::isOn(){
     return gameOn;
+}
+
+bool Game::isFinish(){
+    return finish;
+}
+
+
+void Game::bad(sf::RenderWindow &window){
+
+    sf::Font font;
+    if (font.loadFromFile(FONT_STYLE))
+    {
+        sf::Text text;
+        text.setFont(font);
+        text.setString("Too bad!");
+        text.setCharacterSize(FONT_SIZE);
+        text.setFillColor(sf::Color(247, 192, 158));
+        text.setPosition(195,20*CELL_SIZE);
+        window.draw(text);
+
+    }else{
+        cout << "Cant find font\n";
+    }
 }
 
 void Game::ready(sf::RenderWindow &window){
@@ -38,7 +59,6 @@ void Game::ready(sf::RenderWindow &window){
         cout << "Cant find font\n";
     }
 
-
 }
 
 
@@ -46,10 +66,35 @@ void Game::ready(sf::RenderWindow &window){
 void Game::update(){
 
     pacman.move(&map);
-    blinky.move(&map,pacman);
-    pinky.move(&map,pacman);
-    inky.move(&map,pacman);
-    clyde.move(&map,pacman);
+    Blinky.move(&map,pacman);
+
+    eaten();
+    //pinky.move(&map,pacman);
+    //if(pacman.get_food_eaten() >= 30)
+     //   inky.move(&map,pacman);
+    //if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
+     //   clyde.move(&map,pacman);
+
+    step++;
+}
+
+void Game::eaten(){
+
+    int xp = (pacman.getX()+PACMAN_RADIUS)/CELL_SIZE;
+    int yp = (pacman.getY()+PACMAN_RADIUS)/CELL_SIZE;
+
+    int xb = (Blinky.getX()+MONSTER_SIZE/2)/CELL_SIZE;
+    int yb = (Blinky.getY()+MONSTER_SIZE/2)/CELL_SIZE;
+
+    if(xp == xb && yp == yb){
+        if (pacman.invincible){
+            return;
+        }
+        else{
+            gameOn = false;
+            finish = true;
+        }
+    }
 }
 
 
@@ -61,10 +106,10 @@ void Game::display(sf::RenderWindow &window){
     displayGrid(window);
 
     pacman.display(window);
-    blinky.display(window);
-    pinky.display(window);
-    inky.display(window);
-    clyde.display(window);
+    Blinky.display(window);
+    //pinky.display(window);
+    //inky.display(window);
+    //clyde.display(window);
 }
 
 //Display the score :
@@ -151,8 +196,10 @@ void Game::readKeyboard(sf::RenderWindow &window){
 }
 
 //Constructor :
-Game::Game():blinky(Shadow),pinky(Speedy),inky(Bashful),clyde(Pokey){
+Game::Game(){
 
     gameOn = false;
+    finish = false;
+    step = 0;
 
 }
