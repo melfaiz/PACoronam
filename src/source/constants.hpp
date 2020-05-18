@@ -12,9 +12,9 @@
 //Frame per second :
 #define GAME_FPS 60
 
-#define GRID_IMAGE "img/grid.png"
+#define GRID_IMAGE "ressources/grid.png"
 
-#define FONT_STYLE "img/start.ttf"
+#define FONT_STYLE "ressources/font.ttf"
 #define FONT_SIZE 24
 
 #define MENU_BANNER_TOP 60

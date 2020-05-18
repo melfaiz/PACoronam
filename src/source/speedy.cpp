@@ -19,6 +19,7 @@ void speedy::go_home(){
     if(!in_home){
         if(x > 14 * CELL_SIZE - MONSTER_SIZE / 2 && direction == WEST){
             x -= speed;
+            
             return;
         }
 
