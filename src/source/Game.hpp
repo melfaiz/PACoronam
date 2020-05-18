@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+
 #include "Map.hpp"
 #include "Pacman.hpp"
 #include "shadow.hpp"
@@ -36,10 +37,8 @@ private:
     void displayGrid(sf::RenderWindow &window);
     void eaten();
     void restart();
-    //bool gamePaused;
 
     Pacman pacman;
-
     shadow Blinky;
     speedy Pinky;
     bashful Inky;

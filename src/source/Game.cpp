@@ -70,13 +70,13 @@ void Game::update(){
 
     pacman.move(&map);
     Blinky.move(&map,pacman);
-    Pinky.move(&map,pacman);
-    if(pacman.get_food_eaten() >= 30)
-        Inky.move(&map,pacman);
-    if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
-        Clyde.move(&map,pacman);
+    // Pinky.move(&map,pacman);
+    // if(pacman.get_food_eaten() >= 30)
+    //     Inky.move(&map,pacman);
+    // if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
+    //     Clyde.move(&map,pacman);
 
-    eaten();
+    // eaten();
 
     step++;
 }
@@ -145,13 +145,14 @@ void Game::display(sf::RenderWindow &window){
 
     map.display(window);
     displayScore(window);
-    displayGrid(window);
 
     pacman.display(window);
     Blinky.display(window);
     Pinky.display(window);
     Inky.display(window);
     Clyde.display(window);
+
+    displayGrid(window);
 }
 
 //Display the score :

@@ -173,10 +173,21 @@ void shadow::move(Map *map, Pacman pacman)
 bool shadow::canMove(Map *map, int i, int j)
 {
 
+        std::cout <<  x/CELL_SIZE << " " << y/CELL_SIZE   << " " << direction << " " << nextDirection <<" \n";
+   
+
     if (map->getCellType(i, j) == EMPTY or map->getCellType(i, j) == TREAT or map->getCellType(i, j) == PILL or (mode == on && map->getCellType(i, j) == GATE) or  map->getCellType(i, j) == VIRAL_PILL or map->getCellType(i, j) == VIRAL_THREAT)
     {
-        return true;
-    }
+        if ( ( i == 26 or x == 235) and ( j == 15 or y == 275) and nextDirection == NORTH) 
+        {
+            std::cout << "HAAA \n";
+            return false;
+        }else{
+            return true;
+        }
+        
+    }   
+    
     return false;
 }
 
