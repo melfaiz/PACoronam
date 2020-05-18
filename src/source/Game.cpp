@@ -101,7 +101,7 @@ void Game::update(){
     //if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
     //    Clyde.move(&map,pacman);
 
-    eaten();
+    // eaten();
 
     if(pacman.get_food_eaten() >= 244)
         we_win();
@@ -173,14 +173,14 @@ void Game::display(sf::RenderWindow &window){
 
     map.display(window);
     displayScore(window);
-    if(DEBUG)
-        displayGrid(window);
 
     pacman.display(window);
     Blinky.display(window);
     Pinky.display(window);
     Inky.display(window);
     Clyde.display(window);
+
+    displayGrid(window);
 }
 
 //Display the score :
@@ -233,6 +233,13 @@ void Game::readKeyboard(sf::RenderWindow &window){
         if (event.type == sf::Event::Closed){
             window.close();
             gameOn = false;
+        }
+
+        if (event.type == sf::Event::MouseButtonPressed)
+
+		{cout << "Button " << event.mouseButton.button << " @ "
+                     << " j :" << sf::Mouse::getPosition(window).x / CELL_SIZE<< ", "
+                     << " i :" << sf::Mouse::getPosition(window).y / CELL_SIZE << "\n";
         }
 
         if (event.type == sf::Event::KeyPressed ){

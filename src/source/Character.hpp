@@ -20,6 +20,9 @@ protected:
 
     bool canMove(Map* map,int i,int j);
 
+public:
+    void changeDirection(Direction direction);
+
 };
 
 #endif

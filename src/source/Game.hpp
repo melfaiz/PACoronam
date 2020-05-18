@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+
 #include "Map.hpp"
 #include "Pacman.hpp"
 #include "shadow.hpp"
@@ -42,7 +43,6 @@ private:
     void we_win();
 
     Pacman pacman;
-
     shadow Blinky;
     speedy Pinky;
     bashful Inky;
