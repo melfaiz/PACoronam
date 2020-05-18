@@ -6,6 +6,7 @@ void Game::restart(){
 
     gameOn = false;
     finish = false;
+    win_ = false;
     map.restart();
     step = 0;
 
@@ -27,6 +28,29 @@ bool Game::isFinish(){
 }
 
 
+void Game::we_win(){
+    win_ = true;
+    gameOn = false;
+}
+
+void Game::win(sf::RenderWindow &window){
+
+    sf::Font font;
+    if (font.loadFromFile(FONT_STYLE))
+    {
+        sf::Text text;
+        text.setFont(font);
+        text.setString("You win!");
+        text.setCharacterSize(FONT_SIZE);
+        text.setFillColor(sf::Color(247, 192, 158));
+        text.setPosition(190,20*CELL_SIZE);
+        window.draw(text);
+
+    }else{
+        cout << "Cant find font\n";
+    }
+
+}
 void Game::bad(sf::RenderWindow &window){
 
     sf::Font font;
@@ -77,6 +101,9 @@ void Game::update(){
     //     Clyde.move(&map,pacman);
 
     // eaten();
+
+    if(pacman.get_food_eaten() >= 244)
+        we_win();
 
     step++;
 }
@@ -209,20 +236,23 @@ void Game::readKeyboard(sf::RenderWindow &window){
 
         if (event.type == sf::Event::KeyPressed ){
 
-            gameOn = true;
             switch(event.key.code){
 
             case(sf::Keyboard::Up):
                 pacman.changeDirection(NORTH);
+                gameOn = true;
                 break;
             case(sf::Keyboard::Down):
                 pacman.changeDirection(SOUTH);
+                gameOn = true;
                 break;
             case(sf::Keyboard::Left):
                 pacman.changeDirection(WEST);
+                gameOn = true;
                 break;
             case(sf::Keyboard::Right):
                 pacman.changeDirection(EAST);
+                gameOn = true;
                 break;
             case(sf::Keyboard::Escape):
                 window.close();
@@ -243,6 +273,7 @@ Game::Game(){
 
     gameOn = false;
     finish = false;
+    win_ = false;
     step = 0;
 
 }

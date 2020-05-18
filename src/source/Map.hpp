@@ -24,7 +24,7 @@ typedef enum cellType {
     GATE,
     TREAT,
     PILL,
-    VIRAL_THREAT,
+    VIRAL_TREAT,
     VIRAL_PILL
 
 } cellType;
@@ -103,6 +103,8 @@ private:
     void gate(int x,int y, sf::RenderWindow &window);
     void treat(int x,int y, sf::RenderWindow &window);
     void pill(int x,int y, sf::RenderWindow &window);
+    void viral_pill(int x,int y,sf::RenderWindow &window);
+    void viral_treat(int x,int y,sf::RenderWindow &window);
 
 };
 

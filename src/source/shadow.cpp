@@ -9,6 +9,49 @@ void shadow::display(sf::RenderWindow &window)
 
 void shadow::is_dead(){
     mode = dead;
+    speed = 1.3*SPEED_REF;
+}
+
+void shadow::go_home(){
+
+    static bool in_home = false;
+
+    if(!in_home){
+        if(x > 14 * CELL_SIZE - MONSTER_SIZE / 2 && direction == WEST){
+            x -= speed;
+            return;
+        }
+
+        else if(x < 14 * CELL_SIZE - MONSTER_SIZE / 2 && direction == EAST){
+            x += speed;
+            return;
+        }
+        else{
+            x = 14 * CELL_SIZE - MONSTER_SIZE / 2;
+        }
+
+        if(y < 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2){
+            y += speed;
+
+        }
+        else{
+            y = 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
+            in_home = true;
+            speed = 0.95*SPEED_REF;
+        }
+    }
+    else{
+        if(y > 14 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2)
+            y -= speed;
+        else{
+            y = 14 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
+            in_home = false;
+            direction = WEST;
+            mode = scatter;
+            is_home = false;
+        }
+    }
+
 }
 
 void shadow::change_mode(bool pills,bool restart_){
@@ -20,8 +63,6 @@ void shadow::change_mode(bool pills,bool restart_){
         counter = -9;
 
     if(mode == dead){
-        if((x == 14 * CELL_SIZE - MONSTER_SIZE / 2) && (y = 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2))
-            mode = on;
         if(++counter > 39*GAME_FPS)
             counter = 0;
         old_counter = counter;
@@ -35,7 +76,7 @@ void shadow::change_mode(bool pills,bool restart_){
             shadow_draw.setFillColor(sf::Color::White);
         counter++;
         mode = panic;
-        speed = 0.77*speed_ref;
+        speed = 0.77*SPEED_REF;
         return;
     }
     else{
@@ -46,10 +87,14 @@ void shadow::change_mode(bool pills,bool restart_){
         counter = 0;
     old_counter = counter;
 
-    if(counter <= 30*GAME_FPS)
+    if(counter <= 30*GAME_FPS){
         mode = chase;
-    else if(counter > 30*GAME_FPS)
+        speed = 0.95*SPEED_REF;
+    }
+    else if(counter > 30*GAME_FPS){
         mode = scatter;
+        speed = 0.95*SPEED_REF;
+    }
 
 }
 
@@ -115,6 +160,12 @@ void shadow::move(Map *map, Pacman pacman)
         change_mode(false,false);
     }
 
+    if((mode == dead && i == 14 && j == 14) || is_home){
+        is_home = true;
+        go_home();
+        return;
+    }
+
     tunnel t;
     in_tunnel = t.is_in_tunnel(xr,direction);
 
@@ -176,7 +227,7 @@ bool shadow::canMove(Map *map, int i, int j)
         std::cout <<  x/CELL_SIZE << " " << y/CELL_SIZE   << " " << direction << " " << nextDirection <<" \n";
    
 
-    if (map->getCellType(i, j) == EMPTY or map->getCellType(i, j) == TREAT or map->getCellType(i, j) == PILL or (mode == on && map->getCellType(i, j) == GATE) or  map->getCellType(i, j) == VIRAL_PILL or map->getCellType(i, j) == VIRAL_THREAT)
+    if (map->getCellType(i, j) == EMPTY or map->getCellType(i, j) == TREAT or map->getCellType(i, j) == PILL or (mode == on && map->getCellType(i, j) == GATE) or  map->getCellType(i, j) == VIRAL_PILL or map->getCellType(i, j) == VIRAL_TREAT)
     {
         if ( ( i == 26 or x == 235) and ( j == 15 or y == 275) and nextDirection == NORTH) 
         {
@@ -375,6 +426,7 @@ float shadow::getY(){
 shadow::shadow(){
 
     in_tunnel = false;
+    is_home = false;
 
     shadow_draw.setSize(sf::Vector2f(MONSTER_SIZE, MONSTER_SIZE));
 
@@ -382,7 +434,7 @@ shadow::shadow(){
 
     x = 14 * CELL_SIZE - MONSTER_SIZE / 2;
     y = 14 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
-    speed = speed_ref;
+    speed = 0.95*SPEED_REF;
 
     direction = WEST;
 
@@ -397,7 +449,8 @@ void shadow::restart(){
 
     in_tunnel = false;
     change_mode(false,true);
-    speed = 1;
+    is_home = false;
+    speed = SPEED_REF;
     shadow_draw.setFillColor(sf::Color::Red);
 
     x = 14 * CELL_SIZE - MONSTER_SIZE / 2;

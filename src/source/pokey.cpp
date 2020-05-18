@@ -9,6 +9,48 @@ void pokey::display(sf::RenderWindow &window)
 
 void pokey::is_dead(){
     mode = dead;
+    speed = 1.3*SPEED_REF;
+}
+
+void pokey::go_home(){
+
+    static bool in_home = false;
+
+    if(!in_home){
+        if(x > 14 * CELL_SIZE - MONSTER_SIZE / 2 && direction == WEST){
+            x -= speed;
+            return;
+        }
+
+        else if(x < 14 * CELL_SIZE - MONSTER_SIZE / 2 && direction == EAST){
+            x += speed;
+            return;
+        }
+        else{
+            x = 14 * CELL_SIZE - MONSTER_SIZE / 2;
+        }
+
+        if(y < 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2){
+            y += speed;
+        }
+        else{
+            y = 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
+            in_home = true;
+            speed = 0.95*SPEED_REF;
+        }
+    }
+    else{
+        if(y > 14 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2)
+            y -= speed;
+        else{
+            y = 14 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
+            in_home = false;
+            direction = WEST;
+            mode = scatter;
+            is_home = false;
+        }
+    }
+
 }
 
 void pokey::change_mode(bool pills,bool restart_){
@@ -20,8 +62,6 @@ void pokey::change_mode(bool pills,bool restart_){
         counter = 0;
 
     if(mode == dead){
-        if((x == 14 * CELL_SIZE - MONSTER_SIZE / 2) && (y = 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2))
-            mode = on;
         if(++counter > 39*GAME_FPS)
             counter = 0;
         old_counter = counter;
@@ -35,7 +75,7 @@ void pokey::change_mode(bool pills,bool restart_){
             pokey_draw.setFillColor(sf::Color::White);
         counter++;
         mode = panic;
-        speed = 0.77*speed_ref;
+        speed = 0.77*SPEED_REF;
         return;
     }
     else{
@@ -46,10 +86,14 @@ void pokey::change_mode(bool pills,bool restart_){
         counter = 0;
     old_counter = counter;
 
-    if(counter > 9*GAME_FPS && mode != on)
+    if(counter > 9*GAME_FPS && mode != on){
         mode = chase;
-    else if(counter <= 9*GAME_FPS && mode != on)
+        speed = 0.95*SPEED_REF;
+    }
+    else if(counter <= 9*GAME_FPS && mode != on){
         mode = scatter;
+        speed = 0.95*SPEED_REF;
+    }
 
 }
 
@@ -115,6 +159,12 @@ void pokey::move(Map *map, Pacman pacman)
         change_mode(false,false);
     }
 
+    if((mode == dead && i == 14 && j == 14) || is_home){
+        is_home = true;
+        go_home();
+        return;
+    }
+
     tunnel t;
     in_tunnel = t.is_in_tunnel(xr,direction);
 
@@ -174,7 +224,7 @@ void pokey::move(Map *map, Pacman pacman)
 bool pokey::canMove(Map *map, int i, int j)
 {
 
-    if (map->getCellType(i, j) == EMPTY or map->getCellType(i, j) == TREAT or map->getCellType(i, j) == PILL or (mode == on && map->getCellType(i, j) == GATE) or  map->getCellType(i, j) == VIRAL_PILL or map->getCellType(i, j) == VIRAL_THREAT)
+    if (map->getCellType(i, j) == EMPTY or map->getCellType(i, j) == TREAT or map->getCellType(i, j) == PILL or (mode == on && map->getCellType(i, j) == GATE) or  map->getCellType(i, j) == VIRAL_PILL or map->getCellType(i, j) == VIRAL_TREAT)
     {
         return true;
     }
@@ -383,8 +433,9 @@ float pokey::getY(){
 pokey::pokey(){
 
     in_tunnel = false;
+    is_home = false;
 
-    speed = speed_ref;
+    speed = SPEED_REF;
 
     pokey_draw.setSize(sf::Vector2f(MONSTER_SIZE, MONSTER_SIZE));
 
@@ -404,7 +455,8 @@ void pokey::restart(){
 
     in_tunnel = false;
     change_mode(false,true);
-    speed = speed_ref;;
+    is_home = false;
+    speed = SPEED_REF;
     pokey_draw.setFillColor(sf::Color(247, 187, 20));
 
     x = 16 * CELL_SIZE - MONSTER_SIZE / 2;
