@@ -62,6 +62,6 @@ typedef enum mode {
 } Mode;
 
 #define SPEED_REF 1
-#define DEBUG false
+#define DEBUG true
 
 #endif

@@ -1,4 +1,5 @@
 #include "Map.hpp"
+#include <iostream>
 
 //Restart the map :
 void Map::restart(){
@@ -102,8 +103,9 @@ void Map::display(sf::RenderWindow &window){
                 }
                 break;
             case VIRAL_TREAT:
-                if(DEBUG)
+                if(DEBUG){
                     viral_treat(x,y,window);
+                }
                 else{
                     treat(x,y,window);
                 }
@@ -308,11 +310,21 @@ void Map::pill(int x,int y, sf::RenderWindow &window){
 
 }
 
-void viral_pill(int x,int y,sf::RenderWindow &window){
+void Map::viral_pill(int x,int y,sf::RenderWindow &window){
 
     sf::Color color(250, 0, 246);
     sf::CircleShape shape(PILL_RADIUS);
     shape.setPosition(x+CELL_SIZE/2-PILL_RADIUS,y+CELL_SIZE/2-PILL_RADIUS);
+    shape.setFillColor (color);
+    window.draw(shape);
+
+}
+
+void Map::viral_treat(int x,int y,sf::RenderWindow &window){
+
+    sf::Color color(250, 0, 246);
+    sf::CircleShape shape(TREAT_RADIUS);
+    shape.setPosition(x+CELL_SIZE/2-TREAT_RADIUS,y+CELL_SIZE/2-TREAT_RADIUS);
     shape.setFillColor (color);
     window.draw(shape);
 

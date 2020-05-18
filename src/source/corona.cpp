@@ -1,5 +1,8 @@
 #include "corona.hpp"
 
+#include <iostream>
+#include <time.h>
+
 //New life of the mob :
 void corona::restart_system(){
 
@@ -11,10 +14,11 @@ void corona::restart_system(){
 //God will decide if we are infected:
 bool corona::is_sick(){
 
-    static int it_is_time = rand() % 60*GAME_FPS;
+    srand(time(NULL));
+    static int it_is_time = 50;//(rand()%60*GAME_FPS+0);
     static int god_counter = 0;
     if(god_counter++ >= it_is_time){
-
+        it_is_time = rand() % 60*GAME_FPS;
         return true;
     }
     return false;

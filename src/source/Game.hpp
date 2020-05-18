@@ -10,6 +10,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <iomanip>
+#include <random>
 
 class Game
 {

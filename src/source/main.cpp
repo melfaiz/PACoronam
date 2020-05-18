@@ -23,12 +23,12 @@ int main(){
             game.update();
         }
         else if(game.isFinish() && game.win_ == false){
-            game.bad(window);
             game.display(window);
+            game.bad(window);
         }
         else if(game.win_){
-            game.win(window);
             game.display(window);
+            game.win(window);
         }
         else{
             game.ready(window);

@@ -42,6 +42,7 @@ public:
 
     bool invincible;
     bool in_tunnel;
+    corona_state state;
 
     void display(sf::RenderWindow &window);
     void restart();

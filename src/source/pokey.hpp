@@ -11,6 +11,8 @@ class pokey: public Caracter
 {
 public :
 
+    corona_state state;
+
     pokey();
     void restart();
     void move(Map *map, Pacman pacman);

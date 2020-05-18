@@ -5,11 +5,54 @@ void shadow::display(sf::RenderWindow &window)
 {
     shadow_draw.setPosition(x, y);
     window.draw(shadow_draw);
+
+    if(DEBUG){
+        if(state == incubation){
+            sf::CircleShape point;
+            point.setRadius(4);
+            point.setPosition(x+MONSTER_SIZE/2-3,y+MONSTER_SIZE/2-3);
+            sf::Color color(250, 0, 246);
+            point.setFillColor(color);
+            window.draw(point);
+        }
+        if(state == sick){
+            sf::CircleShape point;
+            point.setRadius(5);
+            point.setPosition(x+MONSTER_SIZE/2-3,y+MONSTER_SIZE/2-3);
+            sf::Color color(30, 250, 30);
+            point.setFillColor(color);
+            window.draw(point);
+        }
+    }
 }
 
 void shadow::is_dead(){
     mode = dead;
     speed = 1.3*SPEED_REF;
+}
+
+void shadow::set_corona(bool you, Map *map){
+
+    if(health.is_sick() && you)
+        state = health.state(true);
+
+    if(state != healthy && state != imunate){
+        state = health.state(true);
+        float xr = x + MONSTER_SIZE / 2;
+        float yr = y + MONSTER_SIZE / 2;
+        int j = xr / CELL_SIZE;
+        int i = yr / CELL_SIZE;
+        if(map->getCellType(i,j) == PILL){
+            map->setCellType(i,j,VIRAL_PILL);
+        }
+        if(map->getCellType(i,j) == TREAT){
+            map->setCellType(i,j,VIRAL_TREAT);
+        }
+    }
+    else{
+        state = health.state(false);
+    }
+
 }
 
 void shadow::go_home(){
@@ -416,6 +459,7 @@ shadow::shadow(){
 
     in_tunnel = false;
     is_home = false;
+    state = healthy;
 
     shadow_draw.setSize(sf::Vector2f(MONSTER_SIZE, MONSTER_SIZE));
 
@@ -440,6 +484,7 @@ void shadow::restart(){
     change_mode(false,true);
     is_home = false;
     speed = SPEED_REF;
+    state = healthy;
     shadow_draw.setFillColor(sf::Color::Red);
 
     x = 14 * CELL_SIZE - MONSTER_SIZE / 2;
