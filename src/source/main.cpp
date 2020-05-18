@@ -22,6 +22,10 @@ int main(){
             game.display(window);
             game.update();
         }
+        else if(game.isFinish()){
+            game.bad(window);
+            game.display(window);
+        }
         else{
             game.ready(window);
             game.display(window);

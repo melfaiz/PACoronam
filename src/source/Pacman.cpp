@@ -3,7 +3,6 @@
 void Pacman::restart(){
 
         direction = INITIAL;
-        infected = false;
         invincible = false;
         turning = false;
         in_tunnel = false;
@@ -333,6 +332,7 @@ bool Pacman::eat(Map* map, int i, int j){
     {
         score += 10;
         map->setCellType(i, j, EMPTY);
+        food_eaten++;
         return true;
     }
 
@@ -341,6 +341,7 @@ bool Pacman::eat(Map* map, int i, int j){
         score += 10;
         map->setCellType(i, j, EMPTY);
         health.state(true);
+        food_eaten++;
         return true;
     }
 
@@ -350,6 +351,15 @@ bool Pacman::eat(Map* map, int i, int j){
         score += 100;
         map->setCellType(i, j, EMPTY);
         speed_modif('p');
+        food_eaten++;
+        return true;
+    }
+    else if (map->getCellType(i,j) == VIRAL_PILL)
+    {
+        score += 100;
+        map->setCellType(i, j, EMPTY);
+        health.state(true);
+        food_eaten++;
         return true;
     }
     else if (map->getCellType(i,j) == VIRAL_PILL)
@@ -420,11 +430,11 @@ void Pacman::display(sf::RenderWindow &window){
     pacman.setPosition(x,y);
     window.draw(pacman);
 
-    sf::CircleShape point;
-    point.setRadius(1);
-    point.setPosition(x+PACMAN_RADIUS-1,y+PACMAN_RADIUS-1);
-    point.setFillColor(sf::Color::Magenta);
-    window.draw(point);
+    //sf::CircleShape point;
+    //point.setRadius(1);
+    //point.setPosition(x+PACMAN_RADIUS-1,y+PACMAN_RADIUS-1);
+    //point.setFillColor(sf::Color::Magenta);
+    //window.draw(point);
 }
 
 
@@ -448,10 +458,13 @@ Direction Pacman::getDirection(){
     return direction;
 }
 
+int Pacman::get_food_eaten(){
+    return food_eaten;
+}
+
 //Constructor :
 Pacman::Pacman(){
 
-        infected = false;
         invincible = false;
         turning = false;
         in_tunnel = false;
@@ -459,6 +472,7 @@ Pacman::Pacman(){
         y = y_i;
         speed = speed_ref;
         score = 0;
+        food_eaten = 0;
         health.restart_system();
 
         pacman.setRadius(PACMAN_RADIUS);
