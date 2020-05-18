@@ -63,5 +63,6 @@ typedef enum mode {
 
 #define SPEED_REF 1
 #define DEBUG false
+#define LATEST_VIRUS rand()%3
 
 #endif

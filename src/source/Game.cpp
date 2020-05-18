@@ -11,7 +11,7 @@ void Game::restart(){
     step = 0;
 
     srand(time(NULL));
-    corona_ = rand()%3;
+    corona_ = LATEST_VIRUS;
 
     pacman.restart();
     Blinky.restart();
@@ -326,6 +326,5 @@ Game::Game(){
     step = 0;
 
     srand(time(NULL));
-    corona_ = rand()%3;
-    std::cout << corona_;
+    corona_ = LATEST_VIRUS;
 }

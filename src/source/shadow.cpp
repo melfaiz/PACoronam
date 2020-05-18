@@ -142,6 +142,10 @@ void shadow::change_mode(bool pills,bool restart_){
         speed = 0.95*SPEED_REF;
     }
 
+    if((x <= 5*CELL_SIZE+MONSTER_SIZE / 2 && y == 16 * CELL_SIZE + MONSTER_SIZE / 2) || (x >= 22*CELL_SIZE+MONSTER_SIZE / 2 && y == 16 * CELL_SIZE + MONSTER_SIZE / 2))
+        speed = 0.55*SPEED_REF;
+
+
 }
 
 

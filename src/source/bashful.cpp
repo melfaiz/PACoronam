@@ -142,6 +142,9 @@ void bashful::change_mode(bool pills, bool restart_){
         speed = 0.95*SPEED_REF;
     }
 
+    if((x <= 5*CELL_SIZE+MONSTER_SIZE / 2 && y == 16 * CELL_SIZE + MONSTER_SIZE / 2) || (x >= 22*CELL_SIZE+MONSTER_SIZE / 2 && y == 16 * CELL_SIZE + MONSTER_SIZE / 2))
+        speed = 0.55*SPEED_REF;
+
 }
 
 
@@ -200,7 +203,7 @@ void bashful::move(Map *map, Pacman pacman)
     int j = xr / CELL_SIZE;
     int i = yr / CELL_SIZE;
 
-    if(pacman.invincible)
+    if(pacman.invincible && mode != on)
        change_mode(true,false);
     else{
         change_mode(false,false);
