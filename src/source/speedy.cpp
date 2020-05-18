@@ -1,23 +1,23 @@
-#include "shadow.hpp"
+#include "speedy.hpp"
 
 //Display shadow :
-void shadow::display(sf::RenderWindow &window)
+void speedy::display(sf::RenderWindow &window)
 {
-    shadow_draw.setPosition(x, y);
-    window.draw(shadow_draw);
+    speedy_draw.setPosition(x, y);
+    window.draw(speedy_draw);
 }
 
-void shadow::is_dead(){
+void speedy::is_dead(){
     mode = dead;
 }
 
-void shadow::change_mode(bool pills,bool restart_){
+void speedy::change_mode(bool pills, bool restart_){
 
-    static int counter = -9;
+    static int counter = 0;
     static int old_counter = 0;
 
     if(restart_)
-        counter = -9;
+        counter = 0;
 
     if(mode == dead){
         if((x == 14 * CELL_SIZE - MONSTER_SIZE / 2) && (y = 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2))
@@ -30,32 +30,32 @@ void shadow::change_mode(bool pills,bool restart_){
 
     else if(pills && mode != dead){
         if(counter-old_counter < 6.5*GAME_FPS)
-            shadow_draw.setFillColor(sf::Color::Blue);
+            speedy_draw.setFillColor(sf::Color::Blue);
         if(counter-old_counter >= 6.5*GAME_FPS)
-            shadow_draw.setFillColor(sf::Color::White);
+            speedy_draw.setFillColor(sf::Color::White);
         counter++;
         mode = panic;
         speed = 0.77*speed_ref;
         return;
     }
     else{
-        shadow_draw.setFillColor(sf::Color::Red);
+        speedy_draw.setFillColor(sf::Color(250, 197, 246));
     }
 
     if(++counter > 39*GAME_FPS)
         counter = 0;
     old_counter = counter;
 
-    if(counter <= 30*GAME_FPS)
+    if(counter > 9*GAME_FPS && mode != on)
         mode = chase;
-    else if(counter > 30*GAME_FPS)
+    else if(counter <= 9*GAME_FPS && mode != on)
         mode = scatter;
 
 }
 
 
 //Give a random direction to Shadow :
-Direction shadow::randomDirection(Map* map){
+Direction speedy::randomDirection(Map* map){
 
     int jd[] = {0,1,0,-1};
     int id[] = {-1,0,1,0};
@@ -87,7 +87,7 @@ Direction shadow::randomDirection(Map* map){
 
 
 //Give the distance between 2 point :
-float shadow::getDistanceIndices(int ia, int ja, int ib, int jb)
+float speedy::getDistanceIndices(int ia, int ja, int ib, int jb)
 {
 
     float a = ia - ib; //calculating number to square in next step
@@ -101,7 +101,7 @@ float shadow::getDistanceIndices(int ia, int ja, int ib, int jb)
 }
 
 //Move Shadow :
-void shadow::move(Map *map, Pacman pacman)
+void speedy::move(Map *map, Pacman pacman)
 {
 
     float xr = x + MONSTER_SIZE / 2;
@@ -170,7 +170,7 @@ void shadow::move(Map *map, Pacman pacman)
 
 
 //Can he move to the specific direction :
-bool shadow::canMove(Map *map, int i, int j)
+bool speedy::canMove(Map *map, int i, int j)
 {
 
     if (map->getCellType(i, j) == EMPTY or map->getCellType(i, j) == TREAT or map->getCellType(i, j) == PILL or (mode == on && map->getCellType(i, j) == GATE) or  map->getCellType(i, j) == VIRAL_PILL or map->getCellType(i, j) == VIRAL_THREAT)
@@ -182,7 +182,7 @@ bool shadow::canMove(Map *map, int i, int j)
 
 
 //Put Shadow on the game :
-Direction shadow::start(Map *map)
+Direction speedy::start(Map *map)
 {
 
     float xr = x + MONSTER_SIZE / 2;
@@ -195,10 +195,12 @@ Direction shadow::start(Map *map)
 
     Direction newDirection;
 
-    if (xr > chaseX)
+    if (yr > chaseY)
+        newDirection = NORTH;
+    else if (xr + speed > chaseX)
         newDirection = WEST;
-
-    if (xr == chaseX && yr == chaseY ){
+    if (xr == chaseX && yr == chaseY)
+    {
         newDirection = WEST;
         mode =  chase;
     }
@@ -208,7 +210,7 @@ Direction shadow::start(Map *map)
 
 
 //Compute the direction to take with a target point :
-Direction shadow::chasePoint(Map *map, float xp, float yp)
+Direction speedy::chasePoint(Map *map, float xp, float yp)
 {
 
     float xm = x;
@@ -293,14 +295,20 @@ Direction shadow::chasePoint(Map *map, float xp, float yp)
 
 
 //Change the direction:
-void shadow::changeDirection(Map *map, Pacman pacman)
+void speedy::changeDirection(Map *map, Pacman pacman)
 {
+
+
+    int jd[] = {0,1,0,-1};
+    int id[] = {-1,0,1,0};
 
     float xr = x + MONSTER_SIZE / 2;
     float yr = y + MONSTER_SIZE / 2;
 
     float xp = pacman.getX() + PACMAN_RADIUS;
     float yp = pacman.getY() + PACMAN_RADIUS;
+
+    Direction pacmanDirection = pacman.getDirection();
 
     if (mode == on) // Monsters dont obey to being in the middle while exiting the gate
     {
@@ -312,15 +320,15 @@ void shadow::changeDirection(Map *map, Pacman pacman)
 
         if (mode == chase)
         {
-            chaseX = xp;
-            chaseY = yp;
+            chaseX = xp + jd[pacmanDirection] * 4 * CELL_SIZE ;
+            chaseY = yp + id[pacmanDirection] * 4 * CELL_SIZE ;
 
             direction = nextDirection;
             nextDirection = chasePoint(map, chaseX, chaseY);
         }
         else if (mode == scatter)
         {
-            chaseX = 26 * CELL_SIZE;
+            chaseX = 3*CELL_SIZE;
             chaseY = 0;
 
             direction = nextDirection;
@@ -352,25 +360,25 @@ void shadow::changeDirection(Map *map, Pacman pacman)
     }
 }
 
-float shadow::getX(){
+float speedy::getX(){
     return x;
 }
 
-float shadow::getY(){
+float speedy::getY(){
     return y;
 }
 
 //Constructor
-shadow::shadow(){
+speedy::speedy(){
 
     in_tunnel = false;
 
-    shadow_draw.setSize(sf::Vector2f(MONSTER_SIZE, MONSTER_SIZE));
+    speedy_draw.setSize(sf::Vector2f(MONSTER_SIZE, MONSTER_SIZE));
 
-    shadow_draw.setFillColor(sf::Color::Red);
+    speedy_draw.setFillColor(sf::Color(250, 197, 246));
 
     x = 14 * CELL_SIZE - MONSTER_SIZE / 2;
-    y = 14 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
+    y = 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
     speed = speed_ref;
 
     direction = WEST;
@@ -382,15 +390,15 @@ shadow::shadow(){
 }
 
 //Restart Blinky :
-void shadow::restart(){
+void speedy::restart(){
 
     in_tunnel = false;
     change_mode(false,true);
     speed = 1;
-    shadow_draw.setFillColor(sf::Color::Red);
+    speedy_draw.setFillColor(sf::Color(250, 197, 246));
 
     x = 14 * CELL_SIZE - MONSTER_SIZE / 2;
-    y = 14 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
+    y = 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
 
     direction = WEST;
 

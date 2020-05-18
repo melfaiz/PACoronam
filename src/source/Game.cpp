@@ -11,6 +11,9 @@ void Game::restart(){
 
     pacman.restart();
     Blinky.restart();
+    Pinky.restart();
+    Inky.restart();
+    Clyde.restart();
 
 }
 
@@ -67,13 +70,13 @@ void Game::update(){
 
     pacman.move(&map);
     Blinky.move(&map,pacman);
+    Pinky.move(&map,pacman);
+    if(pacman.get_food_eaten() >= 30)
+        Inky.move(&map,pacman);
+    if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
+        Clyde.move(&map,pacman);
 
     eaten();
-    //pinky.move(&map,pacman);
-    //if(pacman.get_food_eaten() >= 30)
-     //   inky.move(&map,pacman);
-    //if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
-     //   clyde.move(&map,pacman);
 
     step++;
 }
@@ -86,9 +89,48 @@ void Game::eaten(){
     int xb = (Blinky.getX()+MONSTER_SIZE/2)/CELL_SIZE;
     int yb = (Blinky.getY()+MONSTER_SIZE/2)/CELL_SIZE;
 
+    int xpi = (Pinky.getX()+MONSTER_SIZE/2)/CELL_SIZE;
+    int ypi = (Pinky.getY()+MONSTER_SIZE/2)/CELL_SIZE;
+
+    int xI = (Inky.getX()+MONSTER_SIZE/2)/CELL_SIZE;
+    int yI = (Inky.getY()+MONSTER_SIZE/2)/CELL_SIZE;
+
+    int xC = (Clyde.getX()+MONSTER_SIZE/2)/CELL_SIZE;
+    int yC = (Clyde.getY()+MONSTER_SIZE/2)/CELL_SIZE;
+
     if(xp == xb && yp == yb && !pacman.in_tunnel){
         if (pacman.invincible){
             Blinky.is_dead();
+        }
+        else{
+            gameOn = false;
+            finish = true;
+        }
+    }
+
+    if(xp == xpi && yp == ypi && !pacman.in_tunnel){
+        if (pacman.invincible){
+            Pinky.is_dead();
+        }
+        else{
+            gameOn = false;
+            finish = true;
+        }
+    }
+
+    if(xp == xI && yp == yI && !pacman.in_tunnel){
+        if (pacman.invincible){
+            Inky.is_dead();
+        }
+        else{
+            gameOn = false;
+            finish = true;
+        }
+    }
+
+    if(xp == xC && yp == yC && !pacman.in_tunnel){
+        if (pacman.invincible){
+            Clyde.is_dead();
         }
         else{
             gameOn = false;
@@ -107,9 +149,9 @@ void Game::display(sf::RenderWindow &window){
 
     pacman.display(window);
     Blinky.display(window);
-    //pinky.display(window);
-    //inky.display(window);
-    //clyde.display(window);
+    Pinky.display(window);
+    Inky.display(window);
+    Clyde.display(window);
 }
 
 //Display the score :

@@ -1,23 +1,23 @@
-#include "shadow.hpp"
+#include "pokey.hpp"
 
-//Display shadow :
-void shadow::display(sf::RenderWindow &window)
+//Display pokey :
+void pokey::display(sf::RenderWindow &window)
 {
-    shadow_draw.setPosition(x, y);
-    window.draw(shadow_draw);
+    pokey_draw.setPosition(x, y);
+    window.draw(pokey_draw);
 }
 
-void shadow::is_dead(){
+void pokey::is_dead(){
     mode = dead;
 }
 
-void shadow::change_mode(bool pills,bool restart_){
+void pokey::change_mode(bool pills,bool restart_){
 
-    static int counter = -9;
+    static int counter = 0;
     static int old_counter = 0;
 
     if(restart_)
-        counter = -9;
+        counter = 0;
 
     if(mode == dead){
         if((x == 14 * CELL_SIZE - MONSTER_SIZE / 2) && (y = 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2))
@@ -30,32 +30,32 @@ void shadow::change_mode(bool pills,bool restart_){
 
     else if(pills && mode != dead){
         if(counter-old_counter < 6.5*GAME_FPS)
-            shadow_draw.setFillColor(sf::Color::Blue);
+            pokey_draw.setFillColor(sf::Color::Blue);
         if(counter-old_counter >= 6.5*GAME_FPS)
-            shadow_draw.setFillColor(sf::Color::White);
+            pokey_draw.setFillColor(sf::Color::White);
         counter++;
         mode = panic;
         speed = 0.77*speed_ref;
         return;
     }
     else{
-        shadow_draw.setFillColor(sf::Color::Red);
+        pokey_draw.setFillColor(sf::Color(247, 187, 20));
     }
 
     if(++counter > 39*GAME_FPS)
         counter = 0;
     old_counter = counter;
 
-    if(counter <= 30*GAME_FPS)
+    if(counter > 9*GAME_FPS && mode != on)
         mode = chase;
-    else if(counter > 30*GAME_FPS)
+    else if(counter <= 9*GAME_FPS && mode != on)
         mode = scatter;
 
 }
 
 
-//Give a random direction to Shadow :
-Direction shadow::randomDirection(Map* map){
+//Give a random direction to pokey :
+Direction pokey::randomDirection(Map* map){
 
     int jd[] = {0,1,0,-1};
     int id[] = {-1,0,1,0};
@@ -87,7 +87,7 @@ Direction shadow::randomDirection(Map* map){
 
 
 //Give the distance between 2 point :
-float shadow::getDistanceIndices(int ia, int ja, int ib, int jb)
+float pokey::getDistanceIndices(int ia, int ja, int ib, int jb)
 {
 
     float a = ia - ib; //calculating number to square in next step
@@ -100,8 +100,8 @@ float shadow::getDistanceIndices(int ia, int ja, int ib, int jb)
     return dist;
 }
 
-//Move Shadow :
-void shadow::move(Map *map, Pacman pacman)
+//Move pokey :
+void pokey::move(Map *map, Pacman pacman)
 {
 
     float xr = x + MONSTER_SIZE / 2;
@@ -110,7 +110,7 @@ void shadow::move(Map *map, Pacman pacman)
     int i = yr / CELL_SIZE;
 
     if(pacman.invincible)
-        change_mode(true,false);
+       change_mode(true,false);
     else{
         change_mode(false,false);
     }
@@ -166,11 +166,12 @@ void shadow::move(Map *map, Pacman pacman)
             break;
         }
     }
+
 }
 
 
 //Can he move to the specific direction :
-bool shadow::canMove(Map *map, int i, int j)
+bool pokey::canMove(Map *map, int i, int j)
 {
 
     if (map->getCellType(i, j) == EMPTY or map->getCellType(i, j) == TREAT or map->getCellType(i, j) == PILL or (mode == on && map->getCellType(i, j) == GATE) or  map->getCellType(i, j) == VIRAL_PILL or map->getCellType(i, j) == VIRAL_THREAT)
@@ -181,25 +182,28 @@ bool shadow::canMove(Map *map, int i, int j)
 }
 
 
-//Put Shadow on the game :
-Direction shadow::start(Map *map)
+//Put pokey on the game :
+Direction pokey::start(Map *map)
 {
 
     float xr = x + MONSTER_SIZE / 2;
     float yr = y + MONSTER_SIZE / 2;
 
-    //Initial direction of a monster :
-    if (yr == 13 * CELL_SIZE + MONSTER_SIZE)
-         direction = WEST;
-
-
     Direction newDirection;
 
-    if (xr > chaseX)
+    //Initial direction of a monster :
+    if (xr - speed > chaseX)
+    {
         newDirection = WEST;
+    }
+    else if (yr > chaseY)
+    {
+        newDirection = NORTH;
+    }
 
-    if (xr == chaseX && yr == chaseY ){
-        newDirection = WEST;
+    if (xr == chaseX && yr == chaseY)
+    {
+        direction = WEST;
         mode =  chase;
     }
 
@@ -208,7 +212,7 @@ Direction shadow::start(Map *map)
 
 
 //Compute the direction to take with a target point :
-Direction shadow::chasePoint(Map *map, float xp, float yp)
+Direction pokey::chasePoint(Map *map, float xp, float yp)
 {
 
     float xm = x;
@@ -293,7 +297,7 @@ Direction shadow::chasePoint(Map *map, float xp, float yp)
 
 
 //Change the direction:
-void shadow::changeDirection(Map *map, Pacman pacman)
+void pokey::changeDirection(Map *map, Pacman pacman)
 {
 
     float xr = x + MONSTER_SIZE / 2;
@@ -301,6 +305,12 @@ void shadow::changeDirection(Map *map, Pacman pacman)
 
     float xp = pacman.getX() + PACMAN_RADIUS;
     float yp = pacman.getY() + PACMAN_RADIUS;
+
+    int ip = yp / CELL_SIZE;
+    int jp = xp / CELL_SIZE;
+
+    int im = yr / CELL_SIZE;
+    int jm = xr / CELL_SIZE;
 
     if (mode == on) // Monsters dont obey to being in the middle while exiting the gate
     {
@@ -312,16 +322,25 @@ void shadow::changeDirection(Map *map, Pacman pacman)
 
         if (mode == chase)
         {
-            chaseX = xp;
-            chaseY = yp;
+            int distance = getDistanceIndices(ip,jp,im,jm);
+
+            if (distance < 8 ) // if pokey is less than 8 cells to pacman he goes home
+            {
+            chaseX =  16 * CELL_SIZE - MONSTER_SIZE / 2;
+            chaseY = 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
+            }
+            else{ // he goes for pacman
+                chaseX = xp;
+                chaseY = yp;
+            }
 
             direction = nextDirection;
             nextDirection = chasePoint(map, chaseX, chaseY);
         }
         else if (mode == scatter)
         {
-            chaseX = 26 * CELL_SIZE;
-            chaseY = 0;
+            chaseX = 0;
+            chaseY = 36*CELL_SIZE;
 
             direction = nextDirection;
             nextDirection = chasePoint(map, chaseX, chaseY);
@@ -352,50 +371,49 @@ void shadow::changeDirection(Map *map, Pacman pacman)
     }
 }
 
-float shadow::getX(){
+float pokey::getX(){
     return x;
 }
 
-float shadow::getY(){
+float pokey::getY(){
     return y;
 }
 
 //Constructor
-shadow::shadow(){
+pokey::pokey(){
 
     in_tunnel = false;
 
-    shadow_draw.setSize(sf::Vector2f(MONSTER_SIZE, MONSTER_SIZE));
-
-    shadow_draw.setFillColor(sf::Color::Red);
-
-    x = 14 * CELL_SIZE - MONSTER_SIZE / 2;
-    y = 14 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
     speed = speed_ref;
 
-    direction = WEST;
+    pokey_draw.setSize(sf::Vector2f(MONSTER_SIZE, MONSTER_SIZE));
 
+    pokey_draw.setFillColor(sf::Color(247, 187, 20));
+
+    x = 16 * CELL_SIZE - MONSTER_SIZE / 2;
+    y = 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
+    direction = WEST;
     mode = on;
 
-    chaseX = 14 * CELL_SIZE - CELL_SIZE / 2 - MONSTER_SIZE / 2;
-    chaseY = 13 * CELL_SIZE + MONSTER_SIZE;
+    chaseX = 14 * CELL_SIZE;
+    chaseY = 14 * CELL_SIZE + CELL_SIZE / 2;
 }
 
-//Restart Blinky :
-void shadow::restart(){
+//Restart pokey :
+void pokey::restart(){
 
     in_tunnel = false;
     change_mode(false,true);
-    speed = 1;
-    shadow_draw.setFillColor(sf::Color::Red);
+    speed = speed_ref;;
+    pokey_draw.setFillColor(sf::Color(247, 187, 20));
 
-    x = 14 * CELL_SIZE - MONSTER_SIZE / 2;
-    y = 14 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
+    x = 16 * CELL_SIZE - MONSTER_SIZE / 2;
+    y = 17 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;
 
     direction = WEST;
 
     mode = on;
 
-    chaseX = 14 * CELL_SIZE - CELL_SIZE / 2 - MONSTER_SIZE / 2;
-    chaseY = 13 * CELL_SIZE + MONSTER_SIZE;
+    chaseX = 14 * CELL_SIZE;
+    chaseY = 14 * CELL_SIZE + CELL_SIZE / 2;
 }

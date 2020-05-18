@@ -10,6 +10,7 @@ void Pacman::restart(){
         y = y_i;
         speed = speed_ref;
         score = 0;
+        food_eaten = 0;
         health.restart_system();
 
 }
