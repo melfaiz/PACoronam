@@ -36,12 +36,12 @@ void shadow::set_corona(bool you, Map *map){
     if(health.is_sick() && you)
         state = health.state(true);
 
+    float xr = x + MONSTER_SIZE / 2;
+    float yr = y + MONSTER_SIZE / 2;
+    int j = xr / CELL_SIZE;
+    int i = yr / CELL_SIZE;
     if(state != healthy && state != imunate){
         state = health.state(true);
-        float xr = x + MONSTER_SIZE / 2;
-        float yr = y + MONSTER_SIZE / 2;
-        int j = xr / CELL_SIZE;
-        int i = yr / CELL_SIZE;
         if(map->getCellType(i,j) == PILL){
             map->setCellType(i,j,VIRAL_PILL);
         }
@@ -51,6 +51,9 @@ void shadow::set_corona(bool you, Map *map){
     }
     else{
         state = health.state(false);
+        if(map->getCellType(i,j) == VIRAL_PILL || map->getCellType(i,j) == VIRAL_TREAT){
+            state = incubation;
+        }
     }
 
 }
@@ -272,17 +275,17 @@ bool shadow::canMove(Map *map, int i, int j)
         return false;
 
     }
-        
-   
+
+
 
     if (map->getCellType(i, j) == EMPTY or map->getCellType(i, j) == TREAT or map->getCellType(i, j) == PILL or (mode == on && map->getCellType(i, j) == GATE) or  map->getCellType(i, j) == VIRAL_PILL or map->getCellType(i, j) == VIRAL_TREAT)
     {
 
             return true;
-       
-        
-    }   
-    
+
+
+    }
+
     return false;
 }
 
@@ -498,6 +501,8 @@ void shadow::restart(){
     speed = SPEED_REF;
     state = healthy;
     shadow_draw.setFillColor(sf::Color::Red);
+    health.restart_system();
+    state = healthy;
 
     x = 14 * CELL_SIZE - MONSTER_SIZE / 2;
     y = 14 * CELL_SIZE - MONSTER_SIZE / 2 + CELL_SIZE / 2;

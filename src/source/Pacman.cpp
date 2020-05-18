@@ -15,6 +15,33 @@ void Pacman::restart(){
 
 }
 
+void Pacman::set_corona(bool you, Map *map){
+
+    if(health.is_sick() && you)
+        state = health.state(true);
+
+    float xr = x + MONSTER_SIZE / 2;
+    float yr = y + MONSTER_SIZE / 2;
+    int j = xr / CELL_SIZE;
+    int i = yr / CELL_SIZE;
+
+    if(state != healthy && state != imunate){
+        state = health.state(true);
+        if(map->getCellType(i,j) == PILL){
+            map->setCellType(i,j,VIRAL_PILL);
+        }
+        if(map->getCellType(i,j) == TREAT){
+            map->setCellType(i,j,VIRAL_TREAT);
+        }
+    }
+    else{
+        if((map->getCellType(i,j) == VIRAL_PILL || map->getCellType(i,j) == VIRAL_TREAT )&& state != imunate){
+            state = incubation;
+        }
+    }
+
+}
+
 //Engage the procedure to move change the direction of the Pacman :
 void Pacman::changeDirection(Direction dir){
     nextDirection = dir;
@@ -25,7 +52,7 @@ void Pacman::changeDirection(Direction dir){
 void Pacman::speed_modif(char s){
 
     static bool p = false;
-    //static bool c = false;
+    static bool c = false;
     static int counter = 0;
 
     if(s == 'p'){
@@ -46,6 +73,26 @@ void Pacman::speed_modif(char s){
             speed = SPEED_REF;
         }
     }
+
+    if(s == 'c'){
+        if(!c){
+            speed = 0.2*speed;
+            std::cout << "ok";
+        }
+        c = true;
+        invincible = true;
+        counter = 7*GAME_FPS;
+    }
+
+    if(c){
+        counter --;
+        if(counter == 0){
+            c = false;
+            invincible = false;
+            counter = 0;
+            speed = SPEED_REF;
+        }
+    }
 }
 
 
@@ -60,8 +107,16 @@ void Pacman::move(Map* map){
         int j = xr / CELL_SIZE;
         int i = yr / CELL_SIZE;
 
+        if(map->getCellType(i,j) == VIRAL_PILL || map->getCellType(i,j) == VIRAL_TREAT){
+            state = incubation;
+        }
+
         //Update of the sped state :
         speed_modif('w');//The input doesn't matter :
+
+        if(state == sick)
+            speed_modif('c');
+
 
         tunnel t;
         in_tunnel = t.is_in_tunnel(xr,direction);
@@ -351,6 +406,7 @@ bool Pacman::eat(Map* map, int i, int j){
         score += 100;
         map->setCellType(i, j, EMPTY);
         speed_modif('p');
+        state = healthy;
         food_eaten++;
         return true;
     }
@@ -360,13 +416,6 @@ bool Pacman::eat(Map* map, int i, int j){
         map->setCellType(i, j, EMPTY);
         health.state(true);
         food_eaten++;
-        return true;
-    }
-    else if (map->getCellType(i,j) == VIRAL_PILL)
-    {
-        score += 100;
-        map->setCellType(i, j, EMPTY);
-        health.state(true);
         return true;
     }
 
@@ -430,11 +479,24 @@ void Pacman::display(sf::RenderWindow &window){
     pacman.setPosition(x,y);
     window.draw(pacman);
 
-    //sf::CircleShape point;
-    //point.setRadius(1);
-    //point.setPosition(x+PACMAN_RADIUS-1,y+PACMAN_RADIUS-1);
-    //point.setFillColor(sf::Color::Magenta);
-    //window.draw(point);
+    if(DEBUG){
+        if(state == incubation){
+            sf::CircleShape point;
+            point.setRadius(4);
+            point.setPosition(x+PACMAN_RADIUS-1,y+PACMAN_RADIUS-1);
+            sf::Color color(250, 0, 246);
+            point.setFillColor(color);
+            window.draw(point);
+        }
+        if(state == sick){
+            sf::CircleShape point;
+            point.setRadius(5);
+            point.setPosition(x+PACMAN_RADIUS-1,y+PACMAN_RADIUS-1);
+            sf::Color color(30, 250, 30);
+            point.setFillColor(color);
+            window.draw(point);
+        }
+    }
 }
 
 

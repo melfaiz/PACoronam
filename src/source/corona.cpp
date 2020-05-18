@@ -15,7 +15,7 @@ void corona::restart_system(){
 bool corona::is_sick(){
 
     srand(time(NULL));
-    static int it_is_time = 50;//(rand()%60*GAME_FPS+0);
+    static int it_is_time = (rand()%60*GAME_FPS);
     static int god_counter = 0;
     if(god_counter++ >= it_is_time){
         it_is_time = rand() % 60*GAME_FPS;
