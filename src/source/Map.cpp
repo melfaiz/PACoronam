@@ -95,6 +95,7 @@ void Map::display(sf::RenderWindow &window){
             case PILL:
                 pill(x,y,window);
                 break;
+
             case VIRAL_PILL:
                 if(DEBUG)
                     viral_pill(x,y,window);
@@ -353,6 +354,8 @@ Map::Map(){
                 grid[i][j] = grid_ref[i][j];
         }
     }
+
+    init_virus();
 
 }
 

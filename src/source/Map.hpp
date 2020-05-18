@@ -3,6 +3,7 @@
 
 #include "constants.hpp"
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 
 //Every type of cell :
@@ -40,6 +41,44 @@ public:
     cellType getCellType(int i, int j);
     void setCellType(int i, int j, cellType type);
     void restart();
+
+    void update_virus(){
+
+        for (size_t i = 0; i < HEIGHT; i++)
+        {
+            for (size_t j = 0; j < WIDTH; j++)
+            {
+                if (grid[i][j] == VIRAL_TREAT && virus [i][j] == 0)
+                {   
+                    virus [i][j] = 6*GAME_FPS;
+                }
+
+                
+            }
+            
+        }
+
+        for (size_t i = 0; i < HEIGHT; i++)
+        {
+            for (size_t j = 0; j < WIDTH; j++)
+            {
+                if (virus [i][j] > 1)
+                {
+                    virus [i][j] = virus [i][j] - 1 ;
+                    
+                }else if( grid[i][j] == VIRAL_TREAT && virus [i][j] == 1){
+
+                    grid[i][j] = TREAT;
+                }
+            }
+            
+        }
+
+                        
+
+
+
+    }
 
 private:
 
@@ -83,6 +122,8 @@ private:
         {EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY},
     };
 
+    int virus [HEIGHT][WIDTH];
+
     void full(int x, int y, sf::RenderWindow &window);
 
     void high_bar(int x,int y, sf::RenderWindow &window);
@@ -105,6 +146,21 @@ private:
     void pill(int x,int y, sf::RenderWindow &window);
     void viral_pill(int x,int y,sf::RenderWindow &window);
     void viral_treat(int x,int y,sf::RenderWindow &window);
+
+    void init_virus(){
+
+        for (size_t i = 0; i < HEIGHT; i++)
+        {
+            for (size_t j = 0; j < WIDTH; j++)
+            {
+                virus [i][j] = 0;
+            }
+            
+        }
+        
+    }
+
+
 
 };
 

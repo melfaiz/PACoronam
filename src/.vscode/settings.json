@@ -45,6 +45,9 @@
         "thread": "cpp",
         "chrono": "cpp",
         "ratio": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "functional": "cpp",
+        "numeric": "cpp",
+        "random": "cpp"
     }
 }

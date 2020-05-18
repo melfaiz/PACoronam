@@ -149,7 +149,6 @@ void Pacman::move(Map* map){
 
         nextDirection = NOWHERE;
 
-        //std::cout << "xr : " << x+PACMAN_RADIUS << " yr : " << y+PACMAN_RADIUS << "\n";
 
 }
 

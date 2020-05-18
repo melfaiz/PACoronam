@@ -91,20 +91,23 @@ void Game::ready(sf::RenderWindow &window){
 
 //Update the game :
 void Game::update(){
-
+    
+    map.update_virus();
     pacman.move(&map);
     Blinky.move(&map,pacman);
     Blinky.set_corona(true, &map);
-    //Pinky.move(&map,pacman);
-    //if(pacman.get_food_eaten() >= 30)
-     //   Inky.move(&map,pacman);
-    //if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
-    //    Clyde.move(&map,pacman);
+    Pinky.move(&map,pacman);
+    if(pacman.get_food_eaten() >= 30)
+       Inky.move(&map,pacman);
+    if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
+       Clyde.move(&map,pacman);
 
-    // eaten();
+    eaten();
 
     if(pacman.get_food_eaten() >= 244)
         we_win();
+
+    
 
     step++;
 }
@@ -283,7 +286,4 @@ Game::Game(){
     finish = false;
     win_ = false;
     step = 0;
-
-    int god = rand() % 4;
-
 }
