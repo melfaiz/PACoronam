@@ -17,14 +17,7 @@ typedef enum monsterType {
 
 } monsterType;
 
-typedef enum mode {
 
-    chase = 0,
-    scatter,
-    panic,
-    on
-
-} Mode;
 
 class Monster : public Caracter
 {
