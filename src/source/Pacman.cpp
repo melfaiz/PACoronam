@@ -530,6 +530,7 @@ Pacman::Pacman(){
         invincible = false;
         turning = false;
         in_tunnel = false;
+        eat_monster_serie = false;
         x = x_i;
         y = y_i;
         speed = SPEED_REF;

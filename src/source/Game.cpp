@@ -276,12 +276,12 @@ void Game::readKeyboard(sf::RenderWindow &window){
             gameOn = false;
         }
 
-        if (event.type == sf::Event::MouseButtonPressed)
+        // if (event.type == sf::Event::MouseButtonPressed)
 
-		{cout << "Button " << event.mouseButton.button << " @ "
-                     << " j :" << sf::Mouse::getPosition(window).x / CELL_SIZE<< ", "
-                     << " i :" << sf::Mouse::getPosition(window).y / CELL_SIZE << "\n";
-        }
+		// {cout << "Button " << event.mouseButton.button << " @ "
+        //              << " j :" << sf::Mouse::getPosition(window).x / CELL_SIZE<< ", "
+        //              << " i :" << sf::Mouse::getPosition(window).y / CELL_SIZE << "\n";
+        // }
 
         if (event.type == sf::Event::KeyPressed ){
 

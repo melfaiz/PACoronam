@@ -35,6 +35,8 @@ private:
     void speed_modif(char s);
     corona health;
 
+    bool eat_monster_serie;
+
 
 public:
 

@@ -1,5 +1,5 @@
 CC=g++
-FLAGS=-c -Wall -std=c++14 
+FLAGS=-c -Wall -std=c++14 -I../includes/ -MD 
 LIBFLAGS=-lsfml-graphics -lsfml-window -lsfml-system
 
 SOURCEDIR = source
@@ -8,6 +8,7 @@ EXECUTABLE = pacoronam
 
 SOURCES = $(wildcard $(SOURCEDIR)/*.cpp)
 OBJECTS = $(patsubst $(SOURCEDIR)/%.cpp,$(BUILDDIR)/%.o,$(SOURCES))
+DEPS = $(patsubst $(SOURCEDIR)/%.cpp,$(BUILDDIR)/%.d,$(SOURCES))
 
 all: $(BUILDDIR)/$(EXECUTABLE) run
 
@@ -20,8 +21,12 @@ run:
 $(BUILDDIR)/$(EXECUTABLE): $(OBJECTS)
 	$(CC) $^ -o $@ $(LIBFLAGS)
 
-$(OBJECTS): $(BUILDDIR)/%.o : $(SOURCEDIR)/%.cpp
+$(OBJECTS): $(BUILDDIR)/%.o : $(SOURCEDIR)/%.cpp 
 	$(CC) $(FLAGS) $< -o $@ $(LIBFLAGS)
 
 clean:
 	rm -f $(BUILDDIR)/*o $(BUILDDIR)/$(EXECUTABLE)
+	rm -f $(BUILDDIR)/*d 
+
+include $(wildcard $(DEPS))
+

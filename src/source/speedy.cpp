@@ -65,6 +65,7 @@ void speedy::go_home(){
     if(!in_home){
         if(x > 14 * CELL_SIZE - MONSTER_SIZE / 2 && direction == WEST){
             x -= speed;
+            
             return;
         }
 
@@ -271,10 +272,22 @@ void speedy::move(Map *map, Pacman pacman)
 bool speedy::canMove(Map *map, int i, int j)
 {
 
+    if ( ( i == 25 or i == 13) and ( j == 15 or j == 12) and direction % 2 == 1) // CANT GO UP
+    {
+        return false;
+
+    }
+
+
+
     if (map->getCellType(i, j) == EMPTY or map->getCellType(i, j) == TREAT or map->getCellType(i, j) == PILL or (mode == on && map->getCellType(i, j) == GATE) or  map->getCellType(i, j) == VIRAL_PILL or map->getCellType(i, j) == VIRAL_TREAT)
     {
-        return true;
+
+            return true;
+
+
     }
+
     return false;
 }
 
