@@ -1,5 +1,5 @@
-#ifndef SHADOW_H
-#define SHADOW_H
+#ifndef BASHFUL_H
+#define BASHFUL_H
 
 #include "Character.hpp"
 #include "Pacman.hpp"
@@ -7,11 +7,11 @@
 #include <vector>
 #include<cmath>
 
-class shadow: public Caracter
+class bashful: public Caracter
 {
 public :
 
-    shadow();
+    bashful();
     void restart();
     void move(Map *map, Pacman pacman);
     void display(sf::RenderWindow &window);
@@ -23,7 +23,7 @@ public :
 private:
 
     bool in_tunnel;
-    sf::RectangleShape shadow_draw;
+    sf::RectangleShape bashful_draw;
     Mode mode;
     float chaseX;
     float chaseY;
@@ -39,4 +39,4 @@ private:
 
 };
 
-#endif // SHADOW_H
+#endif // BASHFUL

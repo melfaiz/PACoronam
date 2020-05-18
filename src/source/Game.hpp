@@ -4,6 +4,9 @@
 #include "Map.hpp"
 #include "Pacman.hpp"
 #include "shadow.hpp"
+#include "speedy.hpp"
+#include "bashful.hpp"
+#include "pokey.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <iomanip>
@@ -38,6 +41,9 @@ private:
     Pacman pacman;
 
     shadow Blinky;
+    speedy Pinky;
+    bashful Inky;
+    pokey Clyde;
 
 };
 
