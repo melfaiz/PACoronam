@@ -10,6 +10,9 @@ void Game::restart(){
     map.restart();
     step = 0;
 
+    srand(time(NULL));
+    corona_ = rand()%3;
+
     pacman.restart();
     Blinky.restart();
     Pinky.restart();
@@ -91,23 +94,57 @@ void Game::ready(sf::RenderWindow &window){
 
 //Update the game :
 void Game::update(){
-    
+
     map.update_virus();
     pacman.move(&map);
+    pacman.set_corona(false, &map);
     Blinky.move(&map,pacman);
-    Blinky.set_corona(true, &map);
     Pinky.move(&map,pacman);
     if(pacman.get_food_eaten() >= 30)
        Inky.move(&map,pacman);
     if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
        Clyde.move(&map,pacman);
 
+    switch (corona_){
+
+    case 0:
+        Blinky.set_corona(true, &map);
+        Pinky.set_corona(false, &map);
+        if(pacman.get_food_eaten() >= 30)
+            Inky.set_corona(false, &map);
+        if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
+            Clyde.set_corona(false, &map);
+
+        break;
+    case 1:
+        Blinky.set_corona(false, &map);
+        Pinky.set_corona(true, &map);
+        if(pacman.get_food_eaten() >= 30)
+            Inky.set_corona(false, &map);
+        if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
+            Clyde.set_corona(false, &map);
+    case 2:
+        Blinky.set_corona(false, &map);
+        Pinky.set_corona(false, &map);
+        if(pacman.get_food_eaten() >= 30)
+            Inky.set_corona(true, &map);
+        if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
+            Clyde.set_corona(false, &map);
+    case 3:
+        Blinky.set_corona(false, &map);
+        Pinky.set_corona(false, &map);
+        if(pacman.get_food_eaten() >= 30)
+            Inky.set_corona(false, &map);
+        if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
+            Clyde.set_corona(true, &map);
+
+    }
     eaten();
 
     if(pacman.get_food_eaten() >= 244)
         we_win();
 
-    
+
 
     step++;
 }
@@ -183,7 +220,8 @@ void Game::display(sf::RenderWindow &window){
     Inky.display(window);
     Clyde.display(window);
 
-    displayGrid(window);
+    if(DEBUG)
+        displayGrid(window);
 }
 
 //Display the score :
@@ -286,4 +324,8 @@ Game::Game(){
     finish = false;
     win_ = false;
     step = 0;
+
+    srand(time(NULL));
+    corona_ = rand()%3;
+    std::cout << corona_;
 }

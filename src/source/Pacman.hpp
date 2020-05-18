@@ -44,6 +44,7 @@ public:
     bool in_tunnel;
     corona_state state;
 
+    void set_corona(bool you, Map *map);
     void display(sf::RenderWindow &window);
     void restart();
 

@@ -8,6 +8,8 @@
 #include "speedy.hpp"
 #include "bashful.hpp"
 #include "pokey.hpp"
+
+#include <time.h>
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <iomanip>
@@ -35,6 +37,7 @@ private:
     bool gameOn;
     bool finish;
     int step;
+    int corona_;
 
     void displayScore(sf::RenderWindow &window);
     void displayGrid(sf::RenderWindow &window);
