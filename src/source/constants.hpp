@@ -14,8 +14,8 @@
 
 #define GRID_IMAGE "img/grid.png"
 
-#define FONT_STYLE "img/emulogic.ttf"
-#define FONT_SIZE 23
+#define FONT_STYLE "img/start.ttf"
+#define FONT_SIZE 24
 
 #define MENU_BANNER_TOP 60
 
