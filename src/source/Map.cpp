@@ -94,6 +94,19 @@ void Map::display(sf::RenderWindow &window){
             case PILL:
                 pill(x,y,window);
                 break;
+            case VIRAL_PILL:
+                if(DEBUG)
+                    viral_pill(x,y,window);
+                else{
+                    pill(x,y,window);
+                }
+                break;
+            case VIRAL_TREAT:
+                if(DEBUG)
+                    viral_treat(x,y,window);
+                else{
+                    treat(x,y,window);
+                }
 
             default:
                 break;
@@ -288,6 +301,16 @@ void Map::treat(int x,int y, sf::RenderWindow &window){
 // PILLS
 void Map::pill(int x,int y, sf::RenderWindow &window){
     sf::Color color(247, 192, 158);
+    sf::CircleShape shape(PILL_RADIUS);
+    shape.setPosition(x+CELL_SIZE/2-PILL_RADIUS,y+CELL_SIZE/2-PILL_RADIUS);
+    shape.setFillColor (color);
+    window.draw(shape);
+
+}
+
+void viral_pill(int x,int y,sf::RenderWindow &window){
+
+    sf::Color color(250, 0, 246);
     sf::CircleShape shape(PILL_RADIUS);
     shape.setPosition(x+CELL_SIZE/2-PILL_RADIUS,y+CELL_SIZE/2-PILL_RADIUS);
     shape.setFillColor (color);

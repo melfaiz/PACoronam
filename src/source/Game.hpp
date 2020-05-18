@@ -24,6 +24,8 @@ public:
     bool isFinish();
     void ready(sf::RenderWindow &window);
     void bad(sf::RenderWindow &window);
+    void win(sf::RenderWindow &window);
+    bool win_;
 
 private:
 
@@ -36,7 +38,7 @@ private:
     void displayGrid(sf::RenderWindow &window);
     void eaten();
     void restart();
-    //bool gamePaused;
+    void we_win();
 
     Pacman pacman;
 

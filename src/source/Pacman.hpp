@@ -21,7 +21,6 @@ private:
     int food_eaten;
 
     //initial parameters :
-    const float speed_ref = 1;
     const float x_i = 14*CELL_SIZE - PACMAN_RADIUS-0.5;
     const float y_i = y = 26.5*CELL_SIZE - PACMAN_RADIUS;
 

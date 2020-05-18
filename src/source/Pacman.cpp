@@ -8,7 +8,7 @@ void Pacman::restart(){
         in_tunnel = false;
         x = x_i;
         y = y_i;
-        speed = speed_ref;
+        speed = SPEED_REF;
         score = 0;
         food_eaten = 0;
         health.restart_system();
@@ -43,7 +43,7 @@ void Pacman::speed_modif(char s){
             p = false;
             invincible = false;
             counter = 0;
-            speed = speed_ref;
+            speed = SPEED_REF;
         }
     }
 }
@@ -337,7 +337,7 @@ bool Pacman::eat(Map* map, int i, int j){
         return true;
     }
 
-    else if (map->getCellType(i, j) == VIRAL_THREAT)
+    else if (map->getCellType(i, j) == VIRAL_TREAT)
     {
         score += 10;
         map->setCellType(i, j, EMPTY);
@@ -464,7 +464,7 @@ Pacman::Pacman(){
         in_tunnel = false;
         x = x_i;
         y = y_i;
-        speed = speed_ref;
+        speed = SPEED_REF;
         score = 0;
         food_eaten = 0;
         health.restart_system();
