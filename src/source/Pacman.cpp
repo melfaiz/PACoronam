@@ -363,6 +363,13 @@ bool Pacman::eat(Map* map, int i, int j){
         food_eaten++;
         return true;
     }
+    else if (map->getCellType(i,j) == VIRAL_PILL)
+    {
+        score += 100;
+        map->setCellType(i, j, EMPTY);
+        health.state(true);
+        return true;
+    }
 
     return false;
 }
