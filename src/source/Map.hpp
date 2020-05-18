@@ -48,7 +48,7 @@ public:
         {
             for (size_t j = 0; j < WIDTH; j++)
             {
-                if (grid[i][j] == VIRAL_TREAT && virus [i][j] == 0)
+                if ( (grid[i][j] == VIRAL_TREAT or grid[i][j] == VIRAL_PILL) && virus [i][j] == 0)
                 {   
                     virus [i][j] = 6*GAME_FPS;
                 }
@@ -66,7 +66,7 @@ public:
                 {
                     virus [i][j] = virus [i][j] - 1 ;
                     
-                }else if( grid[i][j] == VIRAL_TREAT && virus [i][j] == 1){
+                }else if( (grid[i][j] == VIRAL_TREAT or grid[i][j] == VIRAL_PILL)  && virus [i][j] == 1){
 
                     grid[i][j] = TREAT;
                 }
