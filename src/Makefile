@@ -10,7 +10,7 @@ SOURCES = $(wildcard $(SOURCEDIR)/*.cpp)
 OBJECTS = $(patsubst $(SOURCEDIR)/%.cpp,$(BUILDDIR)/%.o,$(SOURCES))
 DEPS = $(patsubst $(SOURCEDIR)/%.cpp,$(BUILDDIR)/%.d,$(SOURCES))
 
-all: $(BUILDDIR)/$(EXECUTABLE) run
+all: dir $(BUILDDIR)/$(EXECUTABLE) run
 
 dir:
 	@mkdir -p $(BUILDDIR)

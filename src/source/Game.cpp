@@ -99,8 +99,10 @@ void Game::update(){
     pacman.move(&map);
     Blinky.move(&map,pacman);
     Pinky.move(&map,pacman);
+
     if(pacman.get_food_eaten() >= 30)
        Inky.move(&map,pacman);
+       
     if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
        Clyde.move(&map,pacman);
 
