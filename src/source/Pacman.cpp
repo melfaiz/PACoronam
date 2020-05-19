@@ -1,4 +1,4 @@
-#include "Pacman.hpp"
+#include "../include/Pacman.hpp"
 
 void Pacman::restart(){
 
@@ -11,36 +11,13 @@ void Pacman::restart(){
         speed = SPEED_REF;
         score = 0;
         food_eaten = 0;
-        health.restart_system();
 
 }
 
-void Pacman::set_corona(bool you, Map *map){
-
-    if(health.is_sick() && you)
-        state = health.state(true);
-
-    float xr = x + MONSTER_SIZE / 2;
-    float yr = y + MONSTER_SIZE / 2;
-    int j = xr / CELL_SIZE;
-    int i = yr / CELL_SIZE;
-
-    if(state != healthy && state != imunate){
-        state = health.state(true);
-        if(map->getCellType(i,j) == PILL){
-            map->setCellType(i,j,VIRAL_PILL);
-        }
-        if(map->getCellType(i,j) == TREAT){
-            map->setCellType(i,j,VIRAL_TREAT);
-        }
-    }
-    else{
-        if((map->getCellType(i,j) == VIRAL_PILL || map->getCellType(i,j) == VIRAL_TREAT )&& state != imunate){
-            state = incubation;
-        }
-    }
-
+void Pacman::add_score(int s){
+    score += s;
 }
+
 
 //Engage the procedure to move change the direction of the Pacman :
 void Pacman::changeDirection(Direction dir){
@@ -203,7 +180,6 @@ void Pacman::move(Map* map){
         }
 
         nextDirection = NOWHERE;
-
 
 }
 
@@ -395,7 +371,8 @@ bool Pacman::eat(Map* map, int i, int j){
     {
         score += 10;
         map->setCellType(i, j, EMPTY);
-        health.state(true);
+        if(state == healthy)
+            state = incubation;
         food_eaten++;
         return true;
     }
@@ -414,7 +391,8 @@ bool Pacman::eat(Map* map, int i, int j){
     {
         score += 100;
         map->setCellType(i, j, EMPTY);
-        health.state(true);
+        if(state == healthy)
+            state = incubation;
         food_eaten++;
         return true;
     }
@@ -530,13 +508,11 @@ Pacman::Pacman(){
         invincible = false;
         turning = false;
         in_tunnel = false;
-        eat_monster_serie = false;
         x = x_i;
         y = y_i;
         speed = SPEED_REF;
         score = 0;
         food_eaten = 0;
-        health.restart_system();
 
         pacman.setRadius(PACMAN_RADIUS);
         pacman.setFillColor(sf::Color(255,238,0));

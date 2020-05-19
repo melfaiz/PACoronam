@@ -1,4 +1,4 @@
-#include "Character.hpp"
+#include "../include/Character.hpp"
 
 bool Caracter::canMove(Map* map,int i,int j){
 

@@ -1,5 +1,5 @@
-#include "constants.hpp"
-#include "Game.hpp"
+#include "../include/constants.hpp"
+#include "../include/Game.hpp"
 #include <SFML/Graphics.hpp>
 
 int main(){

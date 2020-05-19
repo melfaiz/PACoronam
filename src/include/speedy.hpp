@@ -1,5 +1,5 @@
-#ifndef BASHFUL_H
-#define BASHFUL_H
+#ifndef SPEEDY_H
+#define SPEEDY_H
 
 #include "Character.hpp"
 #include "Pacman.hpp"
@@ -7,13 +7,14 @@
 #include <vector>
 #include<cmath>
 
-class bashful: public Caracter
+class speedy: public Caracter
 {
 public :
 
     corona_state state;
+    Mode mode;
 
-    bashful();
+    speedy();
     void restart();
     void move(Map *map, Pacman pacman);
     void display(sf::RenderWindow &window);
@@ -21,17 +22,14 @@ public :
     float getX();
     float getY();
     void is_dead();
-    void set_corona(bool you, Map *map);
 
 private:
 
     bool in_tunnel;
-    sf::RectangleShape bashful_draw;
-    Mode mode;
+    sf::RectangleShape speedy_draw;
     float chaseX;
     float chaseY;
     bool is_home;
-    corona health;
 
     float getDistanceIndices(int ia, int ja, int ib, int jb);
     bool canMove(Map* map,int i, int j);
@@ -44,4 +42,4 @@ private:
 
 };
 
-#endif // BASHFUL
+#endif // SPEEDY

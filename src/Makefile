@@ -1,5 +1,5 @@
 CC=g++
-FLAGS=-c -Wall -std=c++14 -I../includes/ -MD 
+FLAGS=-c -Wall -std=c++14 -MD 
 LIBFLAGS=-lsfml-graphics -lsfml-window -lsfml-system
 
 SOURCEDIR = source

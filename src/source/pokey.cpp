@@ -1,4 +1,4 @@
-#include "pokey.hpp"
+#include "../include/pokey.hpp"
 
 //Display pokey :
 void pokey::display(sf::RenderWindow &window)
@@ -24,34 +24,6 @@ void pokey::display(sf::RenderWindow &window)
             window.draw(point);
         }
     }
-}
-
-void pokey::set_corona(bool you, Map *map){
-
-    if(health.is_sick() && you)
-        state = health.state(true);
-
-    float xr = x + MONSTER_SIZE / 2;
-    float yr = y + MONSTER_SIZE / 2;
-    int j = xr / CELL_SIZE;
-    int i = yr / CELL_SIZE;
-
-    if(state != healthy && state != imunate){
-        state = health.state(true);
-        if(map->getCellType(i,j) == PILL){
-            map->setCellType(i,j,VIRAL_PILL);
-        }
-        if(map->getCellType(i,j) == TREAT){
-            map->setCellType(i,j,VIRAL_TREAT);
-        }
-    }
-    else{
-        state = health.state(false);
-        if(map->getCellType(i,j) == VIRAL_PILL || map->getCellType(i,j) == VIRAL_TREAT){
-            state = incubation;
-        }
-    }
-
 }
 
 void pokey::is_dead(){
@@ -112,6 +84,7 @@ void pokey::change_mode(bool pills,bool restart_){
         if(++counter > 39*GAME_FPS)
             counter = 0;
         old_counter = counter;
+        pokey_draw.setFillColor(sf::Color(255, 255, 255, 128));
         return;
     }
 
@@ -142,10 +115,13 @@ void pokey::change_mode(bool pills,bool restart_){
         speed = 0.95*SPEED_REF;
     }
 
-    if((x <= 5*CELL_SIZE+MONSTER_SIZE / 2 && y == 16 * CELL_SIZE + MONSTER_SIZE / 2) || (x >= 22*CELL_SIZE+MONSTER_SIZE / 2 && y == 16 * CELL_SIZE + MONSTER_SIZE / 2))
+    float xr = x + MONSTER_SIZE / 2;
+    float yr = y + MONSTER_SIZE / 2;
+
+    int i = yr / CELL_SIZE;
+
+    if((xr <= 5.5*CELL_SIZE && i == 17) || (xr >= 21.5*CELL_SIZE && i == 17))
         speed = 0.55*SPEED_REF;
-
-
 }
 
 
@@ -267,6 +243,14 @@ void pokey::move(Map *map, Pacman pacman)
             break;
         }
     }
+
+    if(map->getCellType(i,j) == TREAT && (state == incubation || state == sick))
+        map->setCellType(i,j,VIRAL_TREAT);
+    if(map->getCellType(i,j) == PILL && (state == incubation || state == sick))
+        map->setCellType(i,j,VIRAL_PILL);
+
+    if((map->getCellType(i,j) == VIRAL_TREAT || map->getCellType(i,j) == VIRAL_PILL) && state == healthy)
+        state = incubation;
 
 }
 
@@ -521,7 +505,6 @@ void pokey::restart(){
     is_home = false;
     speed = SPEED_REF;
     pokey_draw.setFillColor(sf::Color(247, 187, 20));
-    health.restart_system();
     state = healthy;
 
     x = 16 * CELL_SIZE - MONSTER_SIZE / 2;

@@ -1,5 +1,5 @@
-#ifndef SHADOW_H
-#define SHADOW_H
+#ifndef BASHFUL_H
+#define BASHFUL_H
 
 #include "Character.hpp"
 #include "Pacman.hpp"
@@ -7,13 +7,14 @@
 #include <vector>
 #include<cmath>
 
-class shadow: public Caracter
+class bashful: public Caracter
 {
 public :
 
     corona_state state;
+    Mode mode;
 
-    shadow();
+    bashful();
     void restart();
     void move(Map *map, Pacman pacman);
     void display(sf::RenderWindow &window);
@@ -21,17 +22,15 @@ public :
     float getX();
     float getY();
     void is_dead();
-    void set_corona(bool you, Map *map);
+
 
 private:
 
     bool in_tunnel;
-    sf::RectangleShape shadow_draw;
-    Mode mode;
+    sf::RectangleShape bashful_draw;
     float chaseX;
     float chaseY;
     bool is_home;
-    corona health;
 
     float getDistanceIndices(int ia, int ja, int ib, int jb);
     bool canMove(Map* map,int i, int j);
@@ -44,4 +43,4 @@ private:
 
 };
 
-#endif // SHADOW_H
+#endif // BASHFUL

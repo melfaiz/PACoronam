@@ -1,4 +1,4 @@
-#include "corona.hpp"
+#include "../include/corona.hpp"
 
 #include <iostream>
 #include <time.h>

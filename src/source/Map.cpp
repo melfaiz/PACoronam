@@ -1,4 +1,4 @@
-#include "Map.hpp"
+#include "../include/Map.hpp"
 #include <iostream>
 
 //Restart the map :

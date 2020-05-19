@@ -1,4 +1,4 @@
-#include "speedy.hpp"
+#include "../include/speedy.hpp"
 
 //Display shadow :
 void speedy::display(sf::RenderWindow &window)
@@ -26,32 +26,6 @@ void speedy::display(sf::RenderWindow &window)
     }
 }
 
-void speedy::set_corona(bool you, Map *map){
-
-    if(health.is_sick() && you)
-        state = health.state(true);
-
-    float xr = x + MONSTER_SIZE / 2;
-    float yr = y + MONSTER_SIZE / 2;
-    int j = xr / CELL_SIZE;
-    int i = yr / CELL_SIZE;
-    if(state != healthy && state != imunate){
-        state = health.state(true);
-        if(map->getCellType(i,j) == PILL){
-            map->setCellType(i,j,VIRAL_PILL);
-        }
-        if(map->getCellType(i,j) == TREAT){
-            map->setCellType(i,j,VIRAL_TREAT);
-        }
-    }
-    else{
-        state = health.state(false);
-        if(map->getCellType(i,j) == VIRAL_PILL || map->getCellType(i,j) == VIRAL_TREAT){
-            state = incubation;
-        }
-    }
-
-}
 
 void speedy::is_dead(){
     mode = dead;
@@ -65,7 +39,6 @@ void speedy::go_home(){
     if(!in_home){
         if(x > 14 * CELL_SIZE - MONSTER_SIZE / 2 && direction == WEST){
             x -= speed;
-            
             return;
         }
 
@@ -112,6 +85,7 @@ void speedy::change_mode(bool pills, bool restart_){
         if(++counter > 39*GAME_FPS)
             counter = 0;
         old_counter = counter;
+        speedy_draw.setFillColor(sf::Color(255, 255, 255, 128));
         return;
     }
 
@@ -141,10 +115,13 @@ void speedy::change_mode(bool pills, bool restart_){
         mode = scatter;
         speed = 0.95*SPEED_REF;
     }
-    if((x <= 5*CELL_SIZE+MONSTER_SIZE / 2 && y == 16 * CELL_SIZE + MONSTER_SIZE / 2) || (x >= 22*CELL_SIZE+MONSTER_SIZE / 2 && y == 16 * CELL_SIZE + MONSTER_SIZE / 2))
+    float xr = x + MONSTER_SIZE / 2;
+    float yr = y + MONSTER_SIZE / 2;
+
+    int i = yr / CELL_SIZE;
+
+    if((xr <= 5.5*CELL_SIZE && i == 17) || (xr >= 21.5*CELL_SIZE && i == 17))
         speed = 0.55*SPEED_REF;
-
-
 }
 
 
@@ -265,6 +242,14 @@ void speedy::move(Map *map, Pacman pacman)
             break;
         }
     }
+
+    if(map->getCellType(i,j) == TREAT && (state == incubation || state == sick))
+        map->setCellType(i,j,VIRAL_TREAT);
+    if(map->getCellType(i,j) == PILL && (state == incubation || state == sick))
+        map->setCellType(i,j,VIRAL_PILL);
+
+    if((map->getCellType(i,j) == VIRAL_TREAT || map->getCellType(i,j) == VIRAL_PILL) && state == healthy)
+        state = incubation;
 }
 
 
@@ -510,7 +495,6 @@ void speedy::restart(){
     is_home = false;
     speed = SPEED_REF;
     speedy_draw.setFillColor(sf::Color(250, 197, 246));
-    health.restart_system();
     state = healthy;
 
     x = 14 * CELL_SIZE - MONSTER_SIZE / 2;

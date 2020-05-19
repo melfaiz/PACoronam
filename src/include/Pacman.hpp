@@ -33,9 +33,6 @@ private:
     bool angle(Map* map, int i, int j);
     void turn(int xr, int yr);
     void speed_modif(char s);
-    corona health;
-
-    bool eat_monster_serie;
 
 
 public:
@@ -46,11 +43,11 @@ public:
     bool in_tunnel;
     corona_state state;
 
-    void set_corona(bool you, Map *map);
     void display(sf::RenderWindow &window);
     void restart();
 
     int getScore();
+    void add_score(int s);
     double getX();
     double getY();
     Direction getDirection();

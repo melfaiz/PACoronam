@@ -1,6 +1,9 @@
 #ifndef CONSTANT_H
 #define CONSTANT_H
 
+#define DEBUG true
+#define LATEST_VIRUS rand()%3
+
 #define WINDOW_NAME "PACoronam"
 
 #define CELL_SIZE 20
@@ -12,9 +15,9 @@
 //Frame per second :
 #define GAME_FPS 60
 
-#define GRID_IMAGE "ressources/grid.png"
+#define GRID_IMAGE "resources/grid.png"
 
-#define FONT_STYLE "ressources/font.ttf"
+#define FONT_STYLE "resources/font.ttf"
 #define FONT_SIZE 24
 
 #define MENU_BANNER_TOP 60
@@ -62,7 +65,5 @@ typedef enum mode {
 } Mode;
 
 #define SPEED_REF 1
-#define DEBUG false
-#define LATEST_VIRUS rand()%3
 
 #endif

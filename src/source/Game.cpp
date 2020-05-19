@@ -1,4 +1,4 @@
-#include "Game.hpp"
+#include "../include/Game.hpp"
 using namespace std;
 
 //Restart the game :
@@ -97,7 +97,6 @@ void Game::update(){
 
     map.update_virus();
     pacman.move(&map);
-    pacman.set_corona(false, &map);
     Blinky.move(&map,pacman);
     Pinky.move(&map,pacman);
     if(pacman.get_food_eaten() >= 30)
@@ -105,40 +104,6 @@ void Game::update(){
     if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
        Clyde.move(&map,pacman);
 
-    switch (corona_){
-
-    case 0:
-        Blinky.set_corona(true, &map);
-        Pinky.set_corona(false, &map);
-        if(pacman.get_food_eaten() >= 30)
-            Inky.set_corona(false, &map);
-        if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
-            Clyde.set_corona(false, &map);
-
-        break;
-    case 1:
-        Blinky.set_corona(false, &map);
-        Pinky.set_corona(true, &map);
-        if(pacman.get_food_eaten() >= 30)
-            Inky.set_corona(false, &map);
-        if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
-            Clyde.set_corona(false, &map);
-    case 2:
-        Blinky.set_corona(false, &map);
-        Pinky.set_corona(false, &map);
-        if(pacman.get_food_eaten() >= 30)
-            Inky.set_corona(true, &map);
-        if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
-            Clyde.set_corona(false, &map);
-    case 3:
-        Blinky.set_corona(false, &map);
-        Pinky.set_corona(false, &map);
-        if(pacman.get_food_eaten() >= 30)
-            Inky.set_corona(false, &map);
-        if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
-            Clyde.set_corona(true, &map);
-
-    }
     eaten();
 
     if(pacman.get_food_eaten() >= 244)
@@ -166,43 +131,64 @@ void Game::eaten(){
     int xC = (Clyde.getX()+MONSTER_SIZE/2)/CELL_SIZE;
     int yC = (Clyde.getY()+MONSTER_SIZE/2)/CELL_SIZE;
 
+    static int double_score = 1;
+
+    if(!pacman.invincible)
+        double_score = 1;
+
     if(xp == xb && yp == yb && !pacman.in_tunnel){
-        if (pacman.invincible){
+        if (pacman.invincible && Blinky.mode != dead){
             Blinky.is_dead();
+            pacman.add_score(double_score*100);
+            double_score = 2*double_score;
         }
         else{
-            gameOn = false;
-            finish = true;
+            if(Blinky.mode != dead){
+                gameOn = false;
+                finish = true;
+            }
         }
     }
 
     if(xp == xpi && yp == ypi && !pacman.in_tunnel){
-        if (pacman.invincible){
+        if (pacman.invincible && Pinky.mode != dead){
             Pinky.is_dead();
+            pacman.add_score(double_score*100);
+            double_score = 2*double_score;
         }
         else{
-            gameOn = false;
-            finish = true;
+            if(Pinky.mode != dead){
+                gameOn = false;
+                finish = true;
+            }
         }
     }
 
     if(xp == xI && yp == yI && !pacman.in_tunnel){
-        if (pacman.invincible){
+        if (pacman.invincible && Inky.mode != dead){
             Inky.is_dead();
+            pacman.add_score(double_score*100);
+            double_score = 2*double_score;
         }
         else{
-            gameOn = false;
-            finish = true;
+            if(Inky.mode != dead){
+                gameOn = false;
+                finish = true;
+            }
         }
     }
 
     if(xp == xC && yp == yC && !pacman.in_tunnel){
-        if (pacman.invincible){
+        if (pacman.invincible && Clyde.mode != dead){
             Clyde.is_dead();
+            pacman.add_score(double_score*100);
+            double_score = 2*double_score;
         }
         else{
-            gameOn = false;
-            finish = true;
+            if(Clyde.mode != dead){
+                gameOn = false;
+                finish = true;
+            }
         }
     }
 }
@@ -289,19 +275,23 @@ void Game::readKeyboard(sf::RenderWindow &window){
 
             case(sf::Keyboard::Up):
                 pacman.changeDirection(NORTH);
-                gameOn = true;
+                if(!finish)
+                    gameOn = true;
                 break;
             case(sf::Keyboard::Down):
                 pacman.changeDirection(SOUTH);
-                gameOn = true;
+                if(!finish)
+                    gameOn = true;
                 break;
             case(sf::Keyboard::Left):
                 pacman.changeDirection(WEST);
-                gameOn = true;
+                if(!finish)
+                    gameOn = true;
                 break;
             case(sf::Keyboard::Right):
                 pacman.changeDirection(EAST);
-                gameOn = true;
+                if(!finish)
+                    gameOn = true;
                 break;
             case(sf::Keyboard::Escape):
                 window.close();

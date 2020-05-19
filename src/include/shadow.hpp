@@ -1,5 +1,5 @@
-#ifndef SPEEDY_H
-#define SPEEDY_H
+#ifndef SHADOW_H
+#define SHADOW_H
 
 #include "Character.hpp"
 #include "Pacman.hpp"
@@ -7,13 +7,14 @@
 #include <vector>
 #include<cmath>
 
-class speedy: public Caracter
+class shadow: public Caracter
 {
 public :
 
     corona_state state;
+    Mode mode;
 
-    speedy();
+    shadow();
     void restart();
     void move(Map *map, Pacman pacman);
     void display(sf::RenderWindow &window);
@@ -21,17 +22,14 @@ public :
     float getX();
     float getY();
     void is_dead();
-    void set_corona(bool you, Map *map);
 
 private:
 
     bool in_tunnel;
-    sf::RectangleShape speedy_draw;
-    Mode mode;
+    sf::RectangleShape shadow_draw;
     float chaseX;
     float chaseY;
     bool is_home;
-    corona health;
 
     float getDistanceIndices(int ia, int ja, int ib, int jb);
     bool canMove(Map* map,int i, int j);
@@ -44,4 +42,4 @@ private:
 
 };
 
-#endif // SPEEDY
+#endif // SHADOW_H
