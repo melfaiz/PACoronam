@@ -8,6 +8,7 @@
 #include "speedy.hpp"
 #include "bashful.hpp"
 #include "pokey.hpp"
+#include "corona.hpp"
 
 #include <time.h>
 #include <SFML/Graphics.hpp>
@@ -37,7 +38,7 @@ private:
     bool gameOn;
     bool finish;
     int step;
-    int corona_;
+    corona covid;
 
     void displayScore(sf::RenderWindow &window);
     void displayGrid(sf::RenderWindow &window);

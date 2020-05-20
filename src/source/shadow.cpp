@@ -15,15 +15,15 @@ void shadow::display(sf::RenderWindow &window)
             point.setFillColor(color);
             window.draw(point);
         }
+    }
         if(state == sick){
             sf::CircleShape point;
             point.setRadius(5);
             point.setPosition(x+MONSTER_SIZE/2-3,y+MONSTER_SIZE/2-3);
-            sf::Color color(30, 250, 30);
+            sf::Color color(206, 252, 158);
             point.setFillColor(color);
             window.draw(point);
         }
-    }
 }
 
 void shadow::is_dead(){
@@ -194,6 +194,9 @@ void shadow::move(Map *map, Pacman pacman)
         go_home();
         return;
     }
+
+    if(state == sick)
+        speed = 0.2*SPEED_REF;
 
     tunnel t;
     in_tunnel = t.is_in_tunnel(xr,direction);

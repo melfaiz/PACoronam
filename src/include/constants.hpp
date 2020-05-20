@@ -2,7 +2,7 @@
 #define CONSTANT_H
 
 #define DEBUG true
-#define LATEST_VIRUS rand()%3
+#define LATEST_VIRUS rand()%60*GAME_FPS
 
 #define WINDOW_NAME "PACoronam"
 
@@ -64,6 +64,7 @@ typedef enum mode {
 
 } Mode;
 
-#define SPEED_REF 1
 
+// #define SPEED_REF 5*CELL_SIZE/GAME_FPS
+#define SPEED_REF 1
 #endif

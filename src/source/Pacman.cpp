@@ -6,6 +6,7 @@ void Pacman::restart(){
         invincible = false;
         turning = false;
         in_tunnel = false;
+        state = healthy;
         x = x_i;
         y = y_i;
         speed = SPEED_REF;
@@ -31,14 +32,27 @@ void Pacman::speed_modif(char s){
     static bool p = false;
     static bool c = false;
     static int counter = 0;
+    static int counter_c = 0;
 
+    //If a pill is eaten :
     if(s == 'p'){
         if(!p){
             speed += 0.05*speed;
         }
         p = true;
+        c = false;
+        counter_c = 0;
         invincible = true;
         counter = 7*GAME_FPS;
+    }
+
+    // If we have the corona :
+    if(s == 'c'){
+        if(!c){
+            speed = 0.2*speed;
+        }
+        c = true;
+        counter_c = 10*GAME_FPS;
     }
 
     if(p){
@@ -51,22 +65,11 @@ void Pacman::speed_modif(char s){
         }
     }
 
-    if(s == 'c'){
-        if(!c){
-            speed = 0.2*speed;
-            std::cout << "ok";
-        }
-        c = true;
-        invincible = true;
-        counter = 7*GAME_FPS;
-    }
-
     if(c){
-        counter --;
-        if(counter == 0){
+        counter_c --;
+        if(counter_c == 0){
             c = false;
-            invincible = false;
-            counter = 0;
+            counter_c = 0;
             speed = SPEED_REF;
         }
     }
@@ -461,20 +464,20 @@ void Pacman::display(sf::RenderWindow &window){
         if(state == incubation){
             sf::CircleShape point;
             point.setRadius(4);
-            point.setPosition(x+PACMAN_RADIUS-1,y+PACMAN_RADIUS-1);
+            point.setPosition(x+PACMAN_RADIUS-3,y+PACMAN_RADIUS-3);
             sf::Color color(250, 0, 246);
             point.setFillColor(color);
             window.draw(point);
         }
-        if(state == sick){
-            sf::CircleShape point;
-            point.setRadius(5);
-            point.setPosition(x+PACMAN_RADIUS-1,y+PACMAN_RADIUS-1);
-            sf::Color color(30, 250, 30);
-            point.setFillColor(color);
-            window.draw(point);
-        }
     }
+    if(state == sick){
+        sf::CircleShape point;
+        point.setRadius(CELL_SIZE/2);
+        point.setPosition(x+PACMAN_RADIUS-CELL_SIZE/2,y+PACMAN_RADIUS-CELL_SIZE/2);
+        sf::Color color(206, 252, 158);
+        point.setFillColor(color);
+        window.draw(point);
+        }
 }
 
 
@@ -513,6 +516,7 @@ Pacman::Pacman(){
         speed = SPEED_REF;
         score = 0;
         food_eaten = 0;
+        state = healthy;
 
         pacman.setRadius(PACMAN_RADIUS);
         pacman.setFillColor(sf::Color(255,238,0));

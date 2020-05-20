@@ -4,7 +4,6 @@
 #include "Character.hpp"
 #include "Map.hpp"
 #include "tunnel.hpp"
-#include "corona.hpp"
 
 #include <iostream>
 

@@ -15,22 +15,24 @@ void bashful::display(sf::RenderWindow &window)
             point.setFillColor(color);
             window.draw(point);
         }
-        if(state == sick){
-            sf::CircleShape point;
-            point.setRadius(5);
-            point.setPosition(x+MONSTER_SIZE/2-3,y+MONSTER_SIZE/2-3);
-            sf::Color color(30, 250, 30);
-            point.setFillColor(color);
-            window.draw(point);
-        }
+    }
+    if(state == sick){
+        sf::CircleShape point;
+        point.setRadius(5);
+        point.setPosition(x+MONSTER_SIZE/2-3,y+MONSTER_SIZE/2-3);
+        sf::Color color(206, 252, 158);
+        point.setFillColor(color);
+        window.draw(point);
     }
 }
 
+//Set the mob to the dead mode
 void bashful::is_dead(){
     mode = dead;
     speed = 1.3*SPEED_REF;
 }
 
+//Will return the mob at home
 void bashful::go_home(){
 
     static bool in_home = false;
@@ -72,6 +74,7 @@ void bashful::go_home(){
 
 }
 
+//Change the mode of the mob, with the speed to
 void bashful::change_mode(bool pills, bool restart_){
 
     static int counter = 0;
@@ -192,6 +195,10 @@ void bashful::move(Map *map, Pacman pacman)
         go_home();
         return;
     }
+
+    if(state == sick)
+        speed = 0.2*SPEED_REF;
+
     tunnel t;
     in_tunnel = t.is_in_tunnel(xr,direction);
 
@@ -257,22 +264,11 @@ void bashful::move(Map *map, Pacman pacman)
 //Can he move to the specific direction :
 bool bashful::canMove(Map *map, int i, int j)
 {
-    if ( ( i == 25 or i == 13) and ( j == 15 or j == 12) and direction % 2 == 1) // CANT GO UP
-    {
-        return false;
-
-    }
-
-
 
     if (map->getCellType(i, j) == EMPTY or map->getCellType(i, j) == TREAT or map->getCellType(i, j) == PILL or (mode == on && map->getCellType(i, j) == GATE) or  map->getCellType(i, j) == VIRAL_PILL or map->getCellType(i, j) == VIRAL_TREAT)
     {
-
-            return true;
-
-
+        return true;
     }
-
     return false;
 }
 
@@ -284,15 +280,22 @@ Direction bashful::start(Map *map)
     float xr = x + MONSTER_SIZE / 2;
     float yr = y + MONSTER_SIZE / 2;
 
-    Direction newDirection;
+    Direction newDirection = NORTH;
 
     //Initial direction of a monster :
-    if (xr + speed < chaseX)
+    if (xr + speed < chaseX){
         newDirection = EAST;
-    else if (yr > chaseY)
+        return newDirection;
+    }
+    else{
+        x = chaseX - MONSTER_SIZE/2;
+    }
+    if (yr > chaseY){
         newDirection = NORTH;
-    if (xr == chaseX && yr == chaseY)
-    {
+        return  newDirection;
+    }
+    else{
+        y = chaseY - MONSTER_SIZE/2;
         direction = WEST;
         mode =  chase;
     }

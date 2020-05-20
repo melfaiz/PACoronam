@@ -10,14 +10,13 @@ void Game::restart(){
     map.restart();
     step = 0;
 
-    srand(time(NULL));
-    corona_ = LATEST_VIRUS;
-
     pacman.restart();
     Blinky.restart();
     Pinky.restart();
     Inky.restart();
     Clyde.restart();
+
+    covid.restart();
 
 }
 
@@ -99,14 +98,14 @@ void Game::update(){
     pacman.move(&map);
     Blinky.move(&map,pacman);
     Pinky.move(&map,pacman);
-
     if(pacman.get_food_eaten() >= 30)
        Inky.move(&map,pacman);
-       
     if(step/GAME_FPS > 60 || pacman.get_food_eaten() >= 82)
        Clyde.move(&map,pacman);
 
     eaten();
+
+    covid.update(&pacman,&Inky,&Clyde,&Pinky,&Blinky);
 
     if(pacman.get_food_eaten() >= 244)
         we_win();
@@ -140,6 +139,8 @@ void Game::eaten(){
 
     if(xp == xb && yp == yb && !pacman.in_tunnel){
         if (pacman.invincible && Blinky.mode != dead){
+            if(Blinky.state == incubation || Blinky.state == sick)
+                pacman.state = incubation;
             Blinky.is_dead();
             pacman.add_score(double_score*100);
             double_score = 2*double_score;
@@ -154,6 +155,8 @@ void Game::eaten(){
 
     if(xp == xpi && yp == ypi && !pacman.in_tunnel){
         if (pacman.invincible && Pinky.mode != dead){
+            if(Pinky.state == incubation || Pinky.state == sick)
+                pacman.state = incubation;
             Pinky.is_dead();
             pacman.add_score(double_score*100);
             double_score = 2*double_score;
@@ -168,6 +171,8 @@ void Game::eaten(){
 
     if(xp == xI && yp == yI && !pacman.in_tunnel){
         if (pacman.invincible && Inky.mode != dead){
+            if(Inky.state == incubation || Inky.state == sick)
+                pacman.state = incubation;
             Inky.is_dead();
             pacman.add_score(double_score*100);
             double_score = 2*double_score;
@@ -182,6 +187,8 @@ void Game::eaten(){
 
     if(xp == xC && yp == yC && !pacman.in_tunnel){
         if (pacman.invincible && Clyde.mode != dead){
+            if(Clyde.state == incubation || Clyde.state == sick)
+                pacman.state = incubation;
             Clyde.is_dead();
             pacman.add_score(double_score*100);
             double_score = 2*double_score;
@@ -264,13 +271,6 @@ void Game::readKeyboard(sf::RenderWindow &window){
             gameOn = false;
         }
 
-        // if (event.type == sf::Event::MouseButtonPressed)
-
-		// {cout << "Button " << event.mouseButton.button << " @ "
-        //              << " j :" << sf::Mouse::getPosition(window).x / CELL_SIZE<< ", "
-        //              << " i :" << sf::Mouse::getPosition(window).y / CELL_SIZE << "\n";
-        // }
-
         if (event.type == sf::Event::KeyPressed ){
 
             switch(event.key.code){
@@ -318,5 +318,4 @@ Game::Game(){
     step = 0;
 
     srand(time(NULL));
-    corona_ = LATEST_VIRUS;
 }

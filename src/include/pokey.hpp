@@ -10,6 +10,7 @@
 class pokey: public Caracter
 {
 public :
+
     corona_state state;
     Mode mode;
 
